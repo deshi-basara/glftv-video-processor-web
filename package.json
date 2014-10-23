@@ -1,0 +1,20 @@
+{
+  "name": "glftv-video-processor-web",
+  "version": "1.0.0",
+  "description": "glftv-video-processor-web =========================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deshi-basara/glftv-video-processor-web.git"
+  },
+  "author": "Simon <simon@i-was-perfect.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deshi-basara/glftv-video-processor-web/issues"
+  },
+  "homepage": "https://github.com/deshi-basara/glftv-video-processor-web",
+  "dependencies": {}
+}
