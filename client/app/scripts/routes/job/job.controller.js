@@ -6,13 +6,15 @@
         .module('app')
         .controller('JobCtrl', JobCtrl);
 
-    JobCtrl.$inject = ['ngTableParams', 'JobService', 'SweetAlert'];
+    JobCtrl.$inject = ['ngTableParams', 'JobService', 'ProfileService', 'SweetAlert'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function JobCtrl(ngTableParams, JobService, SweetAlert) {
+    function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert) {
         var ctrl = this;
+
+        ctrl.profiles = ProfileService.getAllProfiles();
 
         /**
          * Is called when files were selected for uploading.
@@ -31,21 +33,51 @@
                 ctrl.filesInUploadQueue[i].status = 'Uploading';
 
                 // upload the current file
-                JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(null, function(data, status) {
+                JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(function(success) {
+
+
+
+                }, function(error, status) {
+
                     // server not available
                     if(status === null) {
                         return SweetAlert.swal('Der Upload-Server ist nicht erreichbar');
                     }
-                });
+
+                }, null);
             }
+        }
+
+        /**
+         * Is called when on a video in the upload-queue-list is clicked.
+         * Changes the 'jop-profile'-box accordingly to the selected video.
+         * @param  {[Object]} clickedVideo [fileObject of the clicked video]
+         */
+        function onVideoSelect(clickedVideo) {
+            console.log(clickedVideo);
+
+            ctrl.fileSelected = clickedVideo;
+        }
+
+        /**
+         * Is called when a profile was clicked from the 'section-profiles'.
+         * Changes the profile-settings-view accordingly to the selected profile.
+         * @param  {[type]} clickedProfile [description]
+         * @return {[type]}                [description]
+         */
+        function onProfileSelect(clickedProfile) {
+
         }
 
         //////////////////////
 
         angular.extend(ctrl, {
             filesInUploadQueue: [],
+            fileSelected: null,
 
-            onFileSelect: onFileSelect
+            onFileSelect: onFileSelect,
+            onVideoSelect: onVideoSelect,
+            onProfileSelect:onProfileSelect
         });
 
     }

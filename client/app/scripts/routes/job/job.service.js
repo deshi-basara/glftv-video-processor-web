@@ -44,7 +44,10 @@
             }).success(function(data, status, header, config, responseText) {
                 // file upload complete
                 fileObj.status = 'Fertig';
-                q.resolve();
+
+                // save the database id of the uploaded file in the queue-array
+                fileObj.uploadId = data.id;
+                q.resolve(data);
             }).error(function(data, status, header, config, responseText) {
                 // file upload error
                 fileObj.status = 'Fehler';
