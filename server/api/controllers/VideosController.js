@@ -29,11 +29,21 @@ module.exports = {
     req.file('videoFile').upload(uploadConfig, function(err, file) {
       if(err) return res.send(500, err);
 
-      console.log(file);
+      console.log(file[0]);
 
-      return res.json({
-        message: file.length + ' file(s) uploaded successfully!',
-        files: file
+      // create a new Video-Object
+      Videos.create({
+        name: file[0].filename,
+        path: file[0].fd,
+        user: 'Ada Rhode'
+      }).exec(function(err, created) {
+        if(err) return res.send(500, err);
+
+        // everything went well, send response
+        return res.json({
+          msg: file[0].filename + ' uploaded successfully',
+          id: created.id
+        });
       });
     })
   },

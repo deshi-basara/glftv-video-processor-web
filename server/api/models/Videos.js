@@ -28,6 +28,11 @@ module.exports = {
             required: true
         },
 
+        path : {
+            type: 'string',
+            required: true
+        },
+
         profil : {
             type: 'int',
             required: true,
@@ -40,12 +45,12 @@ module.exports = {
             defaultsTo: 0
         },
 
-        user : { 
-            type: 'int',
+        user : {
+            type: 'string',
             required: true
         },
 
-        paused : { 
+        paused : {
             type: 'int',
             required: true,
             defaultsTo: 0
