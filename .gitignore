@@ -26,3 +26,13 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+# tmp-folders
+.tmp
+.sass-cache
+
+# bower
+bower_components
+
+# distribution folder
+dist
