@@ -83,10 +83,19 @@ label {
     background-color: $glf-white;
     box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
     padding: 15px;
+    position: relative;
 
     .section-box-head {
         height: em(40);
         line-height: em(40);
         border-bottom: 1px solid $glf-grey;
+    }
+
+    .section-box-footer {
+        width: 98%;
+        position: absolute;
+        bottom: 0px;
+        height: em(65);
+        border-top: 1px solid $glf-grey;
     }
 }

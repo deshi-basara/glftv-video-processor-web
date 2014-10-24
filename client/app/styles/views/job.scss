@@ -1,7 +1,9 @@
 #job {
+    min-height: 40%;
 
     .section-box-body {
         width: 100%;
+        padding-bottom: 15px;
 
         .upload-help {
             margin-top: 15px;
@@ -18,9 +20,26 @@
 
         .upload-indicator {
             margin-top: 15px;
+            margin-bottom: 15px;
 
             table thead tr th {
                 text-align: left;
+            }
+
+            table tbody tr {
+                pointer: cursor;
+            }
+
+            .fa-started {
+                text-align: left;
+
+                .fa-minus {
+                    color: $glf-grey;
+                }
+
+                .fa-check {
+                    color: $glf-green;
+                }
             }
 
             // overwrite bootstrap defauls
@@ -33,11 +52,20 @@
                     background-color: $glf-green;
                 }
             }
+            .form-control {
+                border-radius: 0;
+                height: 20px;
+                line-height: 20px;
+                font-size: em(12);
+                padding: 0;
+            }
         }
+    }
+
+    .section-box-footer {
 
         .upload-controls {
             width: 100%;
-            margin-top: 20px;
             text-align: right;
 
             .button {
@@ -45,6 +73,76 @@
                 margin-right: 10px;
             }
         }
+    }
+}
 
+#job-profile {
+    margin-top: 15px;
+    min-height: 53%;
+
+    .section-box-head {
+
+        span {
+            color: $glf-green;
+        }
+    }
+
+    .section-box-body {
+
+        .section-left {
+            @include span-columns(8 of 12);
+            margin-top: 10px;
+        }
+        .section-right {
+            @include span-columns(4 of 12);
+            margin-top: 10px;
+            height: auto;
+            border-left: 1px solid $glf-grey;
+
+            .section-profiles {
+                .profile-item {
+                    cursor: pointer;
+                    height: em(40);
+                    line-height: em(40);
+                    margin-left: 10px;
+                    border-bottom: 1px solid $glf-grey;
+
+                    span {
+                        padding-left: 15px;
+                    }
+
+                    input {
+                        float: right;
+                        margin: 10px;
+                    }
+                }
+
+                .profile-item:hover {
+                    background-color: $glf-green;
+                    color: $glf-white;
+
+                    @include transition(all 0.7s ease-in-out);
+                }
+            }
+        }
+
+    }
+
+
+    /*.section-box-body {
+        .output-name  {
+            @include span-columns(7 of 12);
+        }
+        .output-format {
+            @include span-columns(5 of 12);
+            @include omega();
+        }
+    }*/
+
+
+    input {
+        margin-left: 10px;
+        color: $glf-dark;
+        border-bottom: 2px solid $glf-border;
     }
 }

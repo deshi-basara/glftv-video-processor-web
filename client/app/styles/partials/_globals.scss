@@ -33,4 +33,9 @@ html, body {
 
 .nested-container {
     padding: 30px;
+    height: 100%;
+}
+
+.outer-container{
+   @include outer-container;
 }
