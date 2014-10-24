@@ -1,0 +1,92 @@
+/**
+ * Input buttons
+ */
+.input-text {
+    height: em(38);
+    padding: 0;
+    float: none;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    background: 0 0;
+    border-bottom: 2px solid $glf-white;
+    color: $glf-white;
+    outline: none;
+    font-size: em(20);
+    font-weight: normal;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+label {
+    height: em(50);
+    line-height: em(50);
+}
+
+.button {
+    position: relative;
+    padding: 8px 30px;
+    border: 0;
+    margin: 10px 1px;
+    cursor: pointer;
+    text-decoration: none;
+    color: $glf-white;
+    outline: 0!important;
+    box-shadow: 0;
+}
+
+.button:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+
+    @include transition(box-shadow .28s cubic-bezier(0.4,0,.2,1));
+}
+
+/**
+ * Centering
+ */
+.center-parent {
+    display: table;
+}
+
+.center-child {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/**
+ * Warning/Info
+ */
+.toast {
+    @include position(fixed, null null 30px null);
+    @include size(100% 45px);
+
+    color: $glf-white;
+    text-align: center;
+
+    .error-msg {
+        background-color: $glf-red;
+        box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+        padding: 15px 25px 15px 25px;
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+/**
+ * Section boxes
+ */
+.section-box {
+    background-color: $glf-white;
+    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+    padding: 15px;
+
+    .section-box-head {
+        height: em(40);
+        line-height: em(40);
+        border-bottom: 1px solid $glf-grey;
+    }
+}

@@ -1,0 +1,37 @@
+<section id="job" class="section-box">
+    <div class="section-box-head">
+        <h4>Video-Files hochladen</h4>
+    </div>
+    <div class="section-box-body">
+        <div class="upload-help" ng-hide="ctrl.filesInUploadQueue.length !== 0">
+            <div>#1</div> Wähle alle Dateien, die du konvertieren möchtest aus.<br>
+            <div>#2</div> Du kannst mehr als eine Datei gleichzeitig auswählen und hochladen.<br>
+            <div>#3</div> Der Upload beginnt sobald du eine Datei ausgewählt hast.<br>
+            <div>#4</div> Nur fertig hochgeladene Videos können konvertiert werden!
+        </div>
+        <div class="upload-indicator" ng-show="ctrl.filesInUploadQueue.length !== 0">
+            <table ng-table class="table table-hover">
+                <tr ng-repeat="file in ctrl.filesInUploadQueue">
+                    <td data-title="'#'">
+                        {{ $index }}
+                    </td>
+                    <td data-title="'Name'">
+                        {{ file.name }}
+                    </td>
+                    <td data-title="'Fortschritt'">
+                        <ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>
+                    </td>
+                    <td data-title="'Größe'">
+                        {{ file.size | agsBytes:2 }}
+                    </td>
+                    <td data-title="'Status'">
+                        {{ file.status }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="upload-controls">
+            <button class="button" ng-file-select="ctrl.onFileSelect($files)" data-multiple="true">Dateien hochladen</button>
+        </div>
+    </div>
+</section>

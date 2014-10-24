@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+         <!--
+            Fonts
+        -->
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+        <!--
+            Vendor stylesheets
+        -->
+        <!-- build:css styles/vendor.min.css -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!-- bower:css -->
+        <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="../bower_components/normalize.css/normalize.css" />
+        <link rel="stylesheet" href="../bower_components/ng-table/ng-table.css" />
+        <link rel="stylesheet" href="../bower_components/sweetalert/lib/sweet-alert.css" />
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!--
+            Custom stylesheets
+        -->
+        <!-- build:css({.tmp,app}) styles/main.min.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+
+        <script src="../bower_components/modernizr/modernizr.js"></script>
+    </head>
+    <body ng-app="app">
+
+        <!--
+            Custom loader directive
+        -->
+        <div ags-loaders></div>
+
+        <!--
+            The ui-view directive tells $state where to place the templates
+        -->
+        <div ui-view class="main-container"></div>
+
+        <!--
+            Vendor scripts
+        -->
+        <!-- build:js scripts/vendor.min.js -->
+        <script src="../bower_components/ng-file-upload/angular-file-upload-html5-shim.js"></script>
+        <!-- bower:js -->
+        <script src="../bower_components/angular/angular.js"></script>
+        <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="../bower_components/traceur/traceur.js"></script>
+        <script src="../bower_components/es6-module-loader/dist/es6-module-loader-sans-promises.js"></script>
+        <script src="../bower_components/system.js/dist/system.js"></script>
+        <script src="../bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="../bower_components/angular-animate/angular-animate.js"></script>
+        <script src="../bower_components/ng-table/ng-table.js"></script>
+        <script src="../bower_components/ng-file-upload/angular-file-upload.js"></script>
+        <script src="../bower_components/sweetalert/lib/sweet-alert.js"></script>
+        <script src="../bower_components/angular-sweetalert/SweetAlert.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!--
+            Custom angular scripts
+        -->
+        <!-- build:js scripts/main.min.js -->
+        <!-- inject:js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/directives/loader.js"></script>
+        <script src="scripts/filters/agsBytes.filter.js"></script>
+        <script src="scripts/directives/progress/progress.directive.js"></script>
+        <script src="scripts/routes/dash/dash.controller.js"></script>
+        <script src="scripts/routes/job/job.controller.js"></script>
+        <script src="scripts/routes/job/job.service.js"></script>
+        <script src="scripts/routes/login/login.controller.js"></script>
+        <script src="scripts/routes/queue/queue.controller.js"></script>
+        <script src="scripts/services/auth/auth.service.js"></script>
+        <!-- endinject -->
+        <!-- endbuild -->
+
+    </body>
+</html>

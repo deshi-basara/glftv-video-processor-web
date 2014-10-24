@@ -1,0 +1,69 @@
+#login {
+    background-color: $glf-dark;
+
+    @include size(100% 100%);
+
+    .login-form {
+        background-color: $glf-green;
+        box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+        @include size(30% 40%);
+        min-height: 274px;
+        @include position(relative, 50% 0 0 50%);
+        @include transform(translate(-50%, -50%));
+
+        .login-form-header {
+            background-color: $glf-green;
+            padding-top: 10px;
+            color: $glf-white;
+            height: em(45);
+            line-height: em(45);
+            text-align: center;
+            font-size: em(24);
+
+            @include position(relative, 0 0 0 0);
+
+            .headline {
+                padding-left: 12px;
+            }
+        }
+
+        .login-form-input {
+            height: 60%;
+            width: 100%;
+
+            .input-group {
+                @include outer-container;
+
+                label {
+                    @include shift(2);
+                    @include span-columns(2 of 12);
+
+                    text-align: right;
+                    color: $glf-white;
+                }
+
+                input {
+                    @include span-columns(6 of 12);
+                }
+            }
+        }
+
+        .login-form-submit {
+            position: absolute;
+            width: 100%;
+            bottom: 10px;
+            text-align: center;
+
+            button {
+                background-color: $glf-white;
+                color: $glf-dark;
+            }
+        }
+
+        .login-form-warning {
+            position: absolute;
+            bottom: -45px;
+        }
+    }
+}

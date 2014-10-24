@@ -1,0 +1,37 @@
+<section id="queue-box" class="section-box">
+    <div class="section-box-head">
+        Alle Jobs
+    </div>
+</section>
+<section id="queue-list" class="section-box">
+
+    <table ng-table class="table table-hover">
+        <tr ng-repeat="job in ctrl.queueData">
+            <td data-title="'ID'">
+                {{ job.id }}
+            </td>
+            <td data-title="'Status'">
+                {{ job.status }}
+            </td>
+            <td data-title="'Priorität'">
+                {{ job.prio }}
+            </td>
+            <td data-title="'Name'">
+                {{ job.name }}
+            </td>
+            <td data-title="'Profil'">
+                {{ job.profile }}
+            </td>
+            <td data-title="'Pass'">
+                {{ job.pass }}
+            </td>
+            <td data-title="'Erstellt'">
+                {{ job.created }}
+            </td>
+            <td data-title="'Benutzer'">
+                {{ job.user }}
+            </td>
+        </tr>
+    </table>
+
+</section>

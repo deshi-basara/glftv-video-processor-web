@@ -1,0 +1,7 @@
+.ags-loader {
+	@include position(fixed, 0 0 0 0);
+
+	i {
+		color: $glf-green;
+	}
+}
