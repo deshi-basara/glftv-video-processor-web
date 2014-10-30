@@ -1,3 +1,5 @@
+var ffmpeg = require('fluent-ffmpeg');
+
 /**
  * FFmpegService.js
  *
