@@ -29,6 +29,9 @@
     "gulp-useref": "^1.0.2",
     "gulp-watch": "^1.0.7",
     "jshint-stylish": "^1.0.0",
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-jasmine": "^0.1.5",
     "main-bower-files": "^2.0.0",
     "run-sequence": "^0.3.7",
     "wiredep": "^1.8.5"
