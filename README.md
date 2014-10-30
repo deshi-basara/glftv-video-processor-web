@@ -22,6 +22,8 @@ Execute inside 'server/'
 [server]$  npm install
 
 [server]$  sails lift
+or
+[server]$  supervisor -i .tmp,.git,views app.js
 ```
 
 Execute inside 'client/'
