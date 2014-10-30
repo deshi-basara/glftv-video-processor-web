@@ -43,8 +43,8 @@
     </div>
     <div class="section-box-footer">
         <div class="upload-controls">
-            <button class="button">Alle fertigen Uploads starten</button>
-            <button class="button" ng-file-select="ctrl.onFileSelect($files)" data-multiple="true">Dateien hochladen</button>
+            <button class="button" ng-click="ctrl.queueUploadedVideos()" ng-show="ctrl.filesInUploadQueue.length !== 0">Alle fertigen Uploads starten</button>
+            <button class="button" ng-file-select="ctrl.onFileSelect($files)" data-multiple="true" ng-show="ctrl.filesInUploadQueue.length === 0">Dateien hochladen</button>
         </div>
     </div>
 </section>

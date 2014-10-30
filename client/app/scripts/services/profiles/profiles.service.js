@@ -65,7 +65,8 @@
                     codec_v: 'libx264',
                     b_v: '2000k',
                     bufsize: '4000k',
-                    threads: 4
+                    threads: 4,
+                    output: 'mp4'
                 }
 
             ];

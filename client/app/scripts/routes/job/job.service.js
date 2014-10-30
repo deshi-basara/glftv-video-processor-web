@@ -6,17 +6,19 @@
         .module('app')
         .factory('JobService', JobService);
 
-    JobService.$inject = ['$upload', 'config', '$q'];
+    JobService.$inject = ['$upload', '$http', 'config', '$q'];
 
     /**
      * Service for uploading jobs
      */
-    function JobService($upload, config, $q) {
+    function JobService($upload, $http, config, $q) {
 
         var service = {
             uploadUrl: '/videos/create',
+            startUrl: '/videos/start',
 
-            uploadFile: uploadFile
+            uploadFile: uploadFile,
+            startFile: startFile
         };
 
         return service;
@@ -51,6 +53,30 @@
             }).error(function(data, status, header, config, responseText) {
                 // file upload error
                 fileObj.status = 'Fehler';
+                q.reject(data, status);
+            });
+
+            return q.promise;
+        }
+
+        /**
+         * Sends a request with the fileId to the server for enqueuing the file.
+         * @param  {[int]} fileId  [Serverside database id of the file]
+         * @return {Promise}       [Resolve: true | Reject: false]
+         */
+        function startFile(fileId) {
+            var q = $q.defer();
+
+            console.log('starting: '+fileId);
+
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.startUrl,
+                data: {id: fileId}
+            }).success(function() {
+                q.resolve();
+            }).error(function(data, status) {
                 q.reject(data, status);
             });
 

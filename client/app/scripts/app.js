@@ -55,7 +55,7 @@ angular
     })
 
     .state('dash.profiles', {
-      url: '/profiles',
+      url: '/profile',
       controller: 'ProfilesCtrl',
       controllerAs: 'ctrl',
       templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html'

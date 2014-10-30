@@ -1,0 +1,106 @@
+<section id="profiles" class="section-box">
+    <div class="section-box-head">
+        <h4>Alle Profile</h4>
+    </div>
+    <div class="section-box-body">
+        <div class="profiles-all">
+            <table ng-table class="table table-hover">
+                <tr ng-repeat="profile in ctrl.allProfiles" ng-click="ctrl.onProfileSelect(profile)">
+                    <td data-title="'#'" class="col-sm-1">
+                        {{:: $index }}
+                    </td>
+                    <td data-title="'Name'" class="col-sm-3">
+                        {{:: profile.name }}
+                    </td>
+                    <td data-title="'Output'" class="col-sm-1">
+                        {{:: profile.output }}
+                    </td>
+                    <td data-title="'Video-Codec'" class="col-sm-2">
+                        {{:: profile.codec_v }}
+                    </td>
+                    <td data-title="'Autor'" class="col-sm-2">
+                        {{:: 'Ada Rhode' }}
+                    </td>
+                    <td data-title="'Letztes Update'" class="col-sm-2">
+                        {{:: '12 Uhr, 12.06.2015' }}
+                    </td>
+                    <td class="fa-activated" data-title="'Aktiviert'" class="col-sm-1">
+                        <i class="fa fa-minus" ng-hide="profile.activated === 0"></i>
+                        <i class="fa fa-check" ng-show="profile.status === 0"></i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="section-box-footer">
+        <div class="upload-controls">
+            <button class="button button-green" ng-click="ctrl.createNewProfile()">Ein neues Profil erstellen</button>
+        </div>
+    </div>
+</section>
+<section id="job-profile" class="section-box" ng-show="!ctrl.selectedProfile">
+    <div class="section-box-head">
+        <h4>Einstellungen für: <span>{{ ctrl.selectedProfile.name }}</span></h4>
+    </div>
+    <div class="section-box-body">
+        <div class="section-left">
+            <div class="section-general" ng-show="ctrl.isActive === 'global'">
+                <div class="input-group">
+                    <label>Profil-Name</label>
+                    <input class="input-text" type="text" ng-model="ctrl.newProfile.outputName">
+                </div>
+            </div>
+            <div class="section-video" ng-show="ctrl.isActive === 'video'">
+                <!-- Row 1 -->
+                <div class="form-group row">
+                    <!-- Format -->
+                    <label class="col-md-2 control-label">Ausgabe Format</label>
+                    <div class="col-md-3">
+                        <select class="form-control">
+                            <option>Webm</option>
+                            <option>Ogv</option>
+                            <option>MP4</option>
+                            <option>Custom</option>
+                        </select>
+                    </div><!-- / Format -->
+                    <!-- Scale -->
+                    <label class="col-md-offset-1 col-md-2 control-label">Auflösung</label>
+                    <div class="col-md-3">
+                        <select class="form-control">
+                            <option>Untouched</option>
+                            <option>1080p</option>
+                            <option>720p</option>
+                            <option>480p</option>
+                            <option>360p</option>
+                            <option>Custom</option>
+                        </select>
+                    </div><!-- / Scale -->
+                </div><!-- / Row 1 -->
+
+                <!-- Row 2 -->
+                <div class="form-group row">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="section-right">
+            <div class="section-profiles">
+                <div class="profile-item" ng-class="{ active: ctrl.isActive == 'global' }" ng-click="ctrl.changeActive('global')">
+                    <span>Allgemein<span>
+                </div>
+                <div class="profile-item" ng-class="{ active: ctrl.isActive == 'video' }" ng-click="ctrl.changeActive('video')">
+                    <span>Video<span>
+                </div>
+                <div class="profile-item" ng-class="{ active: ctrl.isActive == 'audio' }" ng-click="ctrl.changeActive('audio')">
+                    <span>Audio<span>
+                </div>
+                <div class="profile-item" ng-class="{ active: ctrl.isActive == 'custom' }" ng-click="ctrl.changeActive('custom')">
+                    <span>Eigene Parameter<span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-box-footer">
+        ffmpeg {{ ctrl.newProfile.outputName }}
+    </div>
+</section>

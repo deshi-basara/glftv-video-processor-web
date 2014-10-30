@@ -22,7 +22,7 @@
          * @return {[type]}         [description]
          */
         function onFileSelect($files) {
-            // inject
+            // inject files into the view
             ctrl.filesInUploadQueue = $files;
 
             // foreach file start an upload
@@ -69,6 +69,30 @@
 
         }
 
+        /**
+         * Hands all finished file to the JobService.startFile(id) function.
+         * There an queue-request is send.
+         */
+        function queueUploadedVideos() {
+            // iterate through all files in the queue
+            for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
+                var currentFile = ctrl.filesInUploadQueue[i];
+
+                console.log(currentFile.status);
+                // check if the current file is ready
+                if(currentFile.status === 'Fertig') {
+                    // add the videoFile to the encoding-queue
+                    JobService.startFile(currentFile.uploadId).then(function(success) {
+                        console.log(success);
+                    }, function(error) {
+                        console.log(error);
+                    }, function(progress) {
+                        console.log(progress);
+                    });
+                }
+            }
+        }
+
         //////////////////////
 
         angular.extend(ctrl, {
@@ -77,7 +101,8 @@
 
             onFileSelect: onFileSelect,
             onVideoSelect: onVideoSelect,
-            onProfileSelect:onProfileSelect
+            onProfileSelect: onProfileSelect,
+            queueUploadedVideos: queueUploadedVideos
         });
 
     }

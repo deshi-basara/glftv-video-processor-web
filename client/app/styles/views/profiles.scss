@@ -1,0 +1,31 @@
+#profiles {
+    .profiles-all {
+
+        table thead tr th {
+            text-align: left;
+        }
+
+        .fa-activated {
+            padding-left: 32px;
+        }
+    }
+}
+
+#job-profile {
+
+    .section-left {
+        padding-top: 20px;
+    }
+
+    label {
+        display: inline-block;
+        text-align: right;
+        line-height: em(40);
+    }
+    .form-control {
+        display: inline-block;
+        border-radius: 0;
+        padding: 0;
+    }
+}
+
