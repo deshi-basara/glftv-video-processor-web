@@ -117,7 +117,7 @@
                     }
                 }
 
-                .profile-item:hover {
+                .profile-item:hover, .profile-item.active {
                     background-color: $glf-green;
                     color: $glf-white;
 
@@ -126,6 +126,11 @@
             }
         }
 
+    }
+
+    .section-box-footer {
+        text-align: left;
+        line-height: em(60);
     }
 
 

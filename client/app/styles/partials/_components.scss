@@ -43,6 +43,14 @@ label {
     @include transition(box-shadow .28s cubic-bezier(0.4,0,.2,1));
 }
 
+.button-green {
+    background-color: $glf-green;
+}
+
+.button-greener {
+    background-color: $glf-greener;
+}
+
 /**
  * Centering
  */
@@ -97,5 +105,6 @@ label {
         bottom: 0px;
         height: em(65);
         border-top: 1px solid $glf-grey;
+        text-align: right;
     }
 }
