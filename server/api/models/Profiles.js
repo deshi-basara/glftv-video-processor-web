@@ -7,8 +7,36 @@
 
 module.exports = {
 
-  attributes: {
+    connection: 'redis',
 
-  }
+    attributes: {
+
+        name: {
+            type: 'string',
+            required: true,
+            unique: true
+        },
+
+        outputFormat: {
+            type: 'string',
+            required: true
+        },
+
+        videoCodec: {
+            type: 'string',
+            required: true
+        },
+
+        autor: {
+            type: 'string',
+            required: true
+        },
+
+        json: {
+            type: 'string',
+            required: true
+        }
+
+    }
 };
 
