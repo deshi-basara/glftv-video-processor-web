@@ -51,36 +51,42 @@
                 </div>
             </div>
             <div class="section-video" ng-show="ctrl.isActive === 'video'">
+
                 <!-- Row 1 -->
-                <div class="form-group row">
+                <div class="form-group">
                     <!-- Format -->
-                    <label class="col-md-2 control-label">Ausgabe Format</label>
-                    <div class="col-md-3">
-                        <select class="form-control">
-                            <option>Webm</option>
-                            <option>Ogv</option>
-                            <option>MP4</option>
-                            <option>Custom</option>
-                        </select>
-                    </div><!-- / Format -->
+                    <label class="control-label">Ausgabe Format</label>
+                    <select class="form-control" ng-model="ctrl.newProfile.outputFormat" ng-change="ctrl.changeOutputFormat()">
+                        <option value="webm">Webm</option>
+                        <option value="ogv">Ogv</option>
+                        <option value="mp4">MP4</option>
+                        <option>Custom</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <!-- Scale -->
-                    <label class="col-md-offset-1 col-md-2 control-label">Auflösung</label>
-                    <div class="col-md-3">
-                        <select class="form-control">
-                            <option>Untouched</option>
-                            <option>1080p</option>
-                            <option>720p</option>
-                            <option>480p</option>
-                            <option>360p</option>
-                            <option>Custom</option>
-                        </select>
-                    </div><!-- / Scale -->
+                    <label class="control-label">Auflösung</label>
+                    <select class="form-control">
+                        <option>Untouched</option>
+                        <option>1080p</option>
+                        <option>720p</option>
+                        <option>480p</option>
+                        <option>360p</option>
+                        <option>Custom</option>
+                    </select>
                 </div><!-- / Row 1 -->
 
-                <!-- Row 2 -->
+                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.video" ng-submit="ctrl.createNewProfile()"></formly-form>
+
+
+                <!-- Row 2 --
                 <div class="form-group row">
-                    
-                </div>
+                </div>-->
+            </div>
+            <div class="section-audio" ng-show="ctrl.isActive === 'audio'">
+
+                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.audio" ng-submit="ctrl.createNewProfile()"></formly-form>
+
             </div>
         </div>
         <div class="section-right">
@@ -101,6 +107,6 @@
         </div>
     </div>
     <div class="section-box-footer">
-        ffmpeg {{ ctrl.newProfile.outputName }}
+        ffmpeg
     </div>
 </section>

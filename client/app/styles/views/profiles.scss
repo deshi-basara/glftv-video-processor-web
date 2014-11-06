@@ -15,17 +15,32 @@
 
     .section-left {
         padding-top: 20px;
-    }
 
-    label {
-        display: inline-block;
-        text-align: right;
-        line-height: em(40);
-    }
-    .form-control {
-        display: inline-block;
-        border-radius: 0;
-        padding: 0;
+        label {
+            text-align: right;
+            line-height: em(40);
+        }
+        .form-control {
+            border-radius: 0;
+            padding: 0;
+        }
+
+        .form-group {
+            @include span-columns(5 of 12);
+
+            label {
+                text-align: right;
+                @include span-columns(3 of 6);
+            }
+
+            input, select {
+                @include span-columns(2 of 6);
+            }
+
+            select {
+                margin-left: 10px;
+            }
+        }
     }
 }
 

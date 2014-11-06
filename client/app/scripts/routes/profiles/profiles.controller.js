@@ -14,7 +14,9 @@
     function ProfilesCtrl(ngTableParams, ProfileService, SweetAlert) {
         var ctrl = this;
 
+        // fetch needed configuration data from the server
         var profiles = ProfileService.getAllProfiles();
+        var settings = ProfileService.getAllProfileSettings();
 
         /**
          * Changes the active profile-sub-view to the clicked one.
@@ -40,18 +42,30 @@
             ctrl.selectedProfile = clickedProfile;
         }
 
+        /**
+         * Is called when the output-format select-box is changed.
+         * Changes the formly-form accordingly to the selected output format.
+         */
+        function changeOutputFormat() {
+            // change the selected profile setting
+            var selectedOutput = ctrl.newProfile.outputFormat;
+            ctrl.allProfileSettings = settings[selectedOutput];
+        }
+
         //////////////////////
 
         angular.extend(ctrl, {
-            isActive: 'video',
+            isActive: 'global', // default active setting tab
 
-            allProfiles: profiles,
+            allProfiles: profiles, // all saved profiles from the server
+            allProfileSettings: settings[null], // all predefined form settings for the selected output. Default: null
             newProfile: {},
             selectedProfile: null,
 
-            changeActive: changeActive,
+            changeActive: changeActive, // changes the default active settings tab
+            changeOutputFormat: changeOutputFormat,
             createNewProfile: createNewProfile,
-            onProfileSelect: onProfileSelect
+            onProfileSelect: onProfileSelect // when a profile is selected from the list
         });
 
     }
