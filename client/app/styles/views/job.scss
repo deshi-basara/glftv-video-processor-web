@@ -124,6 +124,10 @@
                     @include transition(all 0.7s ease-in-out);
                 }
             }
+
+            button {
+                float: right;
+            }
         }
 
     }
