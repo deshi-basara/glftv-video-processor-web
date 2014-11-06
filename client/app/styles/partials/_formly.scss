@@ -1,0 +1,19 @@
+.formly {
+
+    .form-group {
+        @include span-columns(6 of 12);
+
+        label {
+            text-align: right;
+            @include span-columns(2 of 6);
+        }
+
+        input, select {
+            @include span-columns(3 of 6);
+        }
+
+        select {
+            margin-left: 10px;
+        }
+    }
+}

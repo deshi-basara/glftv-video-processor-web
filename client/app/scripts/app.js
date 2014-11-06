@@ -10,7 +10,8 @@ angular
   'ngAnimate',
   'ngTable',
   'angularFileUpload',
-  'oitozero.ngSweetAlert'
+  'oitozero.ngSweetAlert',
+  'formly'
 ])
 
 .constant('config', {
