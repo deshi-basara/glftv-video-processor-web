@@ -15,7 +15,13 @@
         var ctrl = this;
 
         // fetch needed configuration data from the server
-        var profiles = ProfileService.getAllProfiles();
+        ProfileService.getAllProfiles().then(function(success) {
+            console.log(success);
+            ctrl.allProfiles = success;
+        }, function(err, status) {
+
+        });
+
         var settings = ProfileService.getAllProfileSettings();
 
         /**
@@ -26,9 +32,40 @@
             ctrl.isActive = newActive;
         }
 
-
+        /**
+         * Opens an empty newProfile dialog.
+         */
         function createNewProfile() {
+            ctrl.selectedProfile = {};
+        }
 
+        /**
+         * Validates the new profile settings before submitting them to the server
+         * afterwards.
+         */
+        function submitNewProfile() {
+            var debugObj = {
+                audioBitrate: "360k",
+                audioChannels: "2",
+                audioCodec: "libvorbis",
+                audioSamplerate: "44100",
+                outputFormat: "webm",
+                ownParams: "-test param",
+                profileName: "Simon",
+                scale: "1080p",
+                videoCodec: "libvpx",
+                videoQuality: "good",
+                videoQualityQmax: "42",
+                videoQualityQmin: "10",
+                videoThreads: "4"
+            };
+
+            ProfileService.submitNewProfile(debugObj).then(function(success) {
+                // @todo refetch allProfiles
+                
+            }, function(error, status) {
+
+            });
         }
 
         /**
@@ -57,7 +94,7 @@
         angular.extend(ctrl, {
             isActive: 'global', // default active setting tab
 
-            allProfiles: profiles, // all saved profiles from the server
+            allProfiles: null, // all saved profiles from the server
             allProfileSettings: settings[null], // all predefined form settings for the selected output. Default: null
             newProfile: {},
             selectedProfile: null,
@@ -65,7 +102,8 @@
             changeActive: changeActive, // changes the default active settings tab
             changeOutputFormat: changeOutputFormat,
             createNewProfile: createNewProfile,
-            onProfileSelect: onProfileSelect // when a profile is selected from the list
+            onProfileSelect: onProfileSelect, // when a profile is selected from the list
+            submitNewProfile: submitNewProfile
         });
 
     }

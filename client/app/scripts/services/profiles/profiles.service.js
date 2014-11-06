@@ -15,9 +15,11 @@
 
         var service = {
             allProfilesUrl: '/profiles/all',
+            newProfileUrl: '/profiles/save',
 
             getAllProfiles: getAllProfiles,
-            getAllProfileSettings: getAllProfileSettings
+            getAllProfileSettings: getAllProfileSettings,
+            submitNewProfile: submitNewProfile
         };
 
         return service;
@@ -29,8 +31,21 @@
          * @return {[object]} [JSON-object with all saved profiles]
          */
         function getAllProfiles() {
+            var q = $q.defer();
 
-            var profiles = [
+            // make the request
+            $http({
+                method: 'GET',
+                url: config.apiUrl + service.allProfilesUrl
+            }).success(function(data, status, header, config, responseText) {
+                q.resolve(data);
+            }).error(function(data, status, header, config, responseText) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+
+            /*var profiles = [
                 {
                     name: 'Webm - 720p',
                     codec_a: 'libvorbis',
@@ -72,7 +87,7 @@
                     output: 'mp4'
                 }
 
-            ];
+            ];*/
 
             return profiles;
         }
@@ -114,24 +129,21 @@
                         },
                         {
                             'key': 'videoQualityQmin',
-                            'type': 'number',
+                            'type': 'text',
                             'label': 'Quantisierungs-Min',
-                            'default': 10,
-                            'min': 0
+                            'placeholder': 10
                         },
                         {
                             'key': 'videoQualityQmax',
-                            'type': 'number',
+                            'type': 'text',
                             'label': 'Quantisierungs-Max',
-                            'default': 42,
-                            'min': 0
+                            'placeholder': 42
                         },
                         {
                             'key': 'videoThreads',
-                            'type': 'number',
+                            'type': 'text',
                             'label': 'Threads',
-                            'default': 4,
-                            'min': 0
+                            'placeholder': 4
                         }
 
                     ],
@@ -145,19 +157,15 @@
                         },
                         {
                             'key': 'audioChannels',
-                            'type': 'number',
+                            'type': 'text',
                             'label': 'Audio-Kanäle',
-                            'default': 2,
-                            'placeholder': 2,
-                            'min': 1
+                            'placeholder': 2
                         },
                         {
                             'key': 'audioSamplerate',
-                            'type': 'number',
+                            'type': 'text',
                             'label': 'Abtastrate',
-                            'default': 44100,
-                            'placeholder': 44100,
-                            'min': 1
+                            'placeholder': 44100
                         },
                         {
                             'key': 'audioBitrate',
@@ -177,6 +185,29 @@
                     ar: 44100,
                     b_a: '360k',
              */
+        }
+
+
+        /**
+         * Submits a new profile to the server.
+         * @param  {[object]}  profileModel [ngModel with all the entered profile data]
+         * @return {[promise]}              [Angular promise]
+         */
+        function submitNewProfile(profileModel) {
+            var q = $q.defer();
+
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.newProfileUrl,
+                data: {profile: profileModel}
+            }).success(function(data, status, header, config, responseText) {
+                q.resolve(data);
+            }).error(function(data, status, header, config, responseText) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
         }
 
     }

@@ -13,16 +13,16 @@
                         {{:: profile.name }}
                     </td>
                     <td data-title="'Output'" class="col-sm-1">
-                        {{:: profile.output }}
+                        {{:: profile.outputFormat }}
                     </td>
                     <td data-title="'Video-Codec'" class="col-sm-2">
-                        {{:: profile.codec_v }}
+                        {{:: profile.videoCodec }}
                     </td>
                     <td data-title="'Autor'" class="col-sm-2">
-                        {{:: 'Ada Rhode' }}
+                        {{:: profile.autor }}
                     </td>
                     <td data-title="'Letztes Update'" class="col-sm-2">
-                        {{:: '12 Uhr, 12.06.2015' }}
+                        {{:: profile.updatedAt | date: 'dd.MM.yyyy, HH:mm' }} Uhr
                     </td>
                     <td class="fa-activated" data-title="'Aktiviert'" class="col-sm-1">
                         <i class="fa fa-minus" ng-hide="profile.activated === 0"></i>
@@ -38,7 +38,7 @@
         </div>
     </div>
 </section>
-<section id="job-profile" class="section-box" ng-show="!ctrl.selectedProfile">
+<section id="job-profile" class="section-box" ng-show="ctrl.selectedProfile !== null">
     <div class="section-box-head">
         <h4>Einstellungen für: <span>{{ ctrl.selectedProfile.name }}</span></h4>
     </div>
@@ -47,7 +47,7 @@
             <div class="section-general" ng-show="ctrl.isActive === 'global'">
                 <div class="input-group">
                     <label>Profil-Name</label>
-                    <input class="input-text" type="text" ng-model="ctrl.newProfile.outputName">
+                    <input class="input-text" type="text" ng-model="ctrl.newProfile.profileName">
                 </div>
             </div>
             <div class="section-video" ng-show="ctrl.isActive === 'video'">
@@ -66,7 +66,7 @@
                 <div class="form-group">
                     <!-- Scale -->
                     <label class="control-label">Auflösung</label>
-                    <select class="form-control">
+                    <select class="form-control" ng-model="ctrl.newProfile.scale">
                         <option>Untouched</option>
                         <option>1080p</option>
                         <option>720p</option>
@@ -76,16 +76,17 @@
                     </select>
                 </div><!-- / Row 1 -->
 
-                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.video" ng-submit="ctrl.createNewProfile()"></formly-form>
+                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.video"></formly-form>
 
-
-                <!-- Row 2 --
-                <div class="form-group row">
-                </div>-->
             </div>
             <div class="section-audio" ng-show="ctrl.isActive === 'audio'">
 
-                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.audio" ng-submit="ctrl.createNewProfile()"></formly-form>
+                <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.audio"></formly-form>
+
+            </div>
+            <div class="section-audio" ng-show="ctrl.isActive === 'custom'">
+
+                <input class="form-control" ng-model="ctrl.newProfile.ownParams" />
 
             </div>
         </div>
@@ -104,6 +105,7 @@
                     <span>Eigene Parameter<span>
                 </div>
             </div>
+            <button class="button button-green" ng-click="ctrl.submitNewProfile()">Speichern</button>
         </div>
     </div>
     <div class="section-box-footer">
