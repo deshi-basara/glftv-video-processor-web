@@ -1,0 +1,75 @@
+#register {
+    background-color: $glf-dark;
+
+    @include size(100% 100%);
+
+    .register-form {
+        background-color: $glf-green;
+        box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+        @include size(40% 48%);
+        min-height: 374px;
+        @include position(relative, 50% 0 0 50%);
+        @include transform(translate(-50%, -50%));
+
+        .register-form-header {
+            background-color: $glf-green;
+            padding-top: 10px;
+            color: $glf-white;
+            height: em(45);
+            line-height: em(45);
+            text-align: center;
+            font-size: em(24);
+
+            @include position(relative, 0 0 0 0);
+
+            .headline {
+                padding-left: 12px;
+            }
+        }
+
+        .register-form-input {
+            height: 70%;
+            width: 100%;
+
+            .input-group {
+
+                width: 100%;
+
+                label {
+                    @include shift(1);
+                    @include span-columns(3 of 12);
+
+                    text-align: right;
+                    color: $glf-white;
+                }
+
+                input {
+                    @include span-columns(5 of 12);
+                }
+
+                span {
+                    color: $glf-white;
+                    font-size: 1.25em;
+                }
+            }
+        }
+
+        .register-form-submit {
+            position: absolute;
+            width: 100%;
+            bottom: 10px;
+            text-align: center;
+
+            button {
+                background-color: $glf-white;
+                color: $glf-dark;
+            }
+        }
+
+        .register-form-warning {
+            position: absolute;
+            bottom: -45px;
+        }
+    }
+}
