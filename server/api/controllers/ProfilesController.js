@@ -18,7 +18,6 @@ module.exports = {
             if(err) return res.send(500, err);
 
             // everything went well, send response
-            console.log(profiles);
             return res.send(profiles);
         });
     },
@@ -30,7 +29,7 @@ module.exports = {
     save: function(req, res) {
         // check if the request is valid
         if(!req.body.profile || !req.body.profile.profileName || !req.body.profile.outputFormat ||
-                !req.body.profile.videoCodec) {
+                !req.body.profile['v:c']) {
             return res.send(400, 'Bad request');
         }
 
@@ -39,19 +38,15 @@ module.exports = {
         try {
             var profileName = req.body.profile.profileName;
             var outputFormat = req.body.profile.outputFormat;
-            var videoCodec = req.body.profile.videoCodec;
+            var videoCodec = req.body.profile['v:c'];
 
             delete req.body.profile['profileName'];
             delete req.body.profile['outputFormat'];
-            delete req.body.profile['videoCodec'];
 
             var jsonString = JSON.stringify(req.body.profile);
         } catch(e) {
             return res.send(500, e);
         }
-
-        console.log(profileName);
-        console.log(req.body.profile);
 
         //@todo maybe check for overwrites
 
