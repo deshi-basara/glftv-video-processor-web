@@ -6,12 +6,12 @@
         .module('app')
         .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = ['AuthService', '$timeout'];
+    LoginCtrl.$inject = ['AuthService', '$timeout', '$state'];
 
     /**
      * Handles the login request and potential error feedbacks.
      */
-    function LoginCtrl(AuthService, $timeout) {
+    function LoginCtrl(AuthService, $timeout, $state) {
         var ctrl = this;
 
         /**
@@ -35,11 +35,11 @@
             }
 
             // hand data
-            var auth = AuthService.getAuth(ctrl.login);
-            auth.then(function(status) {
-                console.log(status);
-            }, function(status) {
-                console.log(status);
+            AuthService.getAuth(ctrl.login).then(function(success) {
+                // everything went well, redirect
+                $state.go('dash.job');
+            }, function(error, status) {
+                // show error message
             });
 
         }

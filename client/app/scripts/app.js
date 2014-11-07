@@ -33,6 +33,13 @@ angular
       controllerAs: 'ctrl'
     })
 
+    .state('register', {
+      url: '/register',
+      templateUrl: 'scripts/routes/register/register.index.tpl.html',
+      controller: 'RegisterCtrl',
+      controllerAs: 'ctrl'
+    })
+
     .state('dash', {
       url: '',
       abstract: true,
@@ -70,18 +77,9 @@ angular
 .run(function($state, AuthService) {
 
   // check if the user has a active session
-  AuthService.hasSession()
-    .then(function(success) {
-      console.log(success);
-    }, function(error) {
-      alert(error);
-    });
-
-
-  var hasAuth = false;
-
-  if(hasAuth) {
-    console.log('rediec');
+  AuthService.hasSession().then(function(success) {}, function(error) {
+    // no valid session running, redirect to the login
     $state.go('login');
-  }
+  });
+
 })

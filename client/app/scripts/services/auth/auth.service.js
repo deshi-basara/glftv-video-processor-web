@@ -14,10 +14,13 @@
     function AuthService($http, config, $q, localStorageService) {
 
         var service = {
-            loginUrl: '/api/login',
+            loginUrl: '/user/login',
+            registerUrl: '/user/register',
+            sessionUrl: '/user/session',
 
             hasSession: hasSession,
-            getAuth: getAuth
+            getAuth: getAuth,
+            getRegistration: getRegistration
         };
 
         return service;
@@ -36,12 +39,22 @@
         function hasSession() {
             var q = $q.defer();
 
-            if(localStorageService.isSupported) {
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.sessionUrl
+            }).success(function(data) {
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            /*if(localStorageService.isSupported) {
                 // fetch 
             }
             else {
                 q.reject('storage-error');
-            }
+            }*/
 
             return q.promise;
         }
@@ -59,13 +72,13 @@
                 method: 'POST',
                 url: config.apiUrl + service.loginUrl,
                 data: {
-                    'user': loginObj.user,
+                    'mail': loginObj.user,
                     'pass': loginObj.pass
                 }
-            }).success(function(data, status, header, config, responseText) {
-                q.resolve(true);
-            }).error(function(data, status, header, config, responseText) {
-                q.reject(false);
+            }).success(function(data) {
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
             });
 
             return q.promise;
@@ -73,6 +86,30 @@
 
         function setAuth(sessionId) {
 
+        }
+
+        /**
+         * Submits an registration attemp to the server.
+         * @param  {object} registerModel [ngModel with all registration form inputs]
+         * @return {promise}              [$q promise]
+         */
+        function getRegistration(registerModel) {
+            var q = $q.defer();
+
+            console.log(registerModel);
+
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.registerUrl,
+                data: registerModel
+            }).success(function(data) {
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
         }
 
 
