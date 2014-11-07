@@ -19,7 +19,7 @@
                         {{ file.name }}
                     </td>
                     <td data-title="'Profile'" class="col-sm-2">
-                        <select class="form-control">
+                        <select class="form-control" ng-model="file.profile">
                             <option>Alle</option>
                             <option ng-repeat="profile in ctrl.profiles">{{:: profile.name }}</option>
                         </select>

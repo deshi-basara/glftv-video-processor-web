@@ -43,14 +43,14 @@
             }).progress(function(evt) {
                 // calculate the progress in percentage and notify
                 fileObj.progress = parseInt(100.00 * evt.loaded / evt.total);
-            }).success(function(data, status, header, config, responseText) {
+            }).success(function(data) {
                 // file upload complete
-                fileObj.status = 'Fertig';
+                fileObj.status = 'Bereit';
 
                 // save the database id of the uploaded file in the queue-array
                 fileObj.uploadId = data.id;
                 q.resolve(data);
-            }).error(function(data, status, header, config, responseText) {
+            }).error(function(data, status) {
                 // file upload error
                 fileObj.status = 'Fehler';
                 q.reject(data, status);
@@ -61,19 +61,23 @@
 
         /**
          * Sends a request with the fileId to the server for enqueuing the file.
-         * @param  {[int]} fileId  [Serverside database id of the file]
-         * @return {Promise}       [Resolve: true | Reject: false]
+         * @param  {[int]}    fileId  [Serverside database id of the file]
+         * @param  {[string]} profile [Name of the selected converting profile]
+         * @return {Promise}          [Resolve: true | Reject: false]
          */
-        function startFile(fileId) {
+        function startFile(fileId, profile) {
             var q = $q.defer();
 
-            console.log('starting: '+fileId);
+            console.log('starting: '+fileId +' + '+profile);
 
             // make the request
             $http({
                 method: 'POST',
                 url: config.apiUrl + service.startUrl,
-                data: {id: fileId}
+                data: {
+                    id: fileId,
+                    profile: profile
+                }
             }).success(function() {
                 q.resolve();
             }).error(function(data, status) {

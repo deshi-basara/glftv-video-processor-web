@@ -14,7 +14,12 @@
     function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert) {
         var ctrl = this;
 
-        ctrl.profiles = ProfileService.getAllProfiles();
+        // get all available profiles
+        ProfileService.getAllProfiles().then(function(success) {
+            ctrl.profiles = success;
+        }, function(error, status) {
+
+        });
 
         /**
          * Is called when files were selected for uploading.
@@ -36,7 +41,6 @@
                 JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(function(success) {
 
 
-
                 }, function(error, status) {
 
                     // server not available
@@ -54,8 +58,6 @@
          * @param  {[Object]} clickedVideo [fileObject of the clicked video]
          */
         function onVideoSelect(clickedVideo) {
-            console.log(clickedVideo);
-
             ctrl.fileSelected = clickedVideo;
         }
 
@@ -78,11 +80,10 @@
             for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
                 var currentFile = ctrl.filesInUploadQueue[i];
 
-                console.log(currentFile.status);
-                // check if the current file is ready
-                if(currentFile.status === 'Fertig') {
+                // check if the current file is ready and has a selected profile
+                if(currentFile.status === 'Bereit' && currentFile.profile) {
                     // add the videoFile to the encoding-queue
-                    JobService.startFile(currentFile.uploadId).then(function(success) {
+                    JobService.startFile(currentFile.uploadId, currentFile.profile).then(function(success) {
                         console.log(success);
                     }, function(error) {
                         console.log(error);
@@ -98,6 +99,7 @@
         angular.extend(ctrl, {
             filesInUploadQueue: [],
             fileSelected: null,
+            profiles: null,
 
             onFileSelect: onFileSelect,
             onVideoSelect: onVideoSelect,
