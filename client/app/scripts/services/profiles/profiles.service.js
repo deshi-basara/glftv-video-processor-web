@@ -37,9 +37,9 @@
             $http({
                 method: 'GET',
                 url: config.apiUrl + service.allProfilesUrl
-            }).success(function(data, status, header, config, responseText) {
+            }).success(function(data) {
                 q.resolve(data);
-            }).error(function(data, status, header, config, responseText) {
+            }).error(function(data, status) {
                 q.reject(data, status);
             });
 
@@ -103,13 +103,13 @@
 
                     'video': [
                         {
-                            'key': 'videoCodec',
+                            'key': 'v:c',
                             'type': 'text',
                             'label': 'Video-Codec',
                             'placeholder': 'libvpx'
                         },
                         {
-                            'key': 'videoQuality',
+                            'key': 'quality',
                             'type': 'select',
                             'label': 'Qualität',
                             'options': [
@@ -128,19 +128,19 @@
                             ]
                         },
                         {
-                            'key': 'videoQualityQmin',
+                            'key': 'qmin',
                             'type': 'text',
                             'label': 'Quantisierungs-Min',
                             'placeholder': 10
                         },
                         {
-                            'key': 'videoQualityQmax',
+                            'key': 'qmax',
                             'type': 'text',
                             'label': 'Quantisierungs-Max',
                             'placeholder': 42
                         },
                         {
-                            'key': 'videoThreads',
+                            'key': 'threads',
                             'type': 'text',
                             'label': 'Threads',
                             'placeholder': 4
@@ -150,25 +150,25 @@
 
                     'audio': [
                         {
-                            'key': 'audioCodec',
+                            'key': 'a:c',
                             'type': 'text',
                             'label': 'Audio-Codec',
                             'placeholder': 'libvorbis'
                         },
                         {
-                            'key': 'audioChannels',
+                            'key': 'ac',
                             'type': 'text',
                             'label': 'Audio-Kanäle',
                             'placeholder': 2
                         },
                         {
-                            'key': 'audioSamplerate',
+                            'key': 'ar',
                             'type': 'text',
                             'label': 'Abtastrate',
                             'placeholder': 44100
                         },
                         {
-                            'key': 'audioBitrate',
+                            'key': 'b:a',
                             'type': 'text',
                             'label': 'Bitrate',
                             'placeholder': '360k'
@@ -179,12 +179,6 @@
 
             return settings;
 
-            /**
-             *                     codec_a: 'libvorbis',
-                    ac: 2,
-                    ar: 44100,
-                    b_a: '360k',
-             */
         }
 
 
@@ -195,6 +189,8 @@
          */
         function submitNewProfile(profileModel) {
             var q = $q.defer();
+
+            console.log(profileModel);
 
             // make the request
             $http({

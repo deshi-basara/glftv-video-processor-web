@@ -66,12 +66,12 @@
                 <div class="form-group">
                     <!-- Scale -->
                     <label class="control-label">Auflösung</label>
-                    <select class="form-control" ng-model="ctrl.newProfile.scale">
-                        <option>Untouched</option>
-                        <option>1080p</option>
-                        <option>720p</option>
-                        <option>480p</option>
-                        <option>360p</option>
+                    <select class="form-control" ng-model="ctrl.newProfile.vf">
+                        <option value="scale=-1:-1">Untouched</option>
+                        <option value="scale=-1:1080">1080p</option>
+                        <option value="scale=-1:720">720p</option>
+                        <option value="scale=-1:480">480p</option>
+                        <option value="scale=-1:360">360p</option>
                         <option>Custom</option>
                     </select>
                 </div><!-- / Row 1 -->

@@ -44,25 +44,10 @@
          * afterwards.
          */
         function submitNewProfile() {
-            var debugObj = {
-                audioBitrate: "360k",
-                audioChannels: "2",
-                audioCodec: "libvorbis",
-                audioSamplerate: "44100",
-                outputFormat: "webm",
-                ownParams: "-test param",
-                profileName: "Simon",
-                scale: "1080p",
-                videoCodec: "libvpx",
-                videoQuality: "good",
-                videoQualityQmax: "42",
-                videoQualityQmin: "10",
-                videoThreads: "4"
-            };
 
-            ProfileService.submitNewProfile(debugObj).then(function(success) {
+            ProfileService.submitNewProfile(ctrl.newProfile).then(function(success) {
                 // @todo refetch allProfiles
-                
+
             }, function(error, status) {
 
             });
