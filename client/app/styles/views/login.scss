@@ -33,10 +33,10 @@
             width: 100%;
 
             .input-group {
-                @include outer-container;
+                width: 100%;
 
                 label {
-                    @include shift(2);
+                    @include shift(1);
                     @include span-columns(2 of 12);
 
                     text-align: right;
@@ -44,7 +44,7 @@
                 }
 
                 input {
-                    @include span-columns(6 of 12);
+                    @include span-columns(5 of 12);
                 }
             }
         }
