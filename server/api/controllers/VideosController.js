@@ -60,8 +60,8 @@ module.exports = {
 
     // check if the handed id belongs to a video
     var videoId = req.body.id;
-    Videos.find({
-      where: {id: videoId}
+    Videos.findOne({
+      id: videoId
     }).exec(function(err, video) {
       if(err) return res.send(500, err);
 
@@ -82,14 +82,15 @@ module.exports = {
         console.log(profile);
 
         // add the video to the queue
-        try {
-          KueService.transcodeVideo(video, profile);
-        } catch(err) {
-          return res.send(500, err);
-        }
+        KueService.transcodeVideo(video, profile, function(err) {
+          if(err) {
+            return res.send(500, err);
+          }
 
-        // everything went well, send response
-        return res.send('Video was added to the queue');
+          // everything went well, send response
+          return res.send('Video was added to the queue');
+
+        });
       })
     });
   },
