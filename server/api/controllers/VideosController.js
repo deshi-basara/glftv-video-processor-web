@@ -45,13 +45,30 @@ module.exports = {
     })
   },
 
+  /**
+   * Searches all video files in the handed path and returns the found ones.
+   */
+  search: function(req, res) {
+
+    // check if the request is valid
+    if(!req.body.path) {
+      return res.send(400, 'Bad request');
+    }
+
+    SearchService.searchInPath(req.body.path, function(err, results) {
+      if(err) {
+        return res.send(500, err);
+      }
+
+      // return the search result
+      return res.send(results);
+    });
+  },
 
   /**
    * `VideosController.start()`
    */
   start: function (req, res) {
-
-    console.log(req.body);
 
     // check if the request is valid
     if(!req.body.id || !req.body.profile) {
