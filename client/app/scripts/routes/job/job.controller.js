@@ -6,12 +6,12 @@
         .module('app')
         .controller('JobCtrl', JobCtrl);
 
-    JobCtrl.$inject = ['ngTableParams', 'JobService', 'ProfileService', 'SweetAlert'];
+    JobCtrl.$inject = ['ngTableParams', 'JobService', 'ProfileService', 'SweetAlert', '$modal'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert) {
+    function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert, $modal) {
         var ctrl = this;
 
         // get all available profiles
@@ -20,6 +20,8 @@
         }, function(error, status) {
 
         });
+
+        onServerSelect();
 
         /**
          * Is called when files were selected for uploading.
@@ -72,6 +74,18 @@
         }
 
         /**
+         * Opens the 'chose-files from the server'-modal.
+         */
+        function onServerSelect() {
+            var modalInstance = $modal.open({
+                templateUrl: 'server-modal.html',
+                controller: 'JobModalCtrl',
+                controllerAs: 'modal',
+                size: 'lg'
+            });
+        }
+
+        /**
          * Hands all finished file to the JobService.startFile(id) function.
          * There an queue-request is send.
          */
@@ -106,6 +120,7 @@
             onFileSelect: onFileSelect,
             onVideoSelect: onVideoSelect,
             onProfileSelect: onProfileSelect,
+            onServerSelect: onServerSelect,
             queueUploadedVideos: queueUploadedVideos
         });
 

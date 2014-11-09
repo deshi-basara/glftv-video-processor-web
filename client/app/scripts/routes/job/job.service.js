@@ -15,10 +15,12 @@
 
         var service = {
             uploadUrl: '/videos/create',
+            searchUrl: '/videos/search',
             startUrl: '/videos/start',
 
             uploadFile: uploadFile,
-            startFile: startFile
+            startFile: startFile,
+            startSearch: startSearch
         };
 
         return service;
@@ -80,6 +82,30 @@
                 }
             }).success(function() {
                 q.resolve();
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+        }
+
+        /**
+         * [startSearch description]
+         * @param  {String}  searchPath   [Path in which we start the search for files]
+         * @return {Promise}              [Resolve: true | Reject: false]
+         */
+        function startSearch(searchPath) {
+            var q = $q.defer();
+
+            console.log('search: '+searchPath);
+
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.searchUrl,
+                data: {path: searchPath}
+            }).success(function(data) {
+                q.resolve(data);
             }).error(function(data, status) {
                 q.reject(data, status);
             });
