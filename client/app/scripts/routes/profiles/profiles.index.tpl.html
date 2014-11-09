@@ -38,16 +38,16 @@
         </div>
     </div>
 </section>
-<section id="job-profile" class="section-box" ng-show="ctrl.selectedProfile !== null">
+<section id="job-profile" class="section-box" ng-show="ctrl.showSettingBox">
     <div class="section-box-head">
-        <h4>Einstellungen für: <span>{{ ctrl.selectedProfile.name }}</span></h4>
+        <h4>Einstellungen für: <span>{{ ctrl.newProfile.name }}</span></h4>
     </div>
     <div class="section-box-body">
         <div class="section-left">
             <div class="section-general" ng-show="ctrl.isActive === 'global'">
                 <div class="input-group">
                     <label>Profil-Name</label>
-                    <input class="input-text" type="text" ng-model="ctrl.newProfile.profileName">
+                    <input class="input-text" type="text" value="{{ ctrl.newProfile.name }}" ng-model="ctrl.newProfile.name">
                 </div>
             </div>
             <div class="section-video" ng-show="ctrl.isActive === 'video'">

@@ -36,7 +36,8 @@
          * Opens an empty newProfile dialog.
          */
         function createNewProfile() {
-            ctrl.selectedProfile = {};
+            ctrl.showSettingBox = true;
+            ctrl.newProfile = {};
         }
 
         /**
@@ -60,8 +61,18 @@
          * @return {[type]}                [description]
          */
         function onProfileSelect(clickedProfile) {
-            console.log(clickedProfile);
-            ctrl.selectedProfile = clickedProfile;
+            ctrl.showSettingBox = true;
+            ctrl.newProfile = clickedProfile;
+
+            // the user wants to edit a profile, make the select
+            changeOutputFormat();
+
+            // prepare the json-string for insertion and insert each key value into
+            // the ngModel
+            var jsonSettings = angular.fromJson(ctrl.newProfile.json);
+            angular.forEach(jsonSettings, function(value, key) {
+                ctrl.newProfile[key] = value;
+            });
         }
 
         /**
@@ -78,11 +89,11 @@
 
         angular.extend(ctrl, {
             isActive: 'global', // default active setting tab
+            showSettingBox: false,
 
             allProfiles: null, // all saved profiles from the server
             allProfileSettings: settings[null], // all predefined form settings for the selected output. Default: null
             newProfile: {},
-            selectedProfile: null,
 
             changeActive: changeActive, // changes the default active settings tab
             changeOutputFormat: changeOutputFormat,

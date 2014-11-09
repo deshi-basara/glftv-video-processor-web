@@ -29,7 +29,7 @@ module.exports = {
     save: function(req, res) {
 
         // check if the request is valid
-        if(!req.body.profile || !req.body.profile.profileName || !req.body.profile.outputFormat ||
+        if(!req.body.profile || !req.body.profile.name || !req.body.profile.outputFormat ||
                 !req.body.profile['codec:v'] || (req.body.profile.twoPass === undefined)) {
             return res.send(400, 'Bad request');
         }
@@ -37,12 +37,12 @@ module.exports = {
         // get all needed database data and remove it from the json object.
         // Save the jsonObj as string.
         try {
-            var profileName = req.body.profile.profileName;
+            var name = req.body.profile.name;
             var outputFormat = req.body.profile.outputFormat;
             var videoCodec = req.body.profile['codec:v'];
             var twoPass = req.body.profile.twoPass;
 
-            delete req.body.profile['profileName'];
+            delete req.body.profile['name'];
             delete req.body.profile['outputFormat'];
             delete req.body.profile['twoPass'];
 
@@ -55,7 +55,7 @@ module.exports = {
 
         // save the profile object
         Profiles.create({
-            name: profileName,
+            name: name,
             outputFormat: outputFormat,
             videoCodec: videoCodec,
             twoPass: twoPass,
