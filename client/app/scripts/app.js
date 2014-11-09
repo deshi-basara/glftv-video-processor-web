@@ -6,6 +6,7 @@
 angular
   .module('app', [
   'ui.router',
+  'ui.bootstrap',
   'LocalStorageModule',
   'ngAnimate',
   'ngTable',
