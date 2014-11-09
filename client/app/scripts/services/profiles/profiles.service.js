@@ -99,8 +99,77 @@
         function getAllProfileSettings() {
 
             var settings = {
-                'webm': {
 
+                /*'mp4': {
+                    'video': [
+                        {
+                            'key': 'codec:v',
+                            'type': 'text',
+                            'label': 'Video-Codec',
+                            'placeholder': 'libx264'
+                        },
+                        {
+                            'key': 'threads',
+                            'type': 'text',
+                            'label': 'Threads',
+                            'placeholder': 4
+                        }
+                    ],
+                },*/
+
+
+                'ogv': {
+                    'video': [
+                        {
+                            'key': 'codec:v',
+                            'type': 'text',
+                            'label': 'Video-Codec',
+                            'placeholder': 'libtheora'
+                        },
+                        {
+                            'key': 'qscale:v',
+                            'type': 'text',
+                            'label': 'Video-Qualität',
+                            'placeholder': 10
+                        },
+                        {
+                            'key': 'threads',
+                            'type': 'text',
+                            'label': 'Threads',
+                            'placeholder': 4
+                        }
+                    ],
+
+                    'audio': [
+                        {
+                            'key': 'codec:a',
+                            'type': 'text',
+                            'label': 'Audio-Codec',
+                            'placeholder': 'libvorbis'
+                        },
+                        {
+                            'key': 'ac',
+                            'type': 'text',
+                            'label': 'Audio-Kanäle',
+                            'placeholder': 2
+                        },
+                        {
+                            'key': 'ar',
+                            'type': 'text',
+                            'label': 'Abtastrate',
+                            'placeholder': 44100
+                        },
+                        {
+                            'key': 'b:a',
+                            'type': 'text',
+                            'label': 'Bitrate',
+                            'placeholder': '360k'
+                        }
+                    ]
+                },
+
+
+                'webm': {
                     'video': [
                         {
                             'key': 'codec:v',
@@ -138,6 +207,12 @@
                             'type': 'text',
                             'label': 'Quantisierungs-Max',
                             'placeholder': 42
+                        },
+                        {
+                            'key': 'cpu-used',
+                            'type': 'text',
+                            'label': 'CPU-Used',
+                            'placeholder': 0
                         },
                         {
                             'key': 'threads',
