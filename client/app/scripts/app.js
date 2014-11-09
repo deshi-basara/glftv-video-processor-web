@@ -79,7 +79,7 @@ angular
   // check if the user has a active session
   AuthService.hasSession().then(function(success) {}, function(error) {
     // no valid session running, redirect to the login
-    $state.go('login');
+    //$state.go('login');
   });
 
 })

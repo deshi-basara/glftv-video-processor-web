@@ -28,7 +28,6 @@ module.exports = {
 
         // try to get the user from the database and compare the passwords
         User.findOne({'email': req.body.mail}).exec(function(err, user) {
-            console.log(user);
             if(err) {
                 return res.send(500, err);
             }

@@ -26,10 +26,10 @@
                 ctrl.errorMsg = 'Du hast nicht alle Formular-Felder ausgefüllt';
                 ctrl.showError = true;
 
-                // hide the toast after 3000ms
+                // hide the toast after 5000ms
                 $timeout(function() {
                     ctrl.showError = false;
-                }, 3000);
+                }, 5000);
 
                 return;
             }
