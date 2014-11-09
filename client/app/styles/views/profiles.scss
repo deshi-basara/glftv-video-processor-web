@@ -5,6 +5,10 @@
             text-align: left;
         }
 
+        table tbody tr td {
+            cursor: pointer;
+        }
+
         .fa-activated {
             padding-left: 32px;
         }
