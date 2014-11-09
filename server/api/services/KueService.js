@@ -65,6 +65,8 @@ jobs.process('transcode', function(job, done) {
                 if(err) return done(err);
 
                 console.log('removing');
+
+                done();
             });
 
         });

@@ -42,9 +42,6 @@ module.exports = {
      */
     prepareCmd: function(video, profile, cb) {
 
-        console.log(profile);
-        console.log(video);
-
         // command array, all cmd parameters are added
         var cmdPassTwo = [];
         var cmdPassOne = null;
