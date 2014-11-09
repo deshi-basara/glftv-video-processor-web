@@ -27,9 +27,10 @@ module.exports = {
      * @return {[Response]}     [Error or Success]
      */
     save: function(req, res) {
+
         // check if the request is valid
         if(!req.body.profile || !req.body.profile.profileName || !req.body.profile.outputFormat ||
-                !req.body.profile['v:c']) {
+                !req.body.profile['codec:v'] || (req.body.profile.twoPass === undefined)) {
             return res.send(400, 'Bad request');
         }
 
@@ -38,10 +39,12 @@ module.exports = {
         try {
             var profileName = req.body.profile.profileName;
             var outputFormat = req.body.profile.outputFormat;
-            var videoCodec = req.body.profile['v:c'];
+            var videoCodec = req.body.profile['codec:v'];
+            var twoPass = req.body.profile.twoPass;
 
             delete req.body.profile['profileName'];
             delete req.body.profile['outputFormat'];
+            delete req.body.profile['twoPass'];
 
             var jsonString = JSON.stringify(req.body.profile);
         } catch(e) {
@@ -55,6 +58,7 @@ module.exports = {
             name: profileName,
             outputFormat: outputFormat,
             videoCodec: videoCodec,
+            twoPass: twoPass,
             autor: 'Ada Rhode',
             json: jsonString
         }).exec(function(err, profile) {

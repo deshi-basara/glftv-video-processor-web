@@ -27,6 +27,11 @@ module.exports = {
             required: true
         },
 
+        twoPass: {
+            type: 'boolean',
+            required: true
+        },
+
         autor: {
             type: 'string',
             required: true

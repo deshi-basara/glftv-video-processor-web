@@ -103,7 +103,7 @@
 
                     'video': [
                         {
-                            'key': 'v:c',
+                            'key': 'codec:v',
                             'type': 'text',
                             'label': 'Video-Codec',
                             'placeholder': 'libvpx'
@@ -150,7 +150,7 @@
 
                     'audio': [
                         {
-                            'key': 'a:c',
+                            'key': 'codec:a',
                             'type': 'text',
                             'label': 'Audio-Codec',
                             'placeholder': 'libvorbis'
