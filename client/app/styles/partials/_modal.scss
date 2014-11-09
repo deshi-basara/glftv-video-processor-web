@@ -1,0 +1,99 @@
+/**
+ * Overwrite bootstrap defaults
+ */
+.modal-dialog {
+    .modal-content {
+        .section-box {
+            min-height: 600px;
+
+            .section-box-head {
+                height: em(50);
+                line-height: em(35);
+
+                h4 {
+                    line-height: em(10);
+                }
+
+                h4, .section-search {
+                    display: inline-block;
+                }
+
+                h4 {
+                    @include span-columns(5 of 12);
+                }
+
+                .section-search {
+                    @include span-columns(7 of 12);
+
+                    input {
+                        width: 90%;
+                    }
+
+                    button {
+                        width: 9%;
+                        padding: 0;
+                        margin: -5px 0 0 0;
+                    }
+                }
+            }
+
+            .section-box-body .file-list {
+                margin-top: 15px;
+                height: 455px;
+                overflow-y: scroll;
+                @include span-columns(12 of 12);
+
+                .file-list-item {
+                    @include span-columns(6 of 12);
+                    @include omega(2n);
+                    height: em(40);
+                    line-height: em(40);
+                    margin: 2px 6px 2px 6px;
+                    cursor: default;
+                    border: 1px solid $glf-grey;
+
+                    .file-counter {
+                        @include span-columns(1 of 6);
+                        text-align: center;
+                    }
+
+                    .file-name {
+                        @include span-columns(5 of 6);
+
+                        input {
+                            position: relative;
+                            top: 7px;
+                            right: 10px;
+                            float: right;
+                        }
+                    }
+                }
+
+                .file-list-item:hover {
+                    background-color: $glf-green;
+                    color: $glf-white;
+                }
+            }
+
+            .section-box-footer {
+                padding-right: 10px;
+
+                .file-indicator {
+                    float: left;
+                    line-height: em(60);
+
+                    span {
+                        font-weight: bold;
+                    }
+                }
+                .upload-controls {
+                    float: right;
+
+                    .button-neutral {
+                        margin-right: 50px;
+                    }
+                }
+            }
+        }
+    }
+}

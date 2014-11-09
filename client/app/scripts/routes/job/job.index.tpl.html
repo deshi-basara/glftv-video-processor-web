@@ -25,7 +25,7 @@
                         </select>
                     </td>
                     <td data-title="'Fortschritt'" class="col-sm-2">
-                        <ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>
+                        <!--<ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>-->
                     </td>
                     <td data-title="'Größe'" class="col-sm-1">
                         {{ file.size | agsBytes:2 }}
@@ -45,6 +45,7 @@
     <div class="section-box-footer">
         <div class="upload-controls">
             <button class="button" ng-click="ctrl.queueUploadedVideos()" ng-show="ctrl.filesInUploadQueue.length !== 0">Alle fertigen Uploads starten</button>
+            <button class="button" ng-click="ctrl.onServerSelect()" ng-show="ctrl.filesInUploadQueue.length === 0">Server-Ordner auswählen</button>
             <button class="button" ng-file-select="ctrl.onFileSelect($files)" data-multiple="true" ng-show="ctrl.filesInUploadQueue.length === 0">Dateien hochladen</button>
         </div>
     </div>
@@ -72,3 +73,38 @@
         ffmpeg
     </div>
 </section>
+<!--
+    Server modal
+-->
+<script type="text/ng-template" id="server-modal.html">
+    <div class="section-box">
+        <div class="section-box-head">
+            <h4>Ordner durchsuchen:</h4>
+            <div class="section-search">
+                <input type="text" ng-model="modal.searchString">
+                <button class="button button-green" ng-click="modal.startSearch()">
+                    <i class="fa fa-search" ng-show="!modal.isSearching"></i>
+                    <i class="fa fa-circle-o-notch fa-spin" ng-show="modal.isSearching"></i>
+                </button>
+            </div>
+        </div>
+        <div class="section-box-body">
+            <div class="file-list">
+                <div class="file-list-item" ng-repeat="file in modal.foundFiles">
+                    <div class="file-counter">#{{:: $index }}</div>
+                    <div class="file-name">{{:: file.name }} <input type="checkbox"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-box-footer">
+            <div class="file-indicator">
+                <span>{{ modal.selectedFiles }} / {{ modal.totalFiles }}</span> Videos
+            </div>
+            <div class="upload-controls">
+                <button class="button button-neutral" ng-click="ctrl.queueUploadedVideos()">Alle auswählen</button>
+                <button class="button button-red" ng-click="modal.closeModal()">Schließen</button>
+                <button class="button button-green" ng-click="modal.okModal()">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+</script>
