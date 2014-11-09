@@ -34,8 +34,9 @@
                         {{ file.status }}
                     </td>
                     <td class="fa-started" data-title="'Gestartet'" class="col-sm-1">
-                        <i class="fa fa-minus" ng-hide="file.status === 'Fertig'"></i>
+                        <i class="fa fa-minus" ng-hide="file.status === 'Fertig' || file.status === 'Fehler'"></i>
                         <i class="fa fa-check" ng-show="file.status === 'Fertig'"></i>
+                        <i class="fa fa-exclamation-triangle" ng-show="file.status === 'Fehler'"></i>
                     </td>
                 </tr>
             </table>

@@ -80,13 +80,15 @@
             for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
                 var currentFile = ctrl.filesInUploadQueue[i];
 
+                return currentFile.status = 'Fehler';
+
                 // check if the current file is ready and has a selected profile
                 if(currentFile.status === 'Bereit' && currentFile.profile) {
                     // add the videoFile to the encoding-queue
                     JobService.startFile(currentFile.uploadId, currentFile.profile).then(function(success) {
-                        console.log(success);
+                        currentFile.status = 'Fertig';
                     }, function(error) {
-                        console.log(error);
+                        currentFile.status = 'Fehler';
                     }, function(progress) {
                         console.log(progress);
                     });

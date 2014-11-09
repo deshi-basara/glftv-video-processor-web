@@ -26,8 +26,8 @@
                 text-align: left;
             }
 
-            table tbody tr {
-                pointer: cursor;
+            table tbody tr td {
+                cursor: pointer;
             }
 
             .fa-started {
@@ -39,6 +39,10 @@
 
                 .fa-check {
                     color: $glf-green;
+                }
+
+                .fa-exclamation-triangle {
+                    color: $glf-red;
                 }
             }
 
