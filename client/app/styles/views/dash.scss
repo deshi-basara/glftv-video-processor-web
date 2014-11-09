@@ -64,6 +64,8 @@
 
                 li {
 
+                    border-left: 5px solid $glf-dark;
+
                     a {
                         padding: 20px 0 20px 20px;
                         display: block;
@@ -79,8 +81,9 @@
 
                 li:hover {
                     background-color: $glf-green;
+                    border-left: 5px solid $glf-green;
 
-                    @include transition(background-color 0.7s ease-in-out);
+                    @include transition(all 0.7s ease-in-out);
                 }
 
                 li.active {
