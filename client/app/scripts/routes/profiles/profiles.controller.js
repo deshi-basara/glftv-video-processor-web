@@ -15,14 +15,9 @@
         var ctrl = this;
 
         // fetch needed configuration data from the server
-        ProfileService.getAllProfiles().then(function(success) {
-            console.log(success);
-            ctrl.allProfiles = success;
-        }, function(err, status) {
 
-        });
 
-        var settings = ProfileService.getAllProfileSettings();
+
 
         /**
          * Changes the active profile-sub-view to the clicked one.
@@ -30,6 +25,16 @@
          */
         function changeActive(newActive) {
             ctrl.isActive = newActive;
+        }
+
+        /**
+         * Is called when the output-format select-box is changed.
+         * Changes the formly-form accordingly to the selected output format.
+         */
+        function changeOutputFormat() {
+            // change the selected profile setting
+            var selectedOutput = ctrl.newProfile.outputFormat;
+            ctrl.allProfileSettings = settings[selectedOutput];
         }
 
         /**
@@ -41,17 +46,22 @@
         }
 
         /**
-         * Validates the new profile settings before submitting them to the server
-         * afterwards.
+         * Requests all available profiles from the server.
          */
-        function submitNewProfile() {
-
-            ProfileService.submitNewProfile(ctrl.newProfile).then(function(success) {
-                // @todo refetch allProfiles
-
-            }, function(error, status) {
-
+        function fetchAllProfiles() {
+            ProfileService.getAllProfiles().then(function(success) {
+                ctrl.allProfiles = success;
+            }, function(err, status) {
+                // @todo error response
             });
+        }
+
+        /**
+         * Requests all available profile-settings from the server.
+         */
+        var settings;
+        function fetchAllProfileSettings() {
+            settings = ProfileService.getAllProfileSettings();
         }
 
         /**
@@ -76,14 +86,23 @@
         }
 
         /**
-         * Is called when the output-format select-box is changed.
-         * Changes the formly-form accordingly to the selected output format.
+         * Validates the new profile settings before submitting them to the server
+         * afterwards.
          */
-        function changeOutputFormat() {
-            // change the selected profile setting
-            var selectedOutput = ctrl.newProfile.outputFormat;
-            ctrl.allProfileSettings = settings[selectedOutput];
+        function submitNewProfile() {
+
+            ProfileService.submitNewProfile(ctrl.newProfile).then(function(success) {
+                // refetch all profiles, for updating the all-profile-view
+                fetchAllProfiles();
+            }, function(error, status) {
+
+            });
         }
+
+        //////////////////////
+
+        fetchAllProfiles();
+        fetchAllProfileSettings();
 
         //////////////////////
 
