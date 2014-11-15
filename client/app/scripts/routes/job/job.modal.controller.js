@@ -6,12 +6,12 @@
         .module('app')
         .controller('JobModalCtrl', JobModalCtrl);
 
-    JobModalCtrl.$inject = ['$modalInstance', 'JobService', '$timeout'];
+    JobModalCtrl.$inject = ['$modalInstance', 'JobService', '$timeout', '$rootScope'];
 
     /**
-     * Handles the dash-board view and all interactions
+     * Handles the job-modal view and all interactions
      */
-    function JobModalCtrl($modalInstance, JobService, $timeout) {
+    function JobModalCtrl($modalInstance, JobService, $timeout, $rootScope) {
         var modal = this;
 
         /**
@@ -21,7 +21,22 @@
           $modalInstance.dismiss('cancel');
         }
 
+        /**
+         * Marks all foundFiles as selected.
+         */
+        function selectAll() {
+          // only select if there are foundFiles
+          if(modal.foundFiles !== null) {
+            for(var i = 0; i < modal.foundFiles.length; i++) {
+              modal.foundFiles[i].selected = true;
+            }
+          }
+        }
 
+        /**
+         * Hands the searchString to the SearchService and initiates the
+         * loading indicator and feedback.
+         */
         function startSearch() {
           // set the loading indicator
           modal.isSearching = true;
@@ -46,6 +61,33 @@
           });
         }
 
+        /**
+         * Closes the server-modal and sends all selected files to the
+         * regular job-controller.
+         */
+        function okModal() {
+
+          // only broadcast file, that were selected
+          var selectedFiles = [];
+          for (var i = 0; i < modal.foundFiles.length; i++) {
+            // check wether the file is selected
+            if(modal.foundFiles[i].selected === true) {
+              // set missing attributes
+              modal.foundFiles[i].status = 'Upload'; // no file is uploading, just for feedback
+
+              // selected, push to array
+              selectedFiles.push(modal.foundFiles[i]);
+            }
+          };
+
+          // if something was selected, start the broadcast
+          if(selectedFiles.length !== 0) {
+            $rootScope.$broadcast('modal.server.selectedFiles', selectedFiles);
+          }
+
+          closeModal();
+        }
+
         //////////////////////
 
         angular.extend(modal, {
@@ -59,9 +101,15 @@
 
 
           closeModal: closeModal,
-          okModal: closeModal,
+          okModal: okModal,
+          selectAll: selectAll,
           startSearch: startSearch
         });
+
+        //////////////////////
+
+        modal.searchString = '/home/simon/Downloads';
+        startSearch();
 
     }
 

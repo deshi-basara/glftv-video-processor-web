@@ -59,6 +59,7 @@
 
                     .file-name {
                         @include span-columns(5 of 6);
+                        font-size: em(12);
 
                         input {
                             position: relative;
