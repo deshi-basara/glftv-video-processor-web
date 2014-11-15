@@ -12,7 +12,8 @@ angular
   'ngTable',
   'angularFileUpload',
   'oitozero.ngSweetAlert',
-  'formly'
+  'formly',
+  'truncate'
 ])
 
 .constant('config', {
