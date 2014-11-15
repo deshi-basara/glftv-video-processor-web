@@ -28,11 +28,11 @@ module.exports = {
                 root: searchPath,
                 fileFilter: videoFilter
             }).on('data', function(entry) {
-                console.log(searchResult.length);
                 // an entry was found, push related meta-data to the searchResult-Array
                 searchResult.push({
                     name: entry.name,
-                    path: entry.fullPath
+                    path: entry.fullPath,
+                    size: entry.stat.size
                 });
             }).on('end', function() {
                 // hand all search results back
