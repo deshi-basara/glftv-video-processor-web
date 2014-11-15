@@ -17,9 +17,10 @@ module.exports = {
 
 
   /**
-   * `VideosController.create()`
+   * Gets a file-upload and creates for the completly uploaded file a
+   * video-model. Returns the id of the video-model.
    */
-  create: function (req, res) {
+  upload: function (req, res) {
     // set the upload timeout to 'infinite'
     res.setTimeout(0);
 
@@ -46,6 +47,35 @@ module.exports = {
   },
 
   /**
+   * Creates a video-model on the server for files that aren't uploaded,
+   * but already exist on the server. Returns the id of the video-model.
+   */
+  model: function(req, res) {
+
+    console.log(req.body);
+
+    // check if the request is valid
+    if(!req.body.name || !req.body.path) {
+      return res.send(400, 'Bad request');
+    }
+
+    // create a new Video-Object
+    Videos.create({
+      name: req.body.name,
+      path: req.body.path,
+      user: 'Ada Rhode'
+    }).exec(function(err, created) {
+      if(err) return res.send(500, err);
+
+      // everything went well, send response
+      return res.json({
+        msg: req.body.name + ' created successfully',
+        id: created.id
+      });
+    });
+  },
+
+  /**
    * Searches all video files in the handed path and returns the found ones.
    */
   search: function(req, res) {
@@ -66,7 +96,8 @@ module.exports = {
   },
 
   /**
-   * `VideosController.start()`
+   * Adds an already uploaded or existing file to the transcoding queue, if
+   * all dependencies resolve.
    */
   start: function (req, res) {
 
@@ -95,8 +126,6 @@ module.exports = {
         else if(!profile) {
           return res.send(404, 'Profile does not exist');
         }
-
-        console.log(profile);
 
         // add the video to the queue
         KueService.transcodeVideo(video, profile, function(err) {
