@@ -46,16 +46,6 @@
                 }
             }
 
-            // overwrite bootstrap defauls
-            .progress {
-                margin-bottom: 0;
-                border-radius: 0;
-                background-color: $glf-dark;
-
-                .progress-bar {
-                    background-color: $glf-green;
-                }
-            }
             .form-control {
                 border-radius: 0;
                 height: 20px;

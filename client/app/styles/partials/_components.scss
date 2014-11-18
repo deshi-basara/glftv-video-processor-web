@@ -117,3 +117,40 @@ label {
         text-align: right;
     }
 }
+
+/**
+ * Progressbars
+ */
+// overwrite bootstrap defauls
+.progress {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: $glf-dark;
+
+    .progress-bar {
+        background-color: $glf-green;
+    }
+}
+
+/**
+ * Icons
+ */
+.fa.fa-check, .fa.fa-arrow-circle-o-up {
+    color: $glf-green;
+}
+.fa.fa-minus, .fa.fa-clock-o {
+    color: $glf-border;
+}
+.fa.fa-circle-o-notch, .fa.fa-circle {
+    color: $glf-blue;
+}
+.fa.fa-arrow-circle-o-down {
+    color: $glf-red;
+}
+
+/**
+ * Text
+ */
+.center-text {
+    text-align: center;
+}
