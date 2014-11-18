@@ -6,12 +6,12 @@
         .module('app')
         .controller('QueueCtrl', QueueCtrl);
 
-    QueueCtrl.$inject = [];
+    QueueCtrl.$inject = ['QueueService'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function QueueCtrl() {
+    function QueueCtrl(QueueService) {
         var ctrl = this;
 
         var data = [
@@ -29,8 +29,17 @@
 
         //////////////////////
 
+        QueueService.getAllInQueue(0).then(function(success) {
+            console.log(success);
+            ctrl.queueData = success;
+        }, function(error) {
+
+        });
+
+        //////////////////////
+
         angular.extend(ctrl, {
-            queueData: data
+            queueData: null
         });
     }
 
