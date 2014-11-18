@@ -26,6 +26,7 @@
                     </td>
                     <td data-title="'Fortschritt'" class="col-sm-2">
                         <!--<ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>-->
+                        <progressbar max="100" value="file.progress">{{ file.progress }}%</progressbar>
                     </td>
                     <td data-title="'Größe'" class="col-sm-1">
                         {{ file.size | agsBytes:2 }}
@@ -92,7 +93,9 @@
             <div class="file-list">
                 <div class="file-list-item" ng-repeat="file in modal.foundFiles">
                     <div class="file-counter">#{{:: $index }}</div>
-                    <div class="file-name">{{:: file.name }} <input type="checkbox"></div>
+                    <div class="file-name">
+                        {{:: file.name | characters: 55 :true }} 
+                        <input type="checkbox" ng-model="file.selected"></div>
                 </div>
             </div>
         </div>
@@ -101,7 +104,7 @@
                 <span>{{ modal.selectedFiles }} / {{ modal.totalFiles }}</span> Videos
             </div>
             <div class="upload-controls">
-                <button class="button button-neutral" ng-click="ctrl.queueUploadedVideos()">Alle auswählen</button>
+                <button class="button button-neutral" ng-click="modal.selectAll()">Alle auswählen</button>
                 <button class="button button-red" ng-click="modal.closeModal()">Schließen</button>
                 <button class="button button-green" ng-click="modal.okModal()">Hinzufügen</button>
             </div>

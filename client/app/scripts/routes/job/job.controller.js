@@ -6,12 +6,12 @@
         .module('app')
         .controller('JobCtrl', JobCtrl);
 
-    JobCtrl.$inject = ['ngTableParams', 'JobService', 'ProfileService', 'SweetAlert', '$modal'];
+    JobCtrl.$inject = ['ngTableParams', 'JobService', 'ProfileService', 'SweetAlert', '$modal', '$scope'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert, $modal) {
+    function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert, $modal, $scope) {
         var ctrl = this;
 
         // get all available profiles
@@ -20,8 +20,6 @@
         }, function(error, status) {
 
         });
-
-        onServerSelect();
 
         /**
          * Is called when files were selected for uploading.
@@ -86,7 +84,7 @@
         }
 
         /**
-         * Hands all finished file to the JobService.startFile(id) function.
+         * Hands all finished file to the JobService.startQueue(id) function.
          * There an queue-request is send.
          */
         function queueUploadedVideos() {
@@ -94,12 +92,13 @@
             for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
                 var currentFile = ctrl.filesInUploadQueue[i];
 
-                return currentFile.status = 'Fehler';
+                console.log(currentFile);
 
                 // check if the current file is ready and has a selected profile
                 if(currentFile.status === 'Bereit' && currentFile.profile) {
+
                     // add the videoFile to the encoding-queue
-                    JobService.startFile(currentFile.uploadId, currentFile.profile).then(function(success) {
+                    JobService.startQueue(currentFile.uploadId, currentFile.profile).then(function(success) {
                         currentFile.status = 'Fertig';
                     }, function(error) {
                         currentFile.status = 'Fehler';
@@ -123,6 +122,32 @@
             onServerSelect: onServerSelect,
             queueUploadedVideos: queueUploadedVideos
         });
+
+        /////////////////////
+
+        /**
+         * Listens for files from the modal-job-controller.
+         * @param  {Object} broadcast [Angularjs broadcast-object]
+         * @param  {Array}  files     [Holds all selected file objects]
+         */
+        $scope.$on('modal.server.selectedFiles', function(broadcast, files) {
+            // inject found files
+            ctrl.filesInUploadQueue = files;
+
+            // create video-model for each file on the server
+            for (var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
+                JobService.createModel(ctrl.filesInUploadQueue[i]).then(function(success) {
+                    console.log(success);
+                }, function(error) {
+
+                });
+            };
+        });
+
+        /////////////////////
+
+        onServerSelect();
+
 
     }
 
