@@ -18,6 +18,7 @@ var api = kue.app.listen(1338);
 jobs.process('transcode', function(job, done) {
     // prepare the encoding
     console.log('Prepare transcode of ' + job.data.desc);
+    console.log(job.data.statsId);
 
     // does the specified video file exist?
     fs.exists(job.data.video.path, function(exists) {
@@ -33,6 +34,7 @@ jobs.process('transcode', function(job, done) {
 
             // file was copied, start the transcoding
             console.log('Starting transcode of ' + job.data.desc);
+            StatsService.update(job.data.statsId, {status: 'started', startedAt: new Date()});
 
             // transcoding workflow
             async.series([
@@ -41,8 +43,14 @@ jobs.process('transcode', function(job, done) {
 
                     // do we have a 2-pass transcoding?
                     if(job.data.passOne !== null) {
-                        console.log('1-Pass: ' + job.data.desc);
-                        FFmpegService.convert(job.data.passOne, job.data.video.transcodingDest, function(err) {
+                        FFmpegService.convert(job.data.passOne, job.data.video.transcodingDest, function(progress) {
+                            // is called, whenever a new progress was calculated
+
+                            // we have a 2-pass encoding, change the progress to max 50%
+                            progress = (progress / 2).toFixed(0);
+                            StatsService.update(job.data.statsId, {progress: progress});
+
+                        }, function(err) {
                             if(err) return done(err);
 
                             // 1-pass finished, start 2-pass
@@ -57,8 +65,16 @@ jobs.process('transcode', function(job, done) {
                 // pass-2 function
                 function(next) {
 
-                    console.log('2-Pass: ' + job.data.desc);
-                    FFmpegService.convert(job.data.passTwo, job.data.video.transcodingDest, function(err) {
+                    FFmpegService.convert(job.data.passTwo, job.data.video.transcodingDest, function(progress) {
+                        // is called, whenever a new progress was calculated
+
+                        // if we have a 2-pass encoding, let the 2-pass start at min 50%
+                        if(job.data.passOne !== null && progress !== 0.00) {
+                            progress = (50 + (progress / 2)).toFixed(0);
+                        }
+                        StatsService.update(job.data.statsId, {progress: progress});
+
+                    }, function(err) {
                         if(err) return done(err);
 
                         // 2-pass finished, start cleaning
@@ -68,7 +84,7 @@ jobs.process('transcode', function(job, done) {
             ], function(error, result) {
                 if(err) return done(err);
 
-                console.log('removing');
+                StatsService.update(job.data.statsId, {status: 'finished'});
 
                 done();
             });
@@ -102,21 +118,24 @@ module.exports = {
             }
 
             // create a new stats model
-            StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode', function(err) {
-                if(err) {
-                    return cb(err);
+            StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode',
+                function(err, statsId) {
+                    if(err) {
+                        return cb(err);
+                    }
+
+                    // create a kue job
+                    jobs.create('transcode', {
+                        desc: videoObj.name + ' [' + profileObj.name + ']',
+                        video: videoObj,
+                        profile: profileObj,
+                        passOne: passOne,
+                        passTwo: passTwo,
+                        statsId: statsId
+                    }).priority(videoObj.priority).save();
+
                 }
-
-                // create a kue job
-                jobs.create('transcode', {
-                    desc: videoObj.name + ' [' + profileObj.name + ']',
-                    video: videoObj,
-                    profile: profileObj,
-                    passOne: passOne,
-                    passTwo: passTwo
-                }).priority(videoObj.priority).save();
-
-            });
+            );
         })
     }
 

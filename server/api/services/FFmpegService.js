@@ -126,7 +126,7 @@ module.exports = {
                 var currentProcessingData = getProcessingData(data);
                 var currentSecs = FFmpegTimeToSeconds(currentProcessingData.time);
                 // calculate
-                var currentProgress = calcProgress(currentSecs, 91);
+                var currentProgress = calcProgress(currentSecs, videoTotalTime);
 
                 cbProgress(currentProgress);
             }
