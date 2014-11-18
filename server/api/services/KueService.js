@@ -1,10 +1,14 @@
 var async = require('async');
 var fs = require('fs');
+var fse = require('fs-extra');
 var kue = require('kue');
 var mv = require('mv');
 var path = require('path');
 
+// create the queue
 var jobs = kue.createQueue();
+// create the json-api
+var api = kue.app.listen(1338);
 
 /**
  * Kue job for transcoding videos into a specified format.
@@ -22,12 +26,12 @@ jobs.process('transcode', function(job, done) {
             return done('Video file does not exist');
         }
 
-        // move the video file to its transcoding-folder
-        mv(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
-            job.data.video.fileExtension, {mkdirp: true}, function(err) {
+        // copy the video file to its transcoding-folder
+        fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
+            job.data.video.fileExtension, function(err) {
             if(err) return done('Coud not move the video to the transcoding folder: '+ folderName);
 
-            // file was moved, start the transcoding
+            // file was copied, start the transcoding
             console.log('Starting transcode of ' + job.data.desc);
 
             // transcoding workflow
@@ -88,20 +92,31 @@ module.exports = {
         videoObj.fileName = path.basename(videoObj.path, videoObj.fileExtension);
         videoObj.transcodingDest = sails.config.path.transcoding + '/' + videoObj.fileName;
 
+        console.log(profileObj);
+        console.log(videoObj);
+
         // create the transcoding command
         FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo) {
             if(err) {
                 return cb(err);
             }
 
-            // create a kue job
-            jobs.create('transcode', {
-                desc: videoObj.name + ' [' + profileObj.name + ']',
-                video: videoObj,
-                profile: profileObj,
-                passOne: passOne,
-                passTwo: passTwo
-            }).priority(videoObj.priority).save();
+            // create a new stats model
+            StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode', function(err) {
+                if(err) {
+                    return cb(err);
+                }
+
+                // create a kue job
+                jobs.create('transcode', {
+                    desc: videoObj.name + ' [' + profileObj.name + ']',
+                    video: videoObj,
+                    profile: profileObj,
+                    passOne: passOne,
+                    passTwo: passTwo
+                }).priority(videoObj.priority).save();
+
+            });
         })
     }
 
