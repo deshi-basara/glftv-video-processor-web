@@ -41,7 +41,10 @@ module.exports = {
 
         // update the Stats-Object identified by its id
         Stats.update({id: statsId}, values).exec(function(err, updated) {
-            console.log(updated);
+            if(updated) {
+                // send an update message to all connected sockets
+                sails.io.sockets.emit('stats.progress.update', updated[0]);
+            }
         });
     }
 
