@@ -83,7 +83,9 @@ angular
 
 })
 
-.run(function($state, AuthService) {
+.run(function($state, AuthService, SocketService) {
+
+  SocketService.connectSocket();
 
   // check if the user has a active session
   AuthService.hasSession().then(function(success) {}, function(error) {
