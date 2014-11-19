@@ -1,0 +1,56 @@
+<section id="settings" class="section-box">
+    <div class="section-box-head">
+        <h4>Profil Einstellungs-Möglichkeiten</h4>
+    </div>
+    <div class="section-box-body">
+        <div class="section-left">
+            <textarea class="form-control" ng-model="ctrl.selectedSetting"></textarea>
+        </div>
+        <div class="section-right">
+            <div class="section-profiles">
+                <div class="profile-item" ng-repeat="setting in ctrl.allSettings" ng-click="ctrl.insertSettings(setting)">
+                    <span>{{:: setting.name }}<span>
+                </div>
+            </div>
+            <button class="button button-green" ng-click="ctrl.submitNewSettings()">Speichern</button>
+            <span class="control-check"><input type="checkbox" ng-model="ctrl.newOne"/> Als neue Einstellungen?</span>
+        </div>
+    </div>
+</section>
+<!--
+    Server modal
+-->
+<script type="text/ng-template" id="server-modal.html">
+    <div class="section-box">
+        <div class="section-box-head">
+            <h4>Ordner durchsuchen:</h4>
+            <div class="section-search">
+                <input type="text" ng-model="modal.searchString">
+                <button class="button button-green" ng-click="modal.startSearch()">
+                    <i class="fa fa-search" ng-show="!modal.isSearching"></i>
+                    <i class="fa fa-circle-o-notch fa-spin" ng-show="modal.isSearching"></i>
+                </button>
+            </div>
+        </div>
+        <div class="section-box-body">
+            <div class="file-list">
+                <div class="file-list-item" ng-repeat="file in modal.foundFiles">
+                    <div class="file-counter">#{{:: $index }}</div>
+                    <div class="file-name">
+                        {{:: file.name | characters: 55 :true }} 
+                        <input type="checkbox" ng-model="file.selected"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-box-footer">
+            <div class="file-indicator">
+                <span>{{ modal.selectedFiles }} / {{ modal.totalFiles }}</span> Videos
+            </div>
+            <div class="upload-controls">
+                <button class="button button-neutral" ng-click="modal.selectAll()">Alle auswählen</button>
+                <button class="button button-red" ng-click="modal.closeModal()">Schließen</button>
+                <button class="button button-green" ng-click="modal.okModal()">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+</script>

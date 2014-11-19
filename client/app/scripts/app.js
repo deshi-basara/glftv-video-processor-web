@@ -71,8 +71,15 @@ angular
       templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html'
     })
 
+    .state('dash.settings', {
+      url: '/settings',
+      controller: 'SettingsCtrl',
+      controllerAs: 'ctrl',
+      templateUrl: 'scripts/routes/settings/settings.index.tpl.html'
+    });
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('queue');
+  $urlRouterProvider.otherwise('settings');
 
 })
 
