@@ -16,7 +16,6 @@ module.exports = {
      * @param {Function} cb         [Callback: error | results]
      */
     searchInPath: function(searchPath, cb) {
-        console.log('searchPath: '+searchPath);
 
         // check if the path exists
         fs.exists(searchPath, function(exists){
