@@ -115,7 +115,6 @@
                     data[i] = JSON.parse(jsonString);
                 };
 
-                console.log(data);
                 q.resolve(data);
             }).error(function(data, status) {
                 q.reject(data, status);
@@ -289,8 +288,6 @@
         function submitNewProfile(profileModel) {
             var q = $q.defer();
 
-            console.log(profileModel);
-
             // make the request
             $http({
                 method: 'POST',
@@ -312,8 +309,6 @@
          */
         function submitNewSettings(settingsModel) {
             var q = $q.defer();
-
-            console.log(settingsModel);
 
             // make the request
             $http({
