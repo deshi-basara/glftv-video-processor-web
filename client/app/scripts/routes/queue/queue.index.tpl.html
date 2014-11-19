@@ -42,7 +42,7 @@
                         <i class="fa fa-clock-o" ng-show="job.status === 'queued'"></i>
                         <i class="fa fa-circle-o-notch fa-spin" ng-show="job.status === 'started'"></i>
                         <i class="fa fa-download" ng-show="job.status === 'finished'"></i>
-                        <i class="fa fa-exclamation-triangle" ng-show="job.status === 'error'"></i>
+                        <i class="fa fa-exclamation-triangle" ng-show="job.status === 'failed'"></i>
                     </td>
                 </tr>
                 </tbody>
@@ -51,7 +51,7 @@
     </div>
     <div class="section-box-footer">
         <div class="upload-controls">
-            <button class="button button-red" ng-click="ctrl.removeAllFailed()">Abgebrochene Videos entfernen</button>
+            <button class="button button-neutral" ng-click="ctrl.removeAllFailed()">Abgebrochene Videos entfernen</button>
             <button class="button" ng-click="ctrl.removeAllFinished()">Fertige Videos entfernen</button>
         </div>
     </div>
