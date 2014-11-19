@@ -14,11 +14,6 @@
     function ProfilesCtrl(ngTableParams, ProfileService, SweetAlert) {
         var ctrl = this;
 
-        // fetch needed configuration data from the server
-
-
-
-
         /**
          * Changes the active profile-sub-view to the clicked one.
          * @param  {[String]]} newActive [Profile-sub-view identifier]
@@ -51,6 +46,10 @@
         function fetchAllProfiles() {
             ProfileService.getAllProfiles().then(function(success) {
                 ctrl.allProfiles = success;
+
+                // reload the table
+                ctrl.tableParams.reload();
+
             }, function(err, status) {
                 // @todo error response
             });
@@ -104,6 +103,24 @@
         fetchAllProfiles();
         fetchAllProfileSettings();
 
+        // ngTable settings
+        var tableParams = new ngTableParams({
+            page: 1,
+            count: 10
+        }, {
+            total: 0,
+            counts: [],
+            getData: function($defer, params) {
+                // fetch the table data
+                if(ctrl.allProfiles) {
+                    params.total(ctrl.allProfiles.length);
+                    // slice and set new data for the current page
+                    var data = ctrl.allProfiles.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    $defer.resolve(data);
+                }
+            }
+        });
+
         //////////////////////
 
         angular.extend(ctrl, {
@@ -113,6 +130,7 @@
             allProfiles: null, // all saved profiles from the server
             allProfileSettings: settings[null], // all predefined form settings for the selected output. Default: null
             newProfile: {},
+            tableParams: tableParams,
 
             changeActive: changeActive, // changes the default active settings tab
             changeOutputFormat: changeOutputFormat,
