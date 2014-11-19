@@ -21,7 +21,9 @@
 
         ///////////////
 
-
+        /**
+         * Connects to die sails.io.js WebSocket.
+         */
         function connectSocket() {
             try {
                 service.socket = io.connect('http://localhost:1337');
@@ -37,10 +39,6 @@
         }
 
         function registerListeners() {
-
-            service.socket.on('hello', function(msg) {
-                console.log(msg);
-            });
 
         }
 
