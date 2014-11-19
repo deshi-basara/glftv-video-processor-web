@@ -50,6 +50,10 @@ jobs.process('transcode', function(job, done) {
                             progress = (progress / 2).toFixed(0);
                             StatsService.update(job.data.statsId, {progress: progress});
 
+                            // broadcast progress via socket
+                            console.log(sails.sockets);
+                            sails.io.sockets.emit('stats.progress.update', {id: job.data.statsId, progress: progress});
+
                         }, function(err) {
                             if(err) return done(err);
 
@@ -69,10 +73,16 @@ jobs.process('transcode', function(job, done) {
                         // is called, whenever a new progress was calculated
 
                         // if we have a 2-pass encoding, let the 2-pass start at min 50%
-                        if(job.data.passOne !== null && progress !== 0.00) {
+                        if(job.data.passOne !== null && progress > 0.00) {
                             progress = (50 + (progress / 2)).toFixed(0);
                         }
+                        else {
+                            progress = 100.00;
+                        }
                         StatsService.update(job.data.statsId, {progress: progress});
+
+                        // broadcast progress via socket
+                        sails.io.sockets.emit('stats.progress.update', {id: job.data.statsId, progress: progress});
 
                     }, function(err) {
                         if(err) return done(err);
@@ -84,6 +94,7 @@ jobs.process('transcode', function(job, done) {
             ], function(error, result) {
                 if(err) return done(err);
 
+                // set status to finished
                 StatsService.update(job.data.statsId, {status: 'finished'});
 
                 done();
