@@ -33,6 +33,41 @@ module.exports = {
 
             res.send(stats);
         });
+    },
+
+    /**
+     * [DELETE] Removes all stats-entries identified by req.body.removeIds
+     */
+    remove: function(req, res) {
+
+        // check if the request is valid
+        if(!req.body.removeIds) {
+            return res.send(400, 'Bad request');
+        }
+
+        // remove all entries (one destroy with multiple ids doesn't work!)
+        var removeLength = req.body.removeIds.length;
+        for (var i = 0; i < removeLength; i++) {
+            Stats.destroy({id: req.body.removeIds[i]}).exec(function(err) {
+                if(err) {
+                    return res.send(500, err);
+                }
+            }); //@ŧodo fix potential race condition
+
+            if(i === (removeLength-1)) {
+                // if index === length, there are no other ids left to be detroyed
+                return res.send('Finished videos were removed');
+            }
+        };
+
+        /*Stats.find().where({id: req.body.removeIds}).exec(function(err, found) {
+            if(err) return res.send(500, err);
+
+            console.log(found);
+
+            // everything went well
+            return res.send('Finished videos were removed');
+        });*/
     }
 
 };
