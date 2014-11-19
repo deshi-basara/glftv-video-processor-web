@@ -28,7 +28,8 @@
     "angular-formly": "~1.0.0",
     "angular-formly-templates-bootstrap": "~0.0.2",
     "angular-ui-bootstrap-bower": "~0.11.2",
-    "angular-truncate": "*"
+    "angular-truncate": "*",
+    "angular-svg-round-progressbar": "~0.1.0"
   },
   "devDependencies": {
     "bourbon": "~4.0.2",

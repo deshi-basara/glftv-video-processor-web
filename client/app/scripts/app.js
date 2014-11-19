@@ -9,6 +9,7 @@ angular
   'ui.bootstrap',
   'LocalStorageModule',
   'ngAnimate',
+  'angular-svg-round-progress',
   'ngTable',
   'angularFileUpload',
   'oitozero.ngSweetAlert',
