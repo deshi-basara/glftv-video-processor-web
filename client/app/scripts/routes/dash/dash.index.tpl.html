@@ -10,22 +10,32 @@
 
         <!-- Indicator circle -->
         <section class="dash-nav-worker">
-            <h5>140506_1080.mp4 - Pass 2</h5>
+            <h5>{{ ctrl.currentName }}</h5>
             <div class="worker-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 360">
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 360">
                     <g>
                         <text x="212" y="180" font-size="75" fill="#FFFFFF">14</text>
                         <text x="215" y="205" font-size="25" fill="#FFFFFF">Prozent</text>
                         <circle cx="255" cy="170" r="160" stroke="#FFFFFF" stroke-width="10" fill="none" />
                     </g>
-                </svg>
+                </svg>-->
+                <div class="worker-circle-percentage">{{ ctrl.currentProgress }}<span>Prozent</span></div>
+                <div round-progress
+                    max="100"
+                    current="ctrl.currentProgress"
+                    radius="100"
+                    color="#FFFFFF"
+                    bgcolor="#50B200"
+                    stroke="9"
+                    semi="false"></div>
             </div>
             <div class="worker-overall-progress">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 20">
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 20">
                     <line x1="10%" y1="10" x2="90%" y2="10" stroke-width="8" stroke="#FFFFFF"/>
-                </svg>
+                </svg>-->
+                <progressbar id="overall-progressbar" max="100" value="ctrl.globalProgress"></progressbar>
                 <div id="overall-progress">
-                    Insgesammt <span>50%</span>
+                    Insgesammt <span>{{ ctrl.globalProgress }}%</span>
                 </div>
             </div>
         </section>
@@ -34,8 +44,8 @@
         <!-- Menu items -->
         <section class="dash-nav-items">
             <ul>
-                <li ui-sref-active="active">
-                    <a ui-sref="dash.job">
+                <li>
+                    <a>
                         <i class="fa fa-area-chart"></i>
                         Übersicht
                     </a>

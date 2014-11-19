@@ -28,14 +28,33 @@
             }
 
             .worker-circle {
+                margin-top: -70px;
 
                 .worker-circle-percentage {
-                    margin-top: -230px;
-                    font-size: em(50);
+                    position: relative;
+                    display: block;
+                    top: 140px;
+                    font-size: em(55);
+                    font-weight: bold;
+
+                    span {
+                        display: block;
+                        margin-top: -15px;
+                        font-size: 14px;
+                        font-weight: normal;
+                    }
                 }
             }
 
             .worker-overall-progress {
+                margin-top: 10px;
+
+                #overall-progressbar {
+                    margin-left: 10%;
+                    height: 8px;
+                    width: 80%;
+                    background-color: $glf-greener;
+                }
 
                 #overall-progress {
                     padding-left: 10%;

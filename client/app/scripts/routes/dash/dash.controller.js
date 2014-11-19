@@ -6,19 +6,37 @@
         .module('app')
         .controller('DashCtrl', DashCtrl);
 
-    DashCtrl.$inject = [];
+    DashCtrl.$inject = ['SocketService'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function DashCtrl() {
+    function DashCtrl(SocketService) {
         var ctrl = this;
 
         //////////////////////
 
         angular.extend(ctrl, {
+            currentProgress: 0,
+            currentName: 'Kein laufender Prozess',
+            globalProgress: 0
+        });
+
+        /////////////////////
+
+        /**
+         * Is fired when a stats-entry is updated.
+         * @param  {object} data [id of the stats-entry and all the values that have changed]
+         */
+        SocketService.socket.on('stats.progress.update', function(data) {
+            console.log(data.progress);
+
+            // update values
+            ctrl.currentProgress = data.progress;
+            ctrl.currentName = data.name;
 
         });
+
     }
 
 })();
