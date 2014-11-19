@@ -15,11 +15,14 @@
 
         var service = {
             allProfilesUrl: '/profiles/all',
+            allSettingsUrl: '/settings/all',
             newProfileUrl: '/profiles/save',
+            newSettingsUrl: '/settings/save',
 
             getAllProfiles: getAllProfiles,
             getAllProfileSettings: getAllProfileSettings,
-            submitNewProfile: submitNewProfile
+            submitNewProfile: submitNewProfile,
+            submitNewSettings: submitNewSettings
         };
 
         return service;
@@ -98,6 +101,28 @@
          */
         function getAllProfileSettings() {
 
+            var q = $q.defer();
+
+            // make the request
+            $http({
+                method: 'GET',
+                url: config.apiUrl + service.allSettingsUrl
+            }).success(function(data) {
+                // parse the data to json
+                for (var i = 0; i < data.length; i++) {
+                    var jsonString = data[i].json;
+
+                    data[i] = JSON.parse(jsonString);
+                };
+
+                console.log(data);
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+
             var settings = {
 
                 /*'mp4': {
@@ -119,6 +144,7 @@
 
 
                 'ogv': {
+                    'name': 'ogv',
                     'video': [
                         {
                             'key': 'codec:v',
@@ -170,6 +196,7 @@
 
 
                 'webm': {
+                    'name': 'webm',
                     'video': [
                         {
                             'key': 'codec:v',
@@ -251,9 +278,6 @@
                     ]
                 }
             };
-
-            return settings;
-
         }
 
 
@@ -272,6 +296,33 @@
                 method: 'POST',
                 url: config.apiUrl + service.newProfileUrl,
                 data: {profile: profileModel}
+            }).success(function(data, status, header, config, responseText) {
+                q.resolve(data);
+            }).error(function(data, status, header, config, responseText) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+        }
+
+        /**
+         * Submits a new profile setting to the server.
+         * @param  {boolean}  newOne        [Weather the new profile should be inserted as new one]
+         * @return {promise}                [Angular promise]
+         */
+        function submitNewSettings(settingsModel) {
+            var q = $q.defer();
+
+            console.log(settingsModel);
+
+            // make the request
+            $http({
+                method: 'POST',
+                url: config.apiUrl + service.newSettingsUrl,
+                data: {
+                    name: settingsModel.name,
+                    settings: settingsModel
+                }
             }).success(function(data, status, header, config, responseText) {
                 q.resolve(data);
             }).error(function(data, status, header, config, responseText) {
