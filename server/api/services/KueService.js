@@ -17,8 +17,7 @@ var api = kue.app.listen(1338);
  */
 jobs.process('transcode', function(job, done) {
     // prepare the encoding
-    console.log('Prepare transcode of ' + job.data.desc);
-    console.log(job.data.statsId);
+    StatsService.update(statsId, {status: 'started', startedAt: new Date()});
 
     // does the specified video file exist?
     fs.exists(job.data.video.path, function(exists) {
@@ -31,10 +30,6 @@ jobs.process('transcode', function(job, done) {
         fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
             job.data.video.fileExtension, function(err) {
             if(err) return done('Coud not move the video to the transcoding folder: '+ folderName);
-
-            // file was copied, start the transcoding
-            console.log('Starting transcode of ' + job.data.desc);
-            StatsService.update(job.data.statsId, {status: 'started', startedAt: new Date()});
 
             // transcoding workflow
             async.series([
@@ -49,10 +44,6 @@ jobs.process('transcode', function(job, done) {
                             // we have a 2-pass encoding, change the progress to max 50%
                             progress = (progress / 2).toFixed(0);
                             StatsService.update(job.data.statsId, {progress: progress});
-
-                            // broadcast progress via socket
-                            console.log(sails.sockets);
-                            sails.io.sockets.emit('stats.progress.update', {id: job.data.statsId, progress: progress});
 
                         }, function(err) {
                             if(err) return done(err);
@@ -81,9 +72,6 @@ jobs.process('transcode', function(job, done) {
                         }
                         StatsService.update(job.data.statsId, {progress: progress});
 
-                        // broadcast progress via socket
-                        sails.io.sockets.emit('stats.progress.update', {id: job.data.statsId, progress: progress});
-
                     }, function(err) {
                         if(err) return done(err);
 
@@ -94,15 +82,21 @@ jobs.process('transcode', function(job, done) {
             ], function(error, result) {
                 if(err) return done(err);
 
-                // set status to finished
-                StatsService.update(job.data.statsId, {status: 'finished'});
+                // remove the original video file
+                fs.unlink(job.data.video.path, function(err) {
+                    if(err) return done(err);
 
-                done();
+                    // job was finished
+                    done();
+                });
+
             });
 
         });
     });
 });
+
+
 
 module.exports = {
 
@@ -119,9 +113,6 @@ module.exports = {
         videoObj.fileName = path.basename(videoObj.path, videoObj.fileExtension);
         videoObj.transcodingDest = sails.config.path.transcoding + '/' + videoObj.fileName;
 
-        console.log(profileObj);
-        console.log(videoObj);
-
         // create the transcoding command
         FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo) {
             if(err) {
@@ -136,7 +127,7 @@ module.exports = {
                     }
 
                     // create a kue job
-                    jobs.create('transcode', {
+                    var job = jobs.create('transcode', {
                         desc: videoObj.name + ' [' + profileObj.name + ']',
                         video: videoObj,
                         profile: profileObj,
@@ -144,6 +135,16 @@ module.exports = {
                         passTwo: passTwo,
                         statsId: statsId
                     }).priority(videoObj.priority).save();
+
+                    // potential job events
+                    job.on('complete', function() {
+                        console.log('complete');
+                        // set status to finished
+                        StatsService.update(statsId, {status: 'finished'});
+                    }).on('failed', function(error) {
+                        console.log(error);
+                        StatsService.update(statsId, {status: 'failed'});
+                    });
 
                 }
             );
