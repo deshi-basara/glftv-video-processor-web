@@ -6,13 +6,30 @@
         .module('app')
         .controller('QueueCtrl', QueueCtrl);
 
-    QueueCtrl.$inject = ['QueueService', 'ngTableParams'];
+    QueueCtrl.$inject = ['QueueService', 'ngTableParams', 'SocketService'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function QueueCtrl(QueueService, ngTableParams) {
+    function QueueCtrl(QueueService, ngTableParams, SocketService) {
         var ctrl = this;
+
+        /*
+         * Fetches all stats-entries and inserts them
+         */
+        function fetchAll() {
+            QueueService.getAllInQueue().then(function(success) {
+
+                // save result globally
+                ctrl.queueData = success;
+
+                // reload table params
+                ctrl.tableParams.reload();
+
+            }, function(error) {
+
+            });
+        }
 
         /**
          * Fetches all finished videos and starts a remove request.
@@ -25,11 +42,21 @@
 
                 // check if it's finished
                 if(currentVideo.status === 'finished') {
-                    finishedArray.push(currentVideo);
+                    finishedArray.push(currentVideo.id);
                 }
             };
 
-            console.log(finishedArray);
+            // send remove request if there are finished videos
+            if(finishedArray.length > 0) {
+                QueueService.removeAllFinished(finishedArray).then(function(success) {
+                    // refetch all entries
+                    console.log(success);
+                    fetchAll();
+
+                }, function(error) {
+
+                });
+            }
         }
 
 
@@ -45,19 +72,12 @@
             counts: [],
             getData: function($defer, params) {
                 // fetch the table data
-                QueueService.getAllInQueue().then(function(success) {
-                    // update the table params
-                    params.total(success.length);
+                if(ctrl.queueData) {
+                    params.total(ctrl.queueData.length);
                     // slice and set new data for the current page
-                    var data = success.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    var data = ctrl.queueData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     $defer.resolve(data);
-
-                    // save result globally
-                    ctrl.queueData = success;
-
-                }, function(error) {
-
-                });
+                }
             }
         });
 
@@ -72,7 +92,38 @@
 
         //////////////////////
 
+        /**
+         * Is fired when a stats-entry is updated.
+         * @param  {object} data [id of the stats-entry and all the values that have changed]
+         */
+        SocketService.socket.on('stats.progress.update', function(data) {
+            console.log(data);
+
+            // loop through all stats entries
+            for (var i = 0; i < ctrl.queueData.length; i++) {
+                // update the right stats-entry
+                if(ctrl.queueData[i].id === data.id) {
+
+                    ctrl.queueData[i] = data;
+
+                    // update all available values
+                    /*for (var z = 0; z < data.updated.length; z++) {
+                        var key = Object.keys(data.updated[z]);
+                        var value = data.updated[z];
+
+                        console.log(key+' '+value);
+
+                        ctrl.queueData[i][key] = value;
+                    };*/
+
+                    return ctrl.tableParams.reload();
+                }
+            };
+        });
+
         //////////////////////
+
+        fetchAll();
 
 
     }
