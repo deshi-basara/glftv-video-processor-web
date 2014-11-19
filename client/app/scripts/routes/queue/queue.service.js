@@ -18,7 +18,7 @@
             removeUrl: '/stats/remove',
 
             getAllInQueue: getAllInQueue,
-            removeAllFinished: removeAllFinished
+            removeAll: removeAll
         };
 
         return service;
@@ -48,19 +48,17 @@
         /**
          * Sends a delete request to the server with all stats-entry-ids that
          * should be destroyed.
-         * @param  {object} finishedIds [All stats-entry-ids that should be destroyed]
-         * @return {Promise}            [Resolve: true | Reject: false]
+         * @param  {object}  ids [All stats-entry-ids that should be destroyed]
+         * @return {Promise}     [Resolve: true | Reject: false]
          */
-        function removeAllFinished(finishedIds) {
+        function removeAll(ids) {
             var q = $q.defer();
-
-            console.log(finishedIds);
 
             // make the request
             $http({
                 method: 'DELETE',
                 url: config.apiUrl + service.removeUrl,
-                data: {removeIds: finishedIds}
+                data: {removeIds: ids}
             }).success(function(data) {
                 q.resolve(data);
             }).error(function(data, status) {

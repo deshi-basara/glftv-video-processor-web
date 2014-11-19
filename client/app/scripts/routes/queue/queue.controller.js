@@ -32,6 +32,34 @@
         }
 
         /**
+         * Fetches all failed videos and starts a remove request.
+         */
+        function removeAllFailed() {
+            // get all failed
+            var failedArray = [];
+            for (var i = 0; i < ctrl.queueData.length; i++) {
+                var currentVideo = ctrl.queueData[i];
+
+                // check if it's finished
+                if(currentVideo.status === 'failed') {
+                    failedArray.push(currentVideo.id);
+                }
+            };
+
+            // send remove request if there are finished videos
+            if(failedArray.length > 0) {
+                QueueService.removeAll(failedArray).then(function(success) {
+                    // refetch all entries
+                    console.log(success);
+                    fetchAll();
+
+                }, function(error) {
+
+                });
+            }
+        }
+
+        /**
          * Fetches all finished videos and starts a remove request.
          */
         function removeAllFinished() {
@@ -48,7 +76,7 @@
 
             // send remove request if there are finished videos
             if(finishedArray.length > 0) {
-                QueueService.removeAllFinished(finishedArray).then(function(success) {
+                QueueService.removeAll(finishedArray).then(function(success) {
                     // refetch all entries
                     console.log(success);
                     fetchAll();
@@ -87,6 +115,7 @@
             queueData: null,
             tableParams: tableParams,
 
+            removeAllFailed: removeAllFailed,
             removeAllFinished: removeAllFinished
         });
 
