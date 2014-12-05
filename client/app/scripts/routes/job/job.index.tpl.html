@@ -13,15 +13,16 @@
             <table ng-table class="table table-hover">
                 <tr ng-repeat="file in ctrl.filesInUploadQueue" ng-click="ctrl.onVideoSelect(file)" ng-class="{ 'started': file.status === 'Fertig' }">
                     <td data-title="'#'" class="col-sm-1">
-                        {{ $index }}
+                        {{:: $index }}
                     </td>
                     <td data-title="'Name'" class="col-sm-4">
-                        {{ file.name }}
+                        {{:: file.name }}
                     </td>
                     <td data-title="'Profile'" class="col-sm-2">
                         <select class="form-control select-profile" ng-model="file.profile" ng-class="{ 'error': file.noProfile === true }">
-                            <option>Alle</option>
+                            <!--<option value="all">Alle</option>-->
                             <option ng-repeat="profile in ctrl.profiles">{{:: profile.name }}</option>
+                            <option value="custom" ng-show="file.custom.length !== 0" ng-selected="file.custom.length !== 0">{{ file.custom }}</option>
                         </select>
                     </td>
                     <td data-title="'Fortschritt'" class="col-sm-2">
@@ -64,7 +65,7 @@
         <div class="section-right">
             <div class="section-profiles">
                 <div class="profile-item" ng-repeat="profile in ctrl.profiles">
-                    <span>{{:: profile.name }}<span><input type="checkbox">
+                    <span>{{:: profile.name }} ({{:: profile.outputFormat }})</span><input type="checkbox" ng-model="profile.checked" ng-change="ctrl.customProfiles(profile.name)">
                 </div>
             </div>
         </div>

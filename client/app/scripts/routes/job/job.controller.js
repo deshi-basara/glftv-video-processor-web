@@ -22,6 +22,24 @@
         });
 
         /**
+         * Adds custom selected profiles from the 'bottom-box' to the selected file.
+         * (Custom selected profiles > Select-box selected profiles)
+         */
+        function customProfiles(profileName) {
+
+            // check if the profile was already added
+            var indexOf = ctrl.fileSelected.custom.indexOf(profileName);
+            if(indexOf === -1) {
+                // not added previously, add to the array
+                ctrl.fileSelected.custom.push(profileName);
+            }
+            else {
+                // added previously, remove from the array
+                ctrl.fileSelected.custom.shift(indexOf);
+            }
+        }
+
+        /**
          * Is called when files were selected for uploading.
          * @param  {[Array]} $files [Array of files selected]
          * @return {[type]}         [description]
@@ -33,9 +51,10 @@
             // foreach file start an upload
             for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
 
-                // set the progress to zero and the status
+                // set the progress to zero, the status and make custom profiles available
                 ctrl.filesInUploadQueue[i].progress = parseInt(0);
                 ctrl.filesInUploadQueue[i].status = 'Uploading';
+                ctrl.filesInUploadQueue[i].custom = [];
 
                 // upload the current file
                 JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(function(success) {
@@ -93,10 +112,10 @@
                 var currentFile = ctrl.filesInUploadQueue[i];
 
                 // check if the current file is ready and has a selected profile
-                if(currentFile.status === 'Bereit' && currentFile.profile) {
+                if(currentFile.status === 'Bereit' && currentFile.custom.length !== 0) {
 
                     // add the videoFile to the encoding-queue
-                    JobService.startQueue(currentFile.uploadId, currentFile.profile).then(function(success) {
+                    JobService.startQueue(currentFile.uploadId, currentFile.custom).then(function(success) {
                         currentFile.status = 'Fertig';
                     }, function(error) {
                         currentFile.status = 'Fehler';
@@ -104,7 +123,7 @@
                         console.log(progress);
                     });
                 }
-                else if(currentFile.status === 'Bereit' && !currentFile.profile) {
+                else if(currentFile.status === 'Bereit' && currentFile.custom.length === 0) {
                     // mark the currentFile as profile-less
                     currentFile.noProfile = true;
                 }
@@ -118,6 +137,7 @@
             fileSelected: null,
             profiles: null,
 
+            customProfiles: customProfiles,
             onFileSelect: onFileSelect,
             onVideoSelect: onVideoSelect,
             onProfileSelect: onProfileSelect,

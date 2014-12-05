@@ -133,8 +133,8 @@ module.exports = {
         });
 
         // when the transcoding is finished
-        transcodeProcess.on('exit', function(code) {
-            cb();
+        transcodeProcess.on('exit', function(err) {
+            cb(err);
         });
     },
 
@@ -181,7 +181,8 @@ module.exports = {
         }
 
         // add the output file
-        cmdPassTwo.push('-f', profile.outputFormat, video.transcodingDest + '/' +video.fileName + '.' +profile.outputFormat);
+        cmdPassTwo.push('-f', profile.outputFormat, video.transcodingDest + '/' +video.fileName +
+                            '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat);
 
         // escape cmd
         cmdPassTwo = shellescape(cmdPassTwo);

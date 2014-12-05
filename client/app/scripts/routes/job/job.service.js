@@ -99,14 +99,14 @@
 
         /**
          * Sends a request with the fileId to the server for enqueuing an uploaded file.
-         * @param  {[int]}    fileId  [Serverside database id of the file]
-         * @param  {[string]} profile [Name of the selected converting profile]
-         * @return {Promise}          [Resolve: true | Reject: false]
+         * @param  {[int]}    fileId   [Serverside database id of the file]
+         * @param  {array}    profiles [Name of the selected converting profile]
+         * @return {Promise}           [Resolve: true | Reject: false]
          */
-        function startQueue(fileId, profile) {
+        function startQueue(fileId, profiles) {
             var q = $q.defer();
 
-            console.log('starting: '+fileId +' + '+profile);
+            console.log('starting: '+fileId +' + '+profiles);
 
             // make the request
             $http({
@@ -114,7 +114,7 @@
                 url: config.apiUrl + service.startUrl,
                 data: {
                     id: fileId,
-                    profile: profile
+                    profiles: profiles
                 }
             }).success(function() {
                 q.resolve();

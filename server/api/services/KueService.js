@@ -84,8 +84,9 @@ jobs.process('transcode', function(job, done) {
                 ], function(error, result) {
                     if(err) return done(err);
 
-                    // remove the original video file
-                    fs.unlink(job.data.video.path, function(err) {
+                    // remove the copied video file
+                    fs.unlink(job.data.video.transcodingDest + '/' + job.data.video.fileName +
+                        job.data.video.fileExtension, function(err) {
                         if(err) return done(err);
 
                         // job was finished
@@ -124,61 +125,67 @@ module.exports = {
 
     /**
      * Function for adding a new "transcode"-job to kue.
-     * @param  {Object}   videoObj [Waterline object with the database representation of the video]
-     * @param  {Object}   profile  [Encoding profile object of the output format]
-     * @param  {Function} cb       [Callback, returns err]
+     * @param  {Object}   videoObj      [Waterline object with the database representation of the video]
+     * @param  {Array}    profileArray  [All waterline objects with the representations of the profiles we want the video
+     *                                   to transcode to]
+     * @param  {Function} cb            [Callback, returns err]
      */
-    transcodeVideo: function(videoObj, profileObj, cb) {
+    transcodeVideo: function(videoObj, profileArray, cb) {
 
         // get the transcoding destination
         videoObj.fileExtension = '.' + videoObj.path.substr(videoObj.path.lastIndexOf('.') + 1);
         videoObj.fileName = path.basename(videoObj.path, videoObj.fileExtension);
         videoObj.transcodingDest = sails.config.path.transcoding + '/' + videoObj.fileName;
 
-        // create the transcoding command
-        FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo) {
-            if(err) {
-                return cb(err);
-            }
+        // foreach profile entry, generate needed data & create a new kue-job
+        async.eachSeries(profileArray, function(profileObj, cb) {
 
-            // create a new stats model
-            StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode',
-                function(err, statsId) {
-                    if(err) {
-                        return cb(err);
-                    }
-
-                    // create a kue job
-                    var job = jobs.create('transcode', {
-                        desc: videoObj.name + ' [' + profileObj.name + ']',
-                        video: videoObj,
-                        profile: profileObj,
-                        passOne: passOne,
-                        passTwo: passTwo,
-                        statsId: statsId
-                    }).priority(videoObj.priority).save(function() {
-
-                        // after creation, save the kue-job-id into the stats-object
-                        // (for later kue-job handling).
-                        StatsService.update(statsId, {kueId: job.id});
-                    });
-
-                    // potential job events
-                    job.on('complete', function() {
-                        console.log('complete');
-                        // set status to finished
-                        StatsService.update(statsId, {status: 'finished'});
-                    }).on('failed', function(error) {
-                        console.log(error);
-                        StatsService.update(statsId, {status: 'failed'});
-                    });
-
-                    // everything went well, call callback
-                    return cb();
-
+            // create the transcoding command
+            FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo) {
+                if(err) {
+                    return cb(err);
                 }
-            );
-        })
+
+                // create a new stats model
+                StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode',
+                    function(err, statsId) {
+                        if(err) {
+                            return cb(err);
+                        }
+
+                        // create a kue job
+                        var job = jobs.create('transcode', {
+                            desc: videoObj.name + ' [' + profileObj.name + ']',
+                            video: videoObj,
+                            profile: profileObj,
+                            passOne: passOne,
+                            passTwo: passTwo,
+                            statsId: statsId
+                        }).priority(videoObj.priority).save(function() {
+                            // after creation, save the kue-job-id into the stats-object
+                            // (for later kue-job handling).
+                            StatsService.update(statsId, {kueId: job.id});
+                        });
+
+                        // potential job events
+                        job.on('complete', function() {
+                            // set status to finished
+                            StatsService.update(statsId, {status: 'finished'});
+                        }).on('failed', function(error) {
+                            console.log(error);
+                            StatsService.update(statsId, {status: 'failed'});
+                        });
+
+                        // everything went well, call series-async-callback
+                        cb();
+                    }
+                );
+            });
+
+        }, function(err) {
+            // jobs were added successfully, call callback for triggering the response feedback
+            return cb();
+        });
     },
 
     /**

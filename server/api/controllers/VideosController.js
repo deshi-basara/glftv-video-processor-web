@@ -1,3 +1,5 @@
+var async = require('async');
+
 /**
  * Upload settings
  * @type {Object}
@@ -102,7 +104,7 @@ module.exports = {
   start: function (req, res) {
 
     // check if the request is valid
-    if(!req.body.id || !req.body.profile) {
+    if(!req.body.id || !req.body.profiles || req.body.profiles.length === 0) {
       return res.send(400, 'Bad request');
     }
 
@@ -118,17 +120,31 @@ module.exports = {
         return res.send(404, 'Video does not exist');
       }
 
-      // does the profile exist?
-      Profiles.findOne({name: req.body.profile}, function(err, profile) {
+      // do the handed profiles exist?
+      var profileArray = [];
+      async.eachSeries(req.body.profiles, function(profileName, cb) {
+        // try to get the current profile from the database
+        Profiles.findOne({name: profileName}, function(err, profile) {
+          if(err) return cb(err);
+
+          // if the profile-result is empty, the profile does not exist
+          if(!profile) {
+            cb('Profile does not exist');
+          }
+          else {
+            // add the current profile data to the profileArray
+            profileArray.push(profile);
+            cb();
+          }
+        });
+      }, function(err) {
+        // checking was finished in series, react on errors and proceed
         if(err) {
-          return res.send(500, err);
-        }
-        else if(!profile) {
           return res.send(404, 'Profile does not exist');
         }
 
-        // add the video to the queue
-        KueService.transcodeVideo(video, profile, function(err) {
+        // video and profiles exist, add the video to the queue
+        KueService.transcodeVideo(video, profileArray, function(err) {
           if(err) {
             return res.send(500, err);
           }
@@ -137,7 +153,7 @@ module.exports = {
           return res.send('Video was added to the queue');
 
         });
-      })
+      });
     });
   },
 
