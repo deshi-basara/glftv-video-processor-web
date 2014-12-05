@@ -10,6 +10,10 @@ module.exports = {
 
     attributes: {
 
+        kueId: {
+            type: 'int'
+        },
+
         status: {
             type: 'string',
             required: true,

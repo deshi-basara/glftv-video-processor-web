@@ -19,11 +19,11 @@ module.exports = {
 
         // create a new Stats-Object
         Stats.create({
-          name: statsName,
-          priority: statsPriority,
-          twoPass: statsPass,
-          profil: statsProfil,
-          createdBy: statsCreator
+            name: statsName,
+            priority: statsPriority,
+            twoPass: statsPass,
+            profil: statsProfil,
+            createdBy: statsCreator
         }).exec(function(err, stat) {
             if(err) return cb(err);
 

@@ -16,86 +16,108 @@ var api = kue.app.listen(1338);
  * @param  {Function}   done [Callback, that tells kue when the job is finshed]
  */
 jobs.process('transcode', function(job, done) {
-    // prepare the encoding
-    StatsService.update(statsId, {status: 'started', startedAt: new Date()});
+    setTimeout(function() {
 
-    // does the specified video file exist?
-    fs.exists(job.data.video.path, function(exists) {
-        if(!exists) {
-            console.log('Aborting transcode of ' + job.data.desc + ': ' + job.data.video.path + ' does not exist');
-            return done('Video file does not exist');
-        }
+        // prepare the encoding
+        StatsService.update(job.data.statsId, {status: 'started', startedAt: new Date()});
 
-        // copy the video file to its transcoding-folder
-        fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
-            job.data.video.fileExtension, function(err) {
-            if(err) return done('Coud not move the video to the transcoding folder: '+ folderName);
+        // does the specified video file exist?
+        fs.exists(job.data.video.path, function(exists) {
+            if(!exists) {
+                console.log('Aborting transcode of ' + job.data.desc + ': ' + job.data.video.path + ' does not exist');
+                return done('Video file does not exist');
+            }
 
-            // transcoding workflow
-            async.series([
-                // pass-1 function
-                function(next) {
+            // copy the video file to its transcoding-folder
+            fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
+                job.data.video.fileExtension, function(err) {
+                if(err) return done('Coud not move the video to the transcoding folder: '+ folderName);
 
-                    // do we have a 2-pass transcoding?
-                    if(job.data.passOne !== null) {
-                        FFmpegService.convert(job.data.passOne, job.data.video.transcodingDest, function(progress) {
+                // transcoding workflow
+                async.series([
+                    // pass-1 function
+                    function(next) {
+
+                        // do we have a 2-pass transcoding?
+                        if(job.data.passOne !== null) {
+                            FFmpegService.convert(job.data.passOne, job.data.video.transcodingDest, function(progress) {
+                                // is called, whenever a new progress was calculated
+
+                                // we have a 2-pass encoding, change the progress to max 50%
+                                progress = (progress / 2).toFixed(0);
+                                StatsService.update(job.data.statsId, {progress: progress});
+
+                            }, function(err) {
+                                if(err) return done(err);
+
+                                // 1-pass finished, start 2-pass
+                                next();
+                            });
+                        }
+                        else {
+                            // no 2-pass encoding, go directly to the next function
+                            next();
+                        }
+                    },
+                    // pass-2 function
+                    function(next) {
+
+                        FFmpegService.convert(job.data.passTwo, job.data.video.transcodingDest, function(progress) {
                             // is called, whenever a new progress was calculated
 
-                            // we have a 2-pass encoding, change the progress to max 50%
-                            progress = (progress / 2).toFixed(0);
+                            // if we have a 2-pass encoding, let the 2-pass start at min 50%
+                            if(job.data.passOne !== null && progress > 0.00) {
+                                progress = (50 + (progress / 2)).toFixed(0);
+                            }
+                            else {
+                                progress = 100.00;
+                            }
                             StatsService.update(job.data.statsId, {progress: progress});
 
                         }, function(err) {
                             if(err) return done(err);
 
-                            // 1-pass finished, start 2-pass
+                            // 2-pass finished, start cleaning
                             next();
                         });
                     }
-                    else {
-                        // no 2-pass encoding, go directly to the next function
-                        next();
-                    }
-                },
-                // pass-2 function
-                function(next) {
-
-                    FFmpegService.convert(job.data.passTwo, job.data.video.transcodingDest, function(progress) {
-                        // is called, whenever a new progress was calculated
-
-                        // if we have a 2-pass encoding, let the 2-pass start at min 50%
-                        if(job.data.passOne !== null && progress > 0.00) {
-                            progress = (50 + (progress / 2)).toFixed(0);
-                        }
-                        else {
-                            progress = 100.00;
-                        }
-                        StatsService.update(job.data.statsId, {progress: progress});
-
-                    }, function(err) {
-                        if(err) return done(err);
-
-                        // 2-pass finished, start cleaning
-                        next();
-                    });
-                }
-            ], function(error, result) {
-                if(err) return done(err);
-
-                // remove the original video file
-                fs.unlink(job.data.video.path, function(err) {
+                ], function(error, result) {
                     if(err) return done(err);
 
-                    // job was finished
-                    done();
+                    // remove the original video file
+                    fs.unlink(job.data.video.path, function(err) {
+                        if(err) return done(err);
+
+                        // job was finished
+                        done();
+                    });
+
                 });
 
             });
-
         });
-    });
+
+    }, 5000);
 });
 
+/**
+ * Listens for Queue-lebel events.
+ * @param  {[type]} id     [description]
+ * @param  {[type]} result [description]
+ * @return {[type]}        [description]
+ */
+/*jobs.on('job failed', function(id, result) {
+    console.log(id);
+    console.log(result);
+    kue.Job.get(id, function(err, job) {
+        if (err) return;
+
+        job.remove(function(err) {
+            if (err) throw err;
+            console.log('removed completed job #%d', job.id);
+        });
+    });
+});*/
 
 
 module.exports = {
@@ -134,7 +156,12 @@ module.exports = {
                         passOne: passOne,
                         passTwo: passTwo,
                         statsId: statsId
-                    }).priority(videoObj.priority).save();
+                    }).priority(videoObj.priority).save(function() {
+
+                        // after creation, save the kue-job-id into the stats-object
+                        // (for later kue-job handling).
+                        StatsService.update(statsId, {kueId: job.id});
+                    });
 
                     // potential job events
                     job.on('complete', function() {
@@ -146,9 +173,30 @@ module.exports = {
                         StatsService.update(statsId, {status: 'failed'});
                     });
 
+                    // everything went well, call callback
+                    return cb();
+
                 }
             );
         })
-    }
+    },
 
+    /**
+     * Restart all active jobs.
+     * Recovery from server crashes and unexpected behavior.
+     */
+    restartJobs: function(){
+        kue.Job.rangeByState('active', 0, 500, 'desc', function(err, active){
+            if(err) return console.log(err);
+
+            active.forEach(function(job){
+                job.inactive();
+                console.log('Job ' + job.id + ' readded to Queue!');
+            });
+        });
+    }
 };
+
+setTimeout(function() {
+    //KueService.restartJobs();
+}, 20000);
