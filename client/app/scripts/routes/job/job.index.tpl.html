@@ -11,7 +11,7 @@
         </div>
         <div class="upload-indicator" ng-show="ctrl.filesInUploadQueue.length !== 0">
             <table ng-table class="table table-hover">
-                <tr ng-repeat="file in ctrl.filesInUploadQueue" ng-click="ctrl.onVideoSelect(file)">
+                <tr ng-repeat="file in ctrl.filesInUploadQueue" ng-click="ctrl.onVideoSelect(file)" ng-class="{ 'started': file.status === 'Fertig' }">
                     <td data-title="'#'" class="col-sm-1">
                         {{ $index }}
                     </td>
@@ -19,13 +19,12 @@
                         {{ file.name }}
                     </td>
                     <td data-title="'Profile'" class="col-sm-2">
-                        <select class="form-control" ng-model="file.profile">
+                        <select class="form-control select-profile" ng-model="file.profile" ng-class="{ 'error': file.noProfile === true }">
                             <option>Alle</option>
                             <option ng-repeat="profile in ctrl.profiles">{{:: profile.name }}</option>
                         </select>
                     </td>
                     <td data-title="'Fortschritt'" class="col-sm-2">
-                        <!--<ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>-->
                         <progressbar max="100" value="file.progress">{{ file.progress }}%</progressbar>
                     </td>
                     <td data-title="'Größe'" class="col-sm-1">

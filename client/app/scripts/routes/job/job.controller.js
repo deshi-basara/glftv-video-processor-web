@@ -92,8 +92,6 @@
             for(var i = 0; i < ctrl.filesInUploadQueue.length; i++) {
                 var currentFile = ctrl.filesInUploadQueue[i];
 
-                console.log(currentFile);
-
                 // check if the current file is ready and has a selected profile
                 if(currentFile.status === 'Bereit' && currentFile.profile) {
 
@@ -105,6 +103,10 @@
                     }, function(progress) {
                         console.log(progress);
                     });
+                }
+                else if(currentFile.status === 'Bereit' && !currentFile.profile) {
+                    // mark the currentFile as profile-less
+                    currentFile.noProfile = true;
                 }
             }
         }
@@ -145,8 +147,6 @@
         });
 
         /////////////////////
-
-        onServerSelect();
 
 
     }

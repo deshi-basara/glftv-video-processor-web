@@ -11,3 +11,16 @@
 .animate-show.ng-hide {
     opacity: 0;
 }
+
+
+/**
+ * Ng-enter
+ */
+.ng-enter {
+    opacity: 0;
+    @include transition(opacity 1s ease-in-out);
+
+    &.ng-enter-active {
+        opacity: 1;
+    }
+}

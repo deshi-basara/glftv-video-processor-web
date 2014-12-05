@@ -26,8 +26,27 @@
                 text-align: left;
             }
 
-            table tbody tr td {
-                cursor: pointer;
+            table tbody tr {
+
+                @include transition(background-color 0.7s ease-in-out);
+
+                &.started {
+                    background-color: $glf-grey;
+                    cursor: normal;
+                }
+
+                & .select-profile {
+
+                    @include transition(border 0.7s ease-in-out);
+
+                    &.error {
+                        border: 1px solid $glf-red;
+                    }
+                }
+
+                & td {
+                    cursor: pointer;
+                }
             }
 
             .fa-started {
