@@ -1,4 +1,4 @@
-<section id="job" class="section-box">
+<section id="job queue-box" class="section-box">
     <div class="section-box-head">
         <h4>Warteschlange</h4>
     </div>
@@ -44,6 +44,9 @@
                         <i class="fa fa-download" ng-show="job.status === 'finished'"></i>
                         <i class="fa fa-exclamation-triangle" ng-show="job.status === 'failed'"></i>
                     </td>
+                    <td class="col-xs-0 center-text">
+                        <i class="glyphicon glyphicon-remove-circle" ng-hide="job.status === 'finished'" ng-click="ctrl.cancelSelected(job.id)"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -52,7 +55,7 @@
     <div class="section-box-footer">
         <div class="upload-controls">
             <button class="button button-neutral" ng-click="ctrl.removeAllFailed()">Abgebrochene Videos entfernen</button>
-            <button class="button" ng-click="ctrl.removeAllFinished()">Fertige Videos entfernen</button>
+            <button class="button button-green" ng-click="ctrl.removeAllFinished()">Fertige Videos entfernen</button>
         </div>
     </div>
 </section>

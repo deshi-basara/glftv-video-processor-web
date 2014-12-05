@@ -15,15 +15,39 @@
 
         var service = {
             allUrl: '/stats/all',
+            cancelUrl: '/stats/cancel',
             removeUrl: '/stats/remove',
 
+            cancelJob: cancelJob,
             getAllInQueue: getAllInQueue,
             removeAll: removeAll
         };
 
         return service;
 
-        ///////////////
+        /**
+         * Sends a cancel request to the server and reacts to the server feedback.
+         * @param  {int}      jobId [Id of the job we want to cancel]
+         * @return {Promise}        [Resolve: Object | Reject: false]
+         */
+        function cancelJob(jobId) {
+            var q = $q.defer();
+
+            // make the request
+            $http({
+                method: 'DELETE',
+                url: config.apiUrl + service.cancelUrl,
+                data: {
+                    id: jobId
+                }
+            }).success(function(data) {
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+        }
 
         /**
          * Sends a request with to the server for fetching all stats-entries at.

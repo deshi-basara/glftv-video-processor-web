@@ -14,6 +14,19 @@
     function QueueCtrl(QueueService, ngTableParams, SocketService, $scope) {
         var ctrl = this;
 
+        /**
+         * Is fired when the 'cancel'-icon is clicked.
+         * @param  {int} jobId [Id of the job we want to cancel]
+         */
+        function cancelSelected(jobId) {
+            QueueService.cancelJob(jobId).then(function(success) {
+                // job was canceled, refetch list
+                fetchAll();
+            }, function(error) {
+                // @todo error handling
+            });
+        }
+
         /*
          * Fetches all stats-entries and inserts them
          */
@@ -27,7 +40,7 @@
                 ctrl.tableParams.reload();
 
             }, function(error) {
-
+                // @todo error handling
             });
         }
 
@@ -54,7 +67,7 @@
                     fetchAll();
 
                 }, function(error) {
-
+                    // @todo error handling
                 });
             }
         }
@@ -82,7 +95,7 @@
                     fetchAll();
 
                 }, function(error) {
-
+                    // @todo error handling
                 });
             }
         }
@@ -115,6 +128,7 @@
             queueData: null,
             tableParams: tableParams,
 
+            cancelSelected: cancelSelected,
             removeAllFailed: removeAllFailed,
             removeAllFinished: removeAllFinished
         });
