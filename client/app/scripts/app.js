@@ -1,3 +1,8 @@
+/*!
+* Simon Schuster <simon.schuster@hs-furtwangen.de>
+* glftv-video-processor-web v0.9.0 (https://github.com/deshi-basara/glftv-video-processor-web)
+*/
+
 'use strict';
 
 // angular.module is a global place for creating, registering and retrieving Angular modules.
