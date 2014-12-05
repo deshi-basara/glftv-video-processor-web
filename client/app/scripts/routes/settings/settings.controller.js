@@ -35,6 +35,19 @@
         }
 
         /**
+         * Sends a delete request to the server.
+         * @param  {string} settingName [Name of the setting we want to remove]
+         */
+        function removeSetting(settingName) {
+            ProfileService.removeSetting(settingName).then(function() {
+                // submit was successfully, refetch profiles
+                fetchProfileSettings();
+            }, function(error) {
+                SweetAlert.swal('Server-Fehler', error, 'error');
+            });
+        }
+
+        /**
          * Submits a settings-object to the server after converting
          * and validating it.
          */
@@ -83,6 +96,7 @@
             selectedSetting: null,
 
             insertSettings: insertSettings,
+            removeSetting: removeSetting,
             submitNewSettings: submitNewSettings
         });
 

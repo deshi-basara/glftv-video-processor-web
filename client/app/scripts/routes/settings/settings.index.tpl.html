@@ -9,7 +9,7 @@
         <div class="section-right">
             <div class="section-profiles">
                 <div class="profile-item" ng-repeat="setting in ctrl.allSettings" ng-click="ctrl.insertSettings(setting)">
-                    <span>{{:: setting.name }}<span>
+                    <span>{{:: setting.name }}</span><i class="glyphicon glyphicon-remove-circle" ng-click="ctrl.removeSetting(setting.name)"></i>
                 </div>
             </div>
             <button class="button button-green" ng-click="ctrl.submitNewSettings()">Speichern</button>
@@ -37,7 +37,7 @@
                 <div class="file-list-item" ng-repeat="file in modal.foundFiles">
                     <div class="file-counter">#{{:: $index }}</div>
                     <div class="file-name">
-                        {{:: file.name | characters: 55 :true }} 
+                        {{:: file.name | characters: 55 :true }}
                         <input type="checkbox" ng-model="file.selected"></div>
                 </div>
             </div>

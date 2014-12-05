@@ -19,6 +19,23 @@ module.exports = {
 
     },
 
+    remove: function(req, res) {
+
+        // check if the request is valid
+        if(!req.body.name) {
+            return res.send(400, 'Bad request');
+        }
+
+        // remove the entry
+        Settings.destroy({name: req.body.name}).exec(function(err) {
+            if(err) {
+                return res.send(500, err);
+            }
+
+            res.send('Setting removed');
+        });
+    },
+
     save: function(req, res) {
 
         // check if the request is valid
@@ -40,7 +57,7 @@ module.exports = {
             }
             else if(settings) {
                 // settings exist, warn the user
-                res.send(405, 'Settings already exists');
+                res.send(405, 'Settings already exist');
             }
 
             // save the settings object
@@ -50,8 +67,6 @@ module.exports = {
                 modifiedBy: 'Ada Rhode',
             }).exec(function(err, settings) {
                 if(err) return res.send(500, err);
-
-                console.log(settings);
 
                 // everything went well, send response
                 return res.send('Settings were created');
