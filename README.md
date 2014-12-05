@@ -11,6 +11,8 @@ The following dependencies are needed globally
 * Nodejs (~0.10.32)
 * Redis (~2.8.17)
 * FFmpeg (~2.4.2)
+
+Dev dependencies
 * Bower (~1.3.12)
 * Ruby with SASS (~3.3.4)
 
@@ -38,7 +40,5 @@ Execute inside 'client/'
 ========
 ### Todo
 
-* Finish all client-routes (Profiles!)
-* Queue-View
-* Progress indicators
+* Auth
 * Extra-Features (Mailer, Scheduler, etc.)
