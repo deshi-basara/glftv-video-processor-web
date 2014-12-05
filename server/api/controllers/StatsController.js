@@ -36,6 +36,47 @@ module.exports = {
     },
 
     /**
+     * [DELETE]  Cancels a job identified by the handed id.
+     */
+    cancel: function(req, res) {
+
+        console.log(req.body.id);
+
+        // check if the request is valid
+        if(!req.body.id) {
+            return res.send(400, 'Bad request');
+        }
+
+        // does the stats-entry exist?
+        Stats.findOne({id: req.body.id}).exec(function(err, stat) {
+            if(err) {
+                return res.send(500, err);
+            }
+
+            if(!stat) {
+                return res.send(404, 'Stat entry does not exist');
+            }
+
+            // remove the stats entry
+            Stats.destroy({id: req.body.id}).exec(function(err) {
+                if(err) {
+                    return res.send(500, err);
+                }
+
+                // remove the job from the kue-queue
+                KueService.removeJob(stat.kueId, function(err) {
+                    if(err) {
+                        return res.send(500, err);
+                    }
+
+                    // everything went well, return feedback
+                    return res.send('Job was canceled');
+                });
+            });
+        });
+    },
+
+    /**
      * [DELETE] Removes all stats-entries identified by req.body.removeIds
      */
     remove: function(req, res) {
@@ -45,7 +86,7 @@ module.exports = {
             return res.send(400, 'Bad request');
         }
 
-        // remove all entries (one destroy with multiple ids doesn't work!)
+        // remove all entries (1 destroy with multiple ids doesn't work!)
         var removeLength = req.body.removeIds.length;
         for (var i = 0; i < removeLength; i++) {
             Stats.destroy({id: req.body.removeIds[i]}).exec(function(err) {
@@ -59,15 +100,6 @@ module.exports = {
                 return res.send('Finished videos were removed');
             }
         };
-
-        /*Stats.find().where({id: req.body.removeIds}).exec(function(err, found) {
-            if(err) return res.send(500, err);
-
-            console.log(found);
-
-            // everything went well
-            return res.send('Finished videos were removed');
-        });*/
     }
 
 };

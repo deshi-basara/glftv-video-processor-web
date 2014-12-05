@@ -161,7 +161,7 @@ module.exports = {
                             passOne: passOne,
                             passTwo: passTwo,
                             statsId: statsId
-                        }).priority(videoObj.priority).save(function() {
+                        }).priority(videoObj.priority).removeOnComplete(true).save(function() {
                             // after creation, save the kue-job-id into the stats-object
                             // (for later kue-job handling).
                             StatsService.update(statsId, {kueId: job.id});
@@ -184,6 +184,23 @@ module.exports = {
 
         }, function(err) {
             // jobs were added successfully, call callback for triggering the response feedback
+            return cb();
+        });
+    },
+
+    /**
+     * Removes a job identified by its id from the queue-
+     * @param  {int}      jobId [id of the job we want to cancel]
+     * @param  {function} cb    [callback]
+     */
+    removeJob: function(jobId, cb) {
+
+        kue.Job.get(jobId, function(err, job) {
+            if(err) return cb(err);
+
+            // remove the job
+            job.remove();
+
             return cb();
         });
     },

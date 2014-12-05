@@ -54,8 +54,6 @@ module.exports = {
    */
   model: function(req, res) {
 
-    console.log(req.body);
-
     // check if the request is valid
     if(!req.body.name || !req.body.path) {
       return res.send(400, 'Bad request');
