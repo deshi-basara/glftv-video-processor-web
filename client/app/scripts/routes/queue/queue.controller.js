@@ -6,12 +6,12 @@
         .module('app')
         .controller('QueueCtrl', QueueCtrl);
 
-    QueueCtrl.$inject = ['QueueService', 'ngTableParams', 'SocketService'];
+    QueueCtrl.$inject = ['QueueService', 'ngTableParams', 'SocketService', '$scope'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function QueueCtrl(QueueService, ngTableParams, SocketService) {
+    function QueueCtrl(QueueService, ngTableParams, SocketService, $scope) {
         var ctrl = this;
 
         /*
@@ -126,26 +126,16 @@
          * @param  {object} data [id of the stats-entry and all the values that have changed]
          */
         SocketService.socket.on('stats.progress.update', function(data) {
-            console.log(data);
 
             // loop through all stats entries
             for (var i = 0; i < ctrl.queueData.length; i++) {
+
                 // update the right stats-entry
                 if(ctrl.queueData[i].id === data.id) {
 
-                    ctrl.queueData[i] = data;
+                    ctrl.queueData[i].progress = data.progress;
 
-                    // update all available values
-                    /*for (var z = 0; z < data.updated.length; z++) {
-                        var key = Object.keys(data.updated[z]);
-                        var value = data.updated[z];
-
-                        console.log(key+' '+value);
-
-                        ctrl.queueData[i][key] = value;
-                    };*/
-
-                    return ctrl.tableParams.reload();
+                    return $scope.$apply();
                 }
             };
         });

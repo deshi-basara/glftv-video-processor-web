@@ -6,7 +6,7 @@
         <div class="upload-indicator">
             <table ng-table="ctrl.tableParams" show-filter="false" class="table table-hover">
                 <tbody>
-                <tr ng-repeat="job in $data">
+                <tr ng-repeat="job in ctrl.queueData">
                     <td data-title="'ID'" class="col-xs-0">
                         {{:: job.id }}
                     </td>

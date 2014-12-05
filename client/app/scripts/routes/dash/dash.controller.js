@@ -29,7 +29,6 @@
          * @param  {object} data [id of the stats-entry and all the values that have changed]
          */
         SocketService.socket.on('stats.progress.update', function(data) {
-            console.log(data.progress);
 
             // update values
             ctrl.currentProgress = data.progress;
