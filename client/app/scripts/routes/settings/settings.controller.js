@@ -21,7 +21,7 @@
             ProfileService.getAllProfileSettings().then(function(success) {
                 ctrl.allSettings = success;
             }, function(error) {
-
+                SweetAlert.swal("Server-Fehler", error, "error");
             });
         }
 
@@ -47,16 +47,21 @@
                     var settingsObj = JSON.parse(ctrl.selectedSetting);
                 }
                 catch(e) {
-                    return SweetAlert.swal('Kein gültiger JSON-String');
+                    return SweetAlert.swal('Eingabe-Fehler', 'Kein gültiger JSON-String', 'error');
                 }
 
                 // check if it has a valid name
                 if(!settingsObj.name) {
-                    return SweetAlert.swal('Kein gültiger Name angeben');
+                    SweetAlert.swal('Eingabe-Fehler', 'Kein gültiger Name eingegeben', 'error');
                 }
 
                 // submit to the server
-                ProfileService.submitNewSettings(settingsObj);
+                ProfileService.submitNewSettings(settingsObj).then(function() {
+                    // submit was successfully, refetch profiles
+                    fetchProfileSettings();
+                }, function(error) {
+                    SweetAlert.swal('Server-Fehler', error, 'error');
+                });
             }
         }
 
@@ -85,9 +90,8 @@
 
 
         /////////////////////
-        
-        fetchProfileSettings();
 
+        fetchProfileSettings();
 
     }
 

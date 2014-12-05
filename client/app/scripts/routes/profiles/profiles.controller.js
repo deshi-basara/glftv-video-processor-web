@@ -29,7 +29,18 @@
         function changeOutputFormat() {
             // change the selected profile setting
             var selectedOutput = ctrl.newProfile.outputFormat;
-            ctrl.allProfileSettings = settings[selectedOutput];
+
+            console.log(selectedOutput);
+            console.log(ctrl.allGlobalSettings);
+
+            // get the settings of the selected outputFormat
+            for (var i = 0; i < ctrl.allGlobalSettings.length; i++) {
+
+                if(ctrl.allGlobalSettings[i].name === selectedOutput) {
+                    return ctrl.allProfileSettings = ctrl.allGlobalSettings[i];
+                }
+                
+            };
         }
 
         /**
@@ -58,9 +69,12 @@
         /**
          * Requests all available profile-settings from the server.
          */
-        var settings;
         function fetchAllProfileSettings() {
-            settings = ProfileService.getAllProfileSettings();
+            ProfileService.getAllProfileSettings().then(function(success) {
+                ctrl.allGlobalSettings = success;
+            }, function(error) {
+                // @todo error response
+            });
         }
 
         /**
@@ -128,7 +142,8 @@
             showSettingBox: false,
 
             allProfiles: null, // all saved profiles from the server
-            allProfileSettings: settings[null], // all predefined form settings for the selected output. Default: null
+            allGlobalSettings: [], // all saved profile-settings from the server
+            allProfileSettings: [], // all predefined form settings for the selected output. Default: null
             newProfile: {},
             tableParams: tableParams,
 
