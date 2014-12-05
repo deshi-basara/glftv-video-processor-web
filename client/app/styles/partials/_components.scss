@@ -164,4 +164,26 @@ label {
  */
 .sweet-alert {
     border-radius: 0 !important;
+
+    button.confirm {
+        background-color: $glf-greener !important;
+        border-radius: 0;
+
+        &:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23) !important;
+
+            @include transition(box-shadow .28s cubic-bezier(0.4,0,.2,1));
+        }
+    }
+
+    button.cancel {
+        background-color: $glf-blue !important;
+        border-radius: 0;
+
+        &:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23) !important;
+
+            @include transition(box-shadow .28s cubic-bezier(0.4,0,.2,1));
+        }
+    }
 }
