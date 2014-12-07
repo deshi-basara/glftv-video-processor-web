@@ -28,13 +28,17 @@ html, body {
 }
 
 .main-container {
+    display: block;
+
 	height: 100%;
 	width: 100%;
+
+    overflow: auto;
 }
 
 .nested-container {
     padding: 30px;
-    height: 95%;
+    height: 93%;
 }
 
 .outer-container{

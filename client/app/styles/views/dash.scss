@@ -2,6 +2,7 @@
     height: 100%;
     background-color: $glf-grey;
 
+
     .dash-nav {
         @include size(17% 100%);
         float: left;
@@ -10,6 +11,8 @@
         box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
         text-align: center;
         color: $glf-white;
+
+        overflow-bottom: auto;
 
         .dash-nav-head .headline {
             position: relative;
