@@ -98,16 +98,14 @@ module.exports = {
         var videoTotalTime = null;
 
         // execute the ffmpeg transcoding command
-        var transcodeProcess = process.exec('ffmpeg ' + cmd, {cwd: folderName}, function(error, stdout, stderr) {
-            if(error) {
-                return cb(error);
-            }
-        });
+        var transcodeProcess = process.spawn('ffmpeg', cmd, {cwd: folderName});
 
         // 'stderr' outputs the ffmpeg progress
         transcodeProcess.stderr.on('data', function(data) {
+            console.log(data);
+
             // if there is no total video-time set, fetch the data before we calculate the progress
-            if(videoTotalTime === null) {
+            /*if(videoTotalTime === null) {
                 // get all Duration-Strings from 'stderr'
                 var durationArray = /Duration: (([0-9]+):([0-9]{2}):([0-9]{2}).([0-9]+))/.exec(data);
 
@@ -129,12 +127,22 @@ module.exports = {
                 var currentProgress = calcProgress(currentSecs, videoTotalTime);
 
                 cbProgress(currentProgress);
-            }
+            }*/
+        });
+
+        transcodeProcess.on('error', function(err) {
+            console.log(err);
+            return cb(err);
         });
 
         // when the transcoding is finished
-        transcodeProcess.on('exit', function(err) {
-            cb(err);
+        transcodeProcess.on('close', function(code) {
+            console.log(code);
+            // if error-code
+            if(code !== 0) {
+                return cb(true);
+            }
+            cb();
         });
     },
 
@@ -174,7 +182,7 @@ module.exports = {
             // 1-pass and escape
             cmdPassOne.push('-pass', 1); // @todo set audio to disabled on 1-pass
             cmdPassOne.push('-f', profile.outputFormat, '-y', '/dev/null');
-            cmdPassOne = shellescape(cmdPassOne);
+            cmdPassOne = cmdPassOne;
 
             // 2-pass
             cmdPassTwo.push('-pass', 2);
@@ -185,7 +193,7 @@ module.exports = {
                             '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat);
 
         // escape cmd
-        cmdPassTwo = shellescape(cmdPassTwo);
+        cmdPassTwo = cmdPassTwo;
 
         return cb(null, cmdPassOne, cmdPassTwo);
     }
