@@ -99,4 +99,4 @@ angular
     //$state.go('login');
   });
 
-})
+});
