@@ -12,8 +12,6 @@
         text-align: center;
         color: $glf-white;
 
-        overflow-bottom: auto;
-
         .dash-nav-head .headline {
             position: relative;
             background-color: $glf-greener;
@@ -74,10 +72,13 @@
 
         .dash-nav-items {
             position: relative;
-            top: 20px;
+            top: -10px;
             text-align: left;
             font-size: em(20);
             width: 100%;
+
+            display: block;
+            overflow: auto;
 
             ul {
                 width: 100%;
