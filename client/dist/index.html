@@ -2,22 +2,53 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>"Scanner"</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+         <!--
+            Fonts
+        -->
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+        <!--
+            Vendor stylesheets
+        -->
         <link rel="stylesheet" href="styles/vendor.min.css">
 
+        <!--
+            Custom stylesheets
+        -->
         <link rel="stylesheet" href="styles/main.min.css">
+
+        <script src="../bower_components/modernizr/modernizr.js"></script>
     </head>
-    <body ng-app="Scanner">
+    <body ng-app="app">
+
+        <!--
+            Custom loader directive
+        -->
+        <div ags-loaders></div>
 
         <!--
             The ui-view directive tells $state where to place the templates
         -->
-        <div ui-view></div>
+        <div ui-view class="main-container"></div>
 
+        <!--
+            Vendor scripts
+        -->
         <script src="scripts/vendor.min.js"></script>
 
+        <!--
+            WebSocket script
+        -->
+        <script src="http://localhost:1337/js/dependencies/sails.io.js"></script>
+
+        <!--
+            Custom angular scripts
+        -->
         <script src="scripts/main.min.js"></script>
 
     </body>

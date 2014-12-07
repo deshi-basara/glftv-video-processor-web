@@ -1,0 +1,110 @@
+<div id="dash">
+    <nav class="dash-nav">
+
+        <!-- Headline left -->
+        <section class="dash-nav-head">
+            <div class="headline">
+                <span>GLF-Video</span>-Processor
+            </div>
+        </section>
+
+        <!-- Indicator circle -->
+        <section class="dash-nav-worker">
+            <h5>{{ ctrl.currentName }}</h5>
+            <div class="worker-circle">
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 360">
+                    <g>
+                        <text x="212" y="180" font-size="75" fill="#FFFFFF">14</text>
+                        <text x="215" y="205" font-size="25" fill="#FFFFFF">Prozent</text>
+                        <circle cx="255" cy="170" r="160" stroke="#FFFFFF" stroke-width="10" fill="none" />
+                    </g>
+                </svg>-->
+                <div class="worker-circle-percentage">{{ ctrl.currentProgress }}<span>Prozent</span></div>
+                <div round-progress
+                    max="100"
+                    current="ctrl.currentProgress"
+                    radius="100"
+                    color="#FFFFFF"
+                    bgcolor="#50B200"
+                    stroke="9"
+                    semi="false"></div>
+            </div>
+            <div class="worker-overall-progress">
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 20">
+                    <line x1="10%" y1="10" x2="90%" y2="10" stroke-width="8" stroke="#FFFFFF"/>
+                </svg>-->
+                <progressbar id="overall-progressbar" max="100" value="ctrl.globalProgress"></progressbar>
+                <div id="overall-progress">
+                    Insgesammt <span>{{ ctrl.globalProgress }}%</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Menu items -->
+        <section class="dash-nav-items">
+            <ul>
+                <!--<li>
+                    <a>
+                        <i class="fa fa-area-chart"></i>
+                        Übersicht
+                    </a>
+                </li>-->
+                <li ui-sref-active="active">
+                    <a ui-sref="dash.queue">
+                        <i class="fa fa-tasks"></i>
+                        Warteschlange
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="dash.job">
+                        <i class="fa fa-magic"></i>
+                        Neuer Job
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="dash.profiles">
+                        <i class="fa fa-tags"></i>
+                        Video-Profile
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="dash.settings">
+                        <i class="fa fa-cogs"></i>
+                        Einstellungen
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+    </nav>
+
+    <div class="dash-content">
+
+        <!-- Headline right -->
+        <section class="dash-content-head">
+
+            <!-- State headline -->
+            <div class="headline">
+                <i class="fa fa-area-chart"></i>
+                <span>Übersicht</span>
+            </div>
+
+            <!-- User headline -->
+            <div class="dash-user">
+                <div class="user-name">Ada R.</div>
+                <div class="user-circle">
+                    <div>3</div>
+                </div>
+                <div class="user-action">
+                    <i class="fa fa-caret-down"></i>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Nested view content -->
+        <section ui-view class="nested-container"></section>
+
+    </div>
+</div>
