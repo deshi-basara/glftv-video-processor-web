@@ -85,7 +85,7 @@
                 <input type="text" ng-model="modal.searchString">
                 <button class="button button-green" ng-click="modal.startSearch()">
                     <i class="fa fa-search" ng-show="!modal.isSearching"></i>
-                    <i class="fa fa-circle-o-notch fa-spin" ng-show="modal.isSearching"></i>
+                    <i class="fa fa-circle-o-notch fa-spin" ng-hide="!modal.isSearching"></i>
                 </button>
             </div>
         </div>

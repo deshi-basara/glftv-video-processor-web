@@ -60,7 +60,6 @@
                 // set the progress to zero, the status and make custom profiles available
                 ctrl.filesInUploadQueue[i].progress = parseInt(0);
                 ctrl.filesInUploadQueue[i].status = 'Uploading';
-                ctrl.filesInUploadQueue[i].custom = [];
 
                 // upload the current file
                 JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(function(success) {
@@ -83,6 +82,8 @@
          * @param  {[Object]} clickedVideo [fileObject of the clicked video]
          */
         function onVideoSelect(clickedVideo) {
+            // add an array for all selected profiles
+            clickedVideo.custom = [];
             ctrl.fileSelected = clickedVideo;
         }
 
