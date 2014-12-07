@@ -99,7 +99,7 @@ gulp.task('jshint', function() {
  */
 gulp.task('images', function() {
 
-	return gulp.src(['app/images/**/*','!app/images/**/*.svg']) // don't optimize svg
+	return gulp.src(['app/images/**/**/*','!app/images/**/*.svg']) // don't optimize svg
 		.pipe($.cache($.imagemin({
 			progressive: true,
 			interlaced: true
@@ -128,14 +128,17 @@ gulp.task('html', function() {
 	// returns a stream with the concatenated asset files from the build blocks inside the HTML
 	var assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
-	return gulp.src('app/**/*.html')
+	return gulp.src('app/**/**/**/*.html')
 		.pipe(assets)
-		.pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
+		// ngAnnotate angular scripts
+		.pipe($.if('**/main.min.js', $.ngAnnotate()))
+		// Concatenate And Minify
+		.pipe($.if('**/main.min.js', $.uglify({preserveComments: 'some'})))
+		.pipe($.if('**/vendor.min.js', $.uglify()))
 		.pipe($.if('*.css', $.csso()))
 		.pipe(assets.restore()) // brings back the previously filtered out HTML files
 		.pipe($.useref())
 		.pipe(gulp.dest('dist/'))
-    	.pipe($.size({title: 'html'}));
 });
 
 /**
@@ -145,6 +148,7 @@ gulp.task('copy', function () {
 	return gulp.src([
 		'app/*',
 		'!app/*.html',
+		'!app/lib'
 		], {
 			dot: true
 		})
@@ -197,5 +201,5 @@ gulp.task('serve', ['styles'], function() {
  * Build minified and optimized distribution files.
  */
 gulp.task('build', ['clean'], function(cb) {
-	runSequence('styles', ['jshint', 'html', 'images', 'fonts', 'copy']);
+	runSequence('styles', ['html', 'images', 'fonts', 'copy']);
 });
