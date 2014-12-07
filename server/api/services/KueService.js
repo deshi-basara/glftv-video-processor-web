@@ -31,7 +31,7 @@ jobs.process('transcode', function(job, done) {
             // copy the video file to its transcoding-folder
             fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
                 job.data.video.fileExtension, function(err) {
-                if(err) return done('Coud not move the video to the transcoding folder: '+ folderName);
+                if(err) return done('Coud not move the video to the transcoding folder: '+ job.data.video.transcodingDest);
 
                 // transcoding workflow
                 async.series([
