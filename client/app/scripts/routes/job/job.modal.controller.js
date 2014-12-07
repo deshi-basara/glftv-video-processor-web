@@ -108,7 +108,6 @@
 
         //////////////////////
 
-        modal.searchString = '/home/simon/Downloads';
         startSearch();
 
     }
