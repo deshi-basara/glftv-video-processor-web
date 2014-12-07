@@ -14,12 +14,6 @@
     function JobCtrl(ngTableParams, JobService, ProfileService, SweetAlert, $modal, $scope) {
         var ctrl = this;
 
-        // get all available profiles
-        ProfileService.getAllProfiles().then(function(success) {
-            ctrl.profiles = success;
-        }, function(error, status) {
-
-        });
 
         /**
          * Adds custom selected profiles from the 'bottom-box' to the selected file.
@@ -37,6 +31,18 @@
                 // added previously, remove from the array
                 ctrl.fileSelected.custom.shift(indexOf);
             }
+        }
+
+        /**
+         * Fetches all available profiles from the server.
+         */
+        function fetchAllProfiles() {
+            // get all available profiles
+            ProfileService.getAllProfiles().then(function(success) {
+                ctrl.profiles = success;
+            }, function(error, status) {
+                SweetAlert.swal('Server-Fehler', error, 'error');
+            });
         }
 
         /**
@@ -167,6 +173,8 @@
         });
 
         /////////////////////
+
+        fetchAllProfiles();
 
 
     }
