@@ -101,13 +101,14 @@ module.exports = {
         var transcodeProcess = process.spawn('ffmpeg', cmd, {cwd: folderName});
 
         // 'stderr' outputs the ffmpeg progress
+        var stderrData = '';
         transcodeProcess.stderr.on('data', function(data) {
-            console.log(data);
+            stderrData += data;
 
             // if there is no total video-time set, fetch the data before we calculate the progress
-            /*if(videoTotalTime === null) {
+            if(videoTotalTime === null) {
                 // get all Duration-Strings from 'stderr'
-                var durationArray = /Duration: (([0-9]+):([0-9]{2}):([0-9]{2}).([0-9]+))/.exec(data);
+                var durationArray = /Duration: (([0-9]+):([0-9]{2}):([0-9]{2}).([0-9]+))/.exec(stderrData);
 
                 // the video-duration appears not before the fourth 'stderr'-event, that's why we have
                 // to check if the durationArray is filled
@@ -121,23 +122,21 @@ module.exports = {
             }
             else {
                 // get all needed data for calculating the progress
-                var currentProcessingData = getProcessingData(data);
+                var currentProcessingData = getProcessingData(stderrData);
                 var currentSecs = FFmpegTimeToSeconds(currentProcessingData.time);
                 // calculate
                 var currentProgress = calcProgress(currentSecs, videoTotalTime);
 
                 cbProgress(currentProgress);
-            }*/
+            }
         });
 
         transcodeProcess.on('error', function(err) {
-            console.log(err);
             return cb(err);
         });
 
         // when the transcoding is finished
         transcodeProcess.on('close', function(code) {
-            console.log(code);
             // if error-code
             if(code !== 0) {
                 return cb(true);
