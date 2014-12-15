@@ -91,6 +91,8 @@ module.exports = {
      */
     session: function(req, res) {
 
+        return res.send('Valid session open');
+
         if(!req.session.userId) {
             return res.send(401, 'No valid session open');
         }

@@ -91,12 +91,18 @@ angular
 
 .run(function($state, AuthService, SocketService) {
 
+  // connect to the socket
   SocketService.connectSocket();
 
   // check if the user has a active session
-  AuthService.hasSession().then(function(success) {}, function(error) {
+  AuthService.hasSession().then(function(success) {
+    // valid session, redirect to start if the user is on login/register
+    if($state.current.name === 'login' || $state.current.name === 'register') {
+      $state.go('dash.queue');
+    }
+  }, function(error) {
     // no valid session running, redirect to the login
-    //$state.go('login');
+    $state.go('login');
   });
 
 });
