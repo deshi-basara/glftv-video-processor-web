@@ -91,6 +91,16 @@ label {
             font-weight: bold;
         }
     }
+
+    .success-msg {
+        background-color: $glf-green;
+        box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+        padding: 15px 25px 15px 25px;
+
+        span {
+            font-weight: bold;
+        }
+    }
 }
 
 /**

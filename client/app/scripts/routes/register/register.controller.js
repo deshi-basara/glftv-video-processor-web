@@ -6,20 +6,18 @@
         .module('app')
         .controller('RegisterCtrl', RegisterCtrl);
 
-    RegisterCtrl.$inject = ['AuthService', '$timeout'];
+    RegisterCtrl.$inject = ['AuthService', '$timeout', '$state'];
 
     /**
      * Handles the login request and potential error feedbacks.
      */
-    function RegisterCtrl(AuthService, $timeout) {
+    function RegisterCtrl(AuthService, $timeout, $state) {
         var ctrl = this;
 
         /**
          * Submits the form values to the AuthService after validation
          */
         function submitRegistration() {
-
-            ctrl.register = {name: "Simon Schuster", mail: "simon.schuster@hs-furtwangen.de", pass: "Simon123", pass2: "Simon123"};
 
             // has the user entered all needed values, otherwise stop
             if(ctrl.register.name.length === 0 || ctrl.register.mail.length === 0 ||
@@ -52,13 +50,33 @@
 
             // hand data
             AuthService.getRegistration(ctrl.register).then(function(success) {
-                console.log(success);
+
+                // success message
+                ctrl.showSuccess = true;
+
+                // hide message, after 5000ms
+                $timeout(function() {
+                    ctrl.showSuccess = false;
+
+                    // redirect
+                    $timeout(function() {
+                        $state.go('dash.queue');
+                    }, 800);
+                }, 5000);
+
             }, function(error) {
-                console.log(error);
+                // show an error toast and break
+                ctrl.errorMsg = error
+                ctrl.showError = true;
+
+                // hide the toast after 5000ms
+                $timeout(function() {
+                    ctrl.showError = false;
+                }, 5000);
+
             });
 
         }
-
 
         //////////////////////
 
@@ -70,6 +88,7 @@
                 pass2: ''
             },
             showError: false,
+            showSuccess: false,
 
             submitRegistration: submitRegistration
         });
