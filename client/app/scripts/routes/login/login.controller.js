@@ -36,10 +36,31 @@
 
             // hand data
             AuthService.getAuth(ctrl.login).then(function(success) {
-                // everything went well, redirect
-                $state.go('dash.job');
+
+                // success message
+                ctrl.showSuccess = true;
+
+                // hide message, after 5000ms
+                $timeout(function() {
+                    ctrl.showSuccess = false;
+
+                    // redirect
+                    $timeout(function() {
+                        $state.go('dash.queue');
+                    }, 800);
+                }, 1500);
+
             }, function(error, status) {
-                // show error message
+
+                // show an error toast and break
+                ctrl.errorMsg = error;
+                ctrl.showError = true;
+
+                // hide the toast after 5000ms
+                $timeout(function() {
+                    ctrl.showError = false;
+                }, 5000);
+
             });
 
         }
@@ -53,6 +74,7 @@
                 pass: ''
             },
             showError: false,
+            showSuccess: false,
 
             submitLogin: submitLogin
         });
