@@ -111,6 +111,7 @@
     }
 
     .section-box-body {
+        min-height: 255px;
 
         .section-left {
             @include span-columns(8 of 12);
