@@ -22,7 +22,9 @@
             getAuth: getAuth,
             getRegistration: getRegistration,
             getToken: getToken,
-            saveToken: saveToken
+            getUserId: getUserId,
+            saveToken: saveToken,
+            saveUserId: saveUserId
         };
 
         return service;

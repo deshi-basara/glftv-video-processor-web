@@ -24,85 +24,154 @@ angular
 
 .constant('config', {
   'name': 'development',
-  'apiUrl': 'http://localhost:8051'
+  'apiUrl': 'http://localhost:1337'
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($httpProvider, $stateProvider, $urlRouterProvider, localStorageServiceProvider, config) {
 
-  // This starter uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  $stateProvider
+  function setRoutes() {
 
-    .state('login', {
-      url: '/login',
-      templateUrl: 'scripts/routes/login/login.index.tpl.html',
-      controller: 'LoginCtrl',
-      controllerAs: 'ctrl'
-    })
+    /**
+     * This starter uses AngularUI Router which uses the concept of states.
+     * https://github.com/angular-ui/ui-router
+     */
+    $stateProvider
 
-    .state('register', {
-      url: '/register',
-      templateUrl: 'scripts/routes/register/register.index.tpl.html',
-      controller: 'RegisterCtrl',
-      controllerAs: 'ctrl'
-    })
+      // public routes
+      .state('login', {
+        url: '/login',
+        templateUrl: 'scripts/routes/login/login.index.tpl.html',
+        controller: 'LoginCtrl',
+        controllerAs: 'ctrl'
+      })
 
-    .state('dash', {
-      url: '',
-      abstract: true,
-      templateUrl: 'scripts/routes/dash/dash.index.tpl.html',
-      controller: 'DashCtrl',
-      controllerAs: 'ctrl'
-    })
+      .state('register', {
+        url: '/registrierung',
+        templateUrl: 'scripts/routes/register/register.index.tpl.html',
+        controller: 'RegisterCtrl',
+        controllerAs: 'ctrl'
+      })
 
-    .state('dash.job', {
-      url: '/job',
-      controller: 'JobCtrl',
-      controllerAs: 'ctrl',
-      templateUrl: 'scripts/routes/job/job.index.tpl.html'
-    })
+      // private routes
+      .state('dash', {
+        url: '',
+        abstract: true,
+        templateUrl: 'scripts/routes/dash/dash.index.tpl.html',
+        controller: 'DashCtrl',
+        controllerAs: 'ctrl'
+      })
 
-    .state('dash.queue', {
-      url: '/queue',
-      controller: 'QueueCtrl',
-      controllerAs: 'ctrl',
-      templateUrl: 'scripts/routes/queue/queue.index.tpl.html'
-    })
+      .state('dash.job', {
+        url: '/job',
+        controller: 'JobCtrl',
+        controllerAs: 'ctrl',
+        templateUrl: 'scripts/routes/job/job.index.tpl.html',
+        resolve: {
+          auth: function($http) {
+            console.log('resolve');
+            return $http.get(config.apiUrl + '/user/auth');
+          }
+        }
+      })
 
-    .state('dash.profiles', {
-      url: '/profile',
-      controller: 'ProfilesCtrl',
-      controllerAs: 'ctrl',
-      templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html'
-    })
+      .state('dash.queue', {
+        url: '/warteschlange',
+        controller: 'QueueCtrl',
+        controllerAs: 'ctrl',
+        templateUrl: 'scripts/routes/queue/queue.index.tpl.html'
+      })
 
-    .state('dash.settings', {
-      url: '/settings',
-      controller: 'SettingsCtrl',
-      controllerAs: 'ctrl',
-      templateUrl: 'scripts/routes/settings/settings.index.tpl.html'
-    });
+      .state('dash.profiles', {
+        url: '/profile',
+        controller: 'ProfilesCtrl',
+        controllerAs: 'ctrl',
+        templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html'
+      })
 
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('queue');
+      .state('dash.settings', {
+        url: '/einstellungen',
+        controller: 'SettingsCtrl',
+        controllerAs: 'ctrl',
+        templateUrl: 'scripts/routes/settings/settings.index.tpl.html'
+      });
+
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('warteschlange');
+  }
+
+  function setStorage() {
+    // set the default prefix for the localStorage
+    localStorageServiceProvider.setPrefix('glf-video');
+  }
+
+  function setInteceptors() {
+
+    /**
+     * Response Interceptor construct, that is added to the angular $httpProvider.
+     * When a $http-request is answered the interceptor checks if the $http-response is an
+     * 401:'unauthorized'-error and shows the login page if true.
+     *
+     * https://docs.angularjs.org/api/ng/service/$http (search: Interceptors)
+     */
+    var responseInterceptor = ['$q', '$location', function($q, $location) {
+      // response includes promise, that's why we have to return a promise too
+      return function(promise) {
+        return promise.then(
+          function(response) {
+            // success callback, everything is fine ... proceed
+            return response;
+          },
+          function(response) {
+            // error callback
+            if(response.status === 401) {
+              // error response is an 'unauthorized'-error, show login page
+              $location.path('/login');
+            }
+
+            // reject the promise and pass the error response
+            return $q.reject(response);
+          }
+        )
+      }
+    }];
+
+    // add the responseInterceptor to the $httpProvider
+    $httpProvider.interceptors.push(responseInterceptor)
+
+  }
+
+  setRoutes();
+  setStorage();
+  setInteceptors();
 
 })
 
-.run(function($state, AuthService, SocketService) {
+.run(function($injector, $state, AuthService, SocketService) {
 
-  // connect to the socket
-  SocketService.connectSocket();
+  function setTokenAsHeader() {
+    // append the authorization token on every $http request
+    $injector.get('$http').defaults.transformRequest = function(data, headersGetter) {
 
-  // check if the user has a active session
-  AuthService.hasSession().then(function(success) {
-    // valid session, redirect to start if the user is on login/register
-    if($state.current.name === 'login' || $state.current.name === 'register') {
-      $state.go('dash.queue');
+      // does an authToken & userId exist, if true save it in the header
+      var authToken = AuthService.getToken();
+      var userId = AuthService.getUserId();
+      if(authToken && userId) {
+        headersGetter()['Authorization'] = authToken;
+        headersGetter()['User'] = userId;
+      }
+      if(data) {
+        return angular.toJson(data);
+      }
+
     }
-  }, function(error) {
-    // no valid session running, redirect to the login
-    $state.go('login');
-  });
+  }
+
+  function setConnections() {
+    // connect to the socket
+    SocketService.connectSocket();
+  }
+
+  setTokenAsHeader();
+  setConnections();
 
 });
