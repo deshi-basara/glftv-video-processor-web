@@ -59,18 +59,23 @@ module.exports = {
       return res.send(400, 'Bad request');
     }
 
-    // create a new Video-Object
-    Videos.create({
-      name: req.body.name,
-      path: req.body.path,
-      user: 'Ada Rhode'
-    }).exec(function(err, created) {
+    // get the autor of the model
+    User.findOne({id: req.headers.user}).exec(function(err, user) {
       if(err) return res.send(500, err);
 
-      // everything went well, send response
-      return res.json({
-        msg: req.body.name + ' created successfully',
-        id: created.id
+      // create a new Video-Object
+      Videos.create({
+        name: req.body.name,
+        path: req.body.path,
+        user: user.name
+      }).exec(function(err, created) {
+        if(err) return res.send(500, err);
+
+        // everything went well, send response
+        return res.json({
+          msg: req.body.name + ' created successfully',
+          id: created.id
+        });
       });
     });
   },
@@ -152,36 +157,6 @@ module.exports = {
 
         });
       });
-    });
-  },
-
-
-  /**
-   * `VideosController.edit()`
-   */
-  edit: function (req, res) {
-    return res.json({
-      todo: 'edit() is not implemented yet!'
-    });
-  },
-
-
-  /**
-   * `VideosController.delete()`
-   */
-  delete: function (req, res) {
-    return res.json({
-      todo: 'delete() is not implemented yet!'
-    });
-  },
-
-
-  /**
-   * `VideosController.all()`
-   */
-  all: function (req, res) {
-    return res.json({
-      todo: 'all() is not implemented yet!'
     });
   }
 };

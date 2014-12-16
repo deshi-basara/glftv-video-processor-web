@@ -11,8 +11,6 @@ module.exports = {
      * [GET] Fetches all available profiles from the database and returns them.
      */
     all: function(req, res) {
-        // @todo check if the user has auth
-
         Profiles.find().exec(function(err, profiles) {
             if(err) return res.send(500, err);
 
@@ -49,21 +47,27 @@ module.exports = {
             return res.send(500, e);
         }
 
-        //@todo maybe check for overwrites
-
-        // save the profile object
-        Profiles.create({
-            name: name,
-            outputFormat: outputFormat,
-            videoCodec: videoCodec,
-            twoPass: twoPass,
-            autor: 'Ada Rhode',
-            json: jsonString
-        }).exec(function(err, profile) {
+        // get the autor of the profile
+        User.findOne({id: req.headers.user}).exec(function(err, user) {
             if(err) return res.send(500, err);
 
-            // everything went well, send response
-            return res.send('Profile was created');
+            //@todo maybe check for overwrites
+
+            // save the profile object
+            Profiles.create({
+                name: name,
+                outputFormat: outputFormat,
+                videoCodec: videoCodec,
+                twoPass: twoPass,
+                autor: user.name,
+                json: jsonString
+            }).exec(function(err, profile) {
+                if(err) return res.send(500, err);
+
+                // everything went well, send response
+                return res.send('Profile was created');
+            });
+
         });
     }
 };
