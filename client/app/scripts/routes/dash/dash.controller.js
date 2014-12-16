@@ -20,6 +20,7 @@
         angular.extend(ctrl, {
             currentProgress: 0,
             currentName: 'Kein laufender Prozess',
+            currentUser: 'Ada Rhode',
             globalProgress: 0,
             isAdmin: false
         });
