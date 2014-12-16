@@ -70,12 +70,14 @@ jobs.process('transcode', function(job, done) {
                                 progress = (50 + (progress / 2)).toFixed(0);
                             }
                             else {
-                                progress = 100.00;
+                                //progress = 100.00;
                             }
                             StatsService.update(job.data.statsId, {progress: progress});
 
                         }, function(err) {
                             if(err) return done(err);
+
+                            StatsService.update(job.data.statsId, {progress: 100.00});
 
                             // 2-pass finished, start cleaning
                             next();
@@ -147,7 +149,7 @@ module.exports = {
                 }
 
                 // create a new stats model
-                StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, 'Ada Rhode',
+                StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, videoObj.user,
                     function(err, statsId) {
                         if(err) {
                             return cb(err);

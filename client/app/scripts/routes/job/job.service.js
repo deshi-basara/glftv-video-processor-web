@@ -6,12 +6,12 @@
         .module('app')
         .factory('JobService', JobService);
 
-    JobService.$inject = ['$upload', '$http', 'config', '$q'];
+    JobService.$inject = ['$upload', '$http', 'config', '$q', 'AuthService'];
 
     /**
      * Service for uploading jobs
      */
-    function JobService($upload, $http, config, $q) {
+    function JobService($upload, $http, config, $q, AuthService) {
 
         var service = {
             modelUrl: '/videos/model',
@@ -44,7 +44,7 @@
                 url: config.apiUrl + service.modelUrl,
                 data: {
                     name: fileObj.name,
-                    path: fileObj.path
+                    path: fileObj.path,
                 }
             }).success(function(data) {
                 // file upload complete
@@ -77,7 +77,11 @@
                 method: 'POST',
                 url: config.apiUrl + service.uploadUrl,
                 file: fileObj,
-                fileFormDataName: 'videoFile'
+                fileFormDataName: 'videoFile',
+                data: {
+                    token: AuthService.getToken(),
+                    id: AuthService.getUserId()
+                }
             }).progress(function(evt) {
                 // calculate the progress in percentage and notify
                 fileObj.progress = parseInt(100.00 * evt.loaded / evt.total);

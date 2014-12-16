@@ -23,6 +23,7 @@ module.exports = {
    *        video-model. Returns the id of the video-model.
    */
   upload: function (req, res) {
+
     // set the upload timeout to 'infinite'
     res.setTimeout(0);
 
@@ -31,21 +32,29 @@ module.exports = {
     req.file('videoFile').upload(uploadConfig, function(err, file) {
       if(err) return res.send(500, err);
 
-      // create a new Video-Object
-      Videos.create({
-        name: file[0].filename,
-        path: file[0].fd,
-        user: 'Ada Rhode'
-      }).exec(function(err, created) {
-        if(err) return res.send(500, err);
+      // check if the user exists
+      User.findOne({id: req.body.id}).exec(function(err, user) {
+        if(err || !user) {
+          return res.send(500, err);
+        }
 
-        // everything went well, send response
-        return res.json({
-          msg: file[0].filename + ' uploaded successfully',
-          id: created.id
+        // create a new Video-Object
+        Videos.create({
+          name: file[0].filename,
+          path: file[0].fd,
+          user: user.name
+        }).exec(function(err, created) {
+          if(err) return res.send(500, err);
+
+          // everything went well, send response
+          return res.json({
+            msg: file[0].filename + ' uploaded successfully',
+            id: created.id
+          });
         });
+
       });
-    })
+    });
   },
 
   /**
