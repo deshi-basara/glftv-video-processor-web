@@ -46,7 +46,7 @@ angular
       })
 
       .state('register', {
-        url: '/registrierung',
+        url: '/register',
         templateUrl: 'scripts/routes/register/register.index.tpl.html',
         controller: 'RegisterCtrl',
         controllerAs: 'ctrl'
@@ -75,7 +75,7 @@ angular
       })
 
       .state('dash.queue', {
-        url: '/warteschlange',
+        url: '/queue',
         controller: 'QueueCtrl',
         controllerAs: 'ctrl',
         templateUrl: 'scripts/routes/queue/queue.index.tpl.html'
@@ -89,7 +89,7 @@ angular
       })
 
       .state('dash.settings', {
-        url: '/einstellungen',
+        url: '/settings',
         controller: 'SettingsCtrl',
         controllerAs: 'ctrl',
         templateUrl: 'scripts/routes/settings/settings.index.tpl.html'
@@ -113,36 +113,25 @@ angular
      *
      * https://docs.angularjs.org/api/ng/service/$http (search: Interceptors)
      */
-    var responseInterceptor = ['$q', '$location', function($q, $location) {
-      // response includes promise, that's why we have to return a promise too
-      return function(promise) {
-        return promise.then(
-          function(response) {
-            // success callback, everything is fine ... proceed
-            return response;
-          },
-          function(response) {
-            // error callback
-            if(response.status === 401) {
-              // error response is an 'unauthorized'-error, show login page
-              $location.path('/login');
-            }
-
-            // reject the promise and pass the error response
-            return $q.reject(response);
+    $httpProvider.interceptors.push(function($q, $location) {
+      return {
+        // response error callback
+        'responseError': function(response) {
+          if(response.status === 401) {
+            // error response is an 'unauthorized'-error, show login page
+            $location.path('/login');
           }
-        )
-      }
-    }];
 
-    // add the responseInterceptor to the $httpProvider
-    $httpProvider.interceptors.push(responseInterceptor)
-
+          // reject the promise and pass the error response
+          return $q.reject(response);
+        }
+      };
+    });
   }
 
+  setInteceptors();
   setRoutes();
   setStorage();
-  setInteceptors();
 
 })
 
@@ -155,6 +144,8 @@ angular
       // does an authToken & userId exist, if true save it in the header
       var authToken = AuthService.getToken();
       var userId = AuthService.getUserId();
+      console.log(authToken);
+      console.log(userId);
       if(authToken && userId) {
         headersGetter()['Authorization'] = authToken;
         headersGetter()['User'] = userId;
