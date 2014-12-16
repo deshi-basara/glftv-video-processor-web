@@ -54,6 +54,10 @@
                 // success message
                 ctrl.showSuccess = true;
 
+                // save the token in our localStorage
+                console.log(success);
+                AuthService.saveToken(success.token);
+
                 // hide message, after 5000ms
                 $timeout(function() {
                     ctrl.showSuccess = false;
@@ -82,10 +86,10 @@
 
         angular.extend(ctrl, {
             register: {
-                name: '',
-                mail: '',
-                pass: '',
-                pass2: ''
+                name: 'Simon',
+                mail: 'simon.schuster@hs-furtwangen.de',
+                pass: 'Simon123',
+                pass2: 'Simon123'
             },
             showError: false,
             showSuccess: false,

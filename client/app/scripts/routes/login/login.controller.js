@@ -40,6 +40,9 @@
                 // success message
                 ctrl.showSuccess = true;
 
+                // save the token in our localStorage
+                AuthService.saveToken(success.token);
+
                 // hide message, after 5000ms
                 $timeout(function() {
                     ctrl.showSuccess = false;

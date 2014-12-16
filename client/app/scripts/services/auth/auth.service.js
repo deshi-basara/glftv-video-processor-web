@@ -20,7 +20,9 @@
 
             hasSession: hasSession,
             getAuth: getAuth,
-            getRegistration: getRegistration
+            getRegistration: getRegistration,
+            getToken: getToken,
+            saveToken: saveToken
         };
 
         return service;
@@ -96,8 +98,6 @@
         function getRegistration(registerModel) {
             var q = $q.defer();
 
-            console.log(registerModel);
-
             // make the request
             $http({
                 method: 'POST',
@@ -110,6 +110,22 @@
             });
 
             return q.promise;
+        }
+
+        /**
+         * Returns the saved authToken from the localStorage.
+         * @return {string} [Authentication token]
+         */
+        function getToken() {
+            return localStorageService.get('authToken');
+        }
+
+        /**
+         * Saves the current authToken into the localStorage.
+         * @param  {string}    token [Authentication token]
+         */
+        function saveToken(token) {
+            localStorageService.set('authToken', token);
         }
 
 
