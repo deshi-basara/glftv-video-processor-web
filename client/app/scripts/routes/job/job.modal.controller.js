@@ -26,7 +26,7 @@
          */
         function selectAll() {
           // only select if there are foundFiles
-          if(modal.foundFiles !== null) {
+          if(modal.foundFiles !== 0) {
             for(var i = 0; i < modal.foundFiles.length; i++) {
               modal.foundFiles[i].selected = true;
             }
@@ -57,7 +57,7 @@
             modal.foundFiles = success;
             modal.totalFiles = success.length;
           }, function(error) {
-
+            SweetAlert.swal('Server-Fehler', error, 'error');
           });
         }
 
@@ -97,7 +97,7 @@
           totalFiles: 0,
 
 
-          foundFiles: null,
+          foundFiles: [],
 
 
           closeModal: closeModal,

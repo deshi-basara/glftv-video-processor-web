@@ -94,14 +94,14 @@
                 <div class="file-list-item" ng-repeat="file in modal.foundFiles">
                     <div class="file-counter">#{{:: $index }}</div>
                     <div class="file-name">
-                        {{:: file.name | characters: 55 :true }} 
+                        {{:: file.name | characters: 55 :true }}
                         <input type="checkbox" ng-model="file.selected"></div>
                 </div>
             </div>
         </div>
         <div class="section-box-footer">
             <div class="file-indicator">
-                <span>{{ modal.selectedFiles }} / {{ modal.totalFiles }}</span> Videos
+                <span>{{ (modal.foundFiles | filter: {selected: true}).length }} / {{ modal.totalFiles }}</span> Videos
             </div>
             <div class="upload-controls">
                 <button class="button button-neutral" ng-click="modal.selectAll()">Alle auswählen</button>
