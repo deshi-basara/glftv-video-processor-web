@@ -40,9 +40,6 @@ module.exports = {
 
                 User.update({id: user.id}, {authToken: newToken, authCreated: new Date()}).exec(function(err, users) {
 
-                    req.session.userId = users[0].id;
-                    req.session.authToken = users[0].authToken;
-
                     return res.send({
                         msg: 'Login successfull',
                         id: users[0].id,
@@ -83,7 +80,7 @@ module.exports = {
                 // generate an authToken for the user
                 AuthService.generateToken(function(token) {
 
-                     // create user in the database
+                    // create user in the database
                     User.create({
                         name: req.body.name,
                         email: req.body.mail,
@@ -94,10 +91,6 @@ module.exports = {
                         if(err) {
                             return res.send(500, err);
                         }
-
-                        // save important values in the session
-                        req.session.userId = user.id;
-                        req.session.authToken = user.authToken;
 
                         // everything went well, send response
                         return res.send({
@@ -118,12 +111,27 @@ module.exports = {
      */
     auth: function(req, res) {
 
-        if(!req.session.userId) {
-            return res.send(401, 'No valid session open');
+        // check if the request is valid
+        if(!req.headers.authorization || !req.headers.user) {
+            return res.send(401, 'Unauthorized');
         }
 
-        return res.send('Valid session open');
-    }
+        // check if the user exists
+        User.findOne({id: req.headers.user}).exec(function(err, user) {
+            if(err || !user || !user.authCreated) {
+                return res.send(401, 'Unauthorized');
+            }
 
+            // compate the handed with the send token & check if the token is still valid
+            var tokenMatches = user.compareTokens(req.headers.authorization);
+            var hasNotExpired = AuthService.hasExpired(user.authCreated);
+            if(tokenMatches && hasNotExpired) {
+                return res.send('Authorized');
+            }
+            else {
+                return res.send(401, 'Unauthorized');
+            }
+        });
+    }
 };
 
