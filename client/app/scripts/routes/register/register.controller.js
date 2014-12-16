@@ -86,10 +86,10 @@
 
         angular.extend(ctrl, {
             register: {
-                name: 'Simon',
-                mail: 'simon.schuster@hs-furtwangen.de',
-                pass: 'Simon123',
-                pass2: 'Simon123'
+                name: '',
+                mail: '',
+                pass: '',
+                pass2: ''
             },
             showError: false,
             showSuccess: false,
