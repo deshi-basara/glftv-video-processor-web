@@ -49,3 +49,9 @@ Execute inside 'client/'
 
 * Fix $digest-loop bug for the round progress circle
 * Update all Queue-Values via socket
+
+
+===========
+### Credits
+
+* [Interface inspiration](http://www.deviantart.com/art/Taskmanager-Admin-UI-408633695)
