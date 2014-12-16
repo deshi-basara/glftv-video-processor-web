@@ -6,23 +6,32 @@
         .module('app')
         .controller('DashCtrl', DashCtrl);
 
-    DashCtrl.$inject = ['SocketService'];
+    DashCtrl.$inject = ['SocketService', 'AuthService','$state'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function DashCtrl(SocketService) {
+    function DashCtrl(SocketService, AuthService, $state) {
         var ctrl = this;
 
+        /**
+         * Starts the logout process and redirects to the login.
+         */
+        function submitLogout() {
+            AuthService.logout();
+            $state.go('login');
+        }
 
         //////////////////////
 
         angular.extend(ctrl, {
             currentProgress: 0,
             currentName: 'Kein laufender Prozess',
-            currentUser: 'Ada Rhode',
+            currentUser: AuthService.getUserName(),
             globalProgress: 0,
-            isAdmin: false
+            isAdmin: false,
+
+            submitLogout: submitLogout
         });
 
         /////////////////////

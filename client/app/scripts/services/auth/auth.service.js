@@ -18,50 +18,20 @@
             registerUrl: '/user/register',
             sessionUrl: '/user/session',
 
-            hasSession: hasSession,
             getAuth: getAuth,
             getRegistration: getRegistration,
             getToken: getToken,
             getUserId: getUserId,
+            getUserName: getUserName,
+            logout: logout,
             saveToken: saveToken,
-            saveUserId: saveUserId
+            saveUserId: saveUserId,
+            saveUserName: saveUserName
         };
 
         return service;
 
         ///////////////
-
-
-        function generateClientSession() {
-
-        }
-
-        /**
-         * Checks if the user has a active session and if it is still valid.
-         * @return {Boolean}      [True: user is authenticated | False: not authenticated]
-         */
-        function hasSession() {
-            var q = $q.defer();
-
-            // make the request
-            $http({
-                method: 'POST',
-                url: config.apiUrl + service.sessionUrl
-            }).success(function(data) {
-                q.resolve(data);
-            }).error(function(data, status) {
-                q.reject(data, status);
-            });
-
-            /*if(localStorageService.isSupported) {
-                // fetch 
-            }
-            else {
-                q.reject('storage-error');
-            }*/
-
-            return q.promise;
-        }
 
         /**
          * Requests the authentication of the handed user data.
@@ -86,10 +56,6 @@
             });
 
             return q.promise;
-        }
-
-        function setAuth(sessionId) {
-
         }
 
         /**
@@ -124,10 +90,26 @@
 
         /**
          * Returns the saved userId from the localStorage.
-         * @return {int}    id [Server database id of the user]
+         * @return {int}    [Server database id of the user]
          */
         function getUserId() {
             return localStorageService.get('userId');
+        }
+
+        /**
+         * Returns the saved userName from the localStorage.
+         * @return {string}    [Name of the user]
+         */
+        function getUserName() {
+            return localStorageService.get('userName');
+        }
+
+        /**
+         * Removes the localStorage auth-credentials and forces a logout.
+         */
+        function logout() {
+            localStorageService.remove('authToken');
+            localStorageService.remove('userId');
         }
 
         /**
@@ -144,6 +126,15 @@
          */
         function saveUserId(id) {
             localStorageService.set('userId', id);
+        }
+
+        /**
+         * Saves the current user's name into the localStorage.
+         * @param  {string} name [User name]
+         */
+        function saveUserName(name) {
+            console.log(name);
+            localStorageService.set('userName', name);
         }
 
 

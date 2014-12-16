@@ -57,6 +57,7 @@
                 // save the token in our localStorage
                 AuthService.saveToken(success.token);
                 AuthService.saveUserId(success.id);
+                AuthService.saveUserName(success.name);
 
                 // hide message, after 5000ms
                 $timeout(function() {

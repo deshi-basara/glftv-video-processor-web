@@ -82,14 +82,12 @@
 
             <!-- User headline -->
             <div class="dash-user">
-                <div class="user-name">{{:: ctrl.currentUser }}</div>
+                <div class="user-name">Hallo <span>{{:: ctrl.currentUser }}</span></div>
                 <!--<div class="user-circle">
                     <div>3</div>
                 </div>-->
-                <div class="user-action">
-                    <a href="/user/logout">
-                        <i class="fa fa-sign-out"></i>
-                    </a>
+                <div class="user-action" ng-click="ctrl.submitLogout()">
+                    <i class="fa fa-sign-out"></i>
                 </div>
             </div>
 

@@ -144,6 +144,13 @@
                     display: inline-block;
                 }
 
+                .user-name {
+                    span {
+                        margin-left: 2px;
+                        font-weight: bold;
+                    }
+                }
+
                 .user-circle {
                     @include size(44px null);
                     @include position(relative, 9px null null null);
@@ -171,8 +178,9 @@
 
                 .user-action {
                     margin-right: 15px;
+                    cursor: pointer;
 
-                    a {
+                    i {
                         color: $glf-green;
                     }
                 }
