@@ -29,6 +29,9 @@ angular
 
 .config(function($httpProvider, $stateProvider, $urlRouterProvider, localStorageServiceProvider, config) {
 
+  /**
+   * 1) Sets all route settings
+   */
   function setRoutes() {
 
     /**
@@ -68,7 +71,6 @@ angular
         templateUrl: 'scripts/routes/job/job.index.tpl.html',
         resolve: {
           auth: function($http) {
-            console.log('resolve');
             return $http.get(config.apiUrl + '/user/auth');
           }
         }
@@ -78,32 +80,53 @@ angular
         url: '/queue',
         controller: 'QueueCtrl',
         controllerAs: 'ctrl',
-        templateUrl: 'scripts/routes/queue/queue.index.tpl.html'
+        templateUrl: 'scripts/routes/queue/queue.index.tpl.html',
+        resolve: {
+          auth: function($http) {
+            return $http.get(config.apiUrl + '/user/auth');
+          }
+        }
       })
 
       .state('dash.profiles', {
         url: '/profile',
         controller: 'ProfilesCtrl',
         controllerAs: 'ctrl',
-        templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html'
+        templateUrl: 'scripts/routes/profiles/profiles.index.tpl.html',
+        resolve: {
+          auth: function($http) {
+            return $http.get(config.apiUrl + '/user/auth');
+          }
+        }
       })
 
       .state('dash.settings', {
         url: '/settings',
         controller: 'SettingsCtrl',
         controllerAs: 'ctrl',
-        templateUrl: 'scripts/routes/settings/settings.index.tpl.html'
+        templateUrl: 'scripts/routes/settings/settings.index.tpl.html',
+        resolve: {
+          auth: function($http) {
+            return $http.get(config.apiUrl + '/user/auth');
+          }
+        }
       });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('warteschlange');
   }
 
+  /**
+   * 2) Sets all storage settings
+   */
   function setStorage() {
     // set the default prefix for the localStorage
     localStorageServiceProvider.setPrefix('glf-video');
   }
 
+  /**
+   * 3) Sets all needed interceptors
+   */
   function setInteceptors() {
 
     /**
@@ -129,6 +152,7 @@ angular
     });
   }
 
+  // set
   setInteceptors();
   setRoutes();
   setStorage();
@@ -137,15 +161,16 @@ angular
 
 .run(function($injector, $state, AuthService, SocketService) {
 
-  function setTokenAsHeader() {
+  /**
+   * 1) Sets the $http-header
+   */
+  function setHeader() {
     // append the authorization token on every $http request
     $injector.get('$http').defaults.transformRequest = function(data, headersGetter) {
 
       // does an authToken & userId exist, if true save it in the header
       var authToken = AuthService.getToken();
       var userId = AuthService.getUserId();
-      console.log(authToken);
-      console.log(userId);
       if(authToken && userId) {
         headersGetter()['Authorization'] = authToken;
         headersGetter()['User'] = userId;
@@ -157,12 +182,16 @@ angular
     }
   }
 
+  /**
+   * 2) Sets all needed connections
+   */
   function setConnections() {
     // connect to the socket
     SocketService.connectSocket();
   }
 
-  setTokenAsHeader();
+  // set
+  setHeader();
   setConnections();
 
 });
