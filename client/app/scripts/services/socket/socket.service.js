@@ -26,10 +26,10 @@
          */
         function connectSocket() {
             try {
-                service.socket = io.connect('http://localhost:1337');
+                service.socket = io.connect(config.apiUrl);
             }
             catch(err) {
-                return SweetAlert.swal('Es konnte keine Verbindung zum WebSocket hergetsellt werden');
+                return SweetAlert.swal('Server-Fehler', 'Es konnte keine Verbindung zum WebSocket hergestellt werden', 'error');
             }
 
             // when the socket is connected, start listening for updates
@@ -38,8 +38,11 @@
             });
         }
 
+        /**
+         * All service-event-listeners, that shoud be added.
+         */
         function registerListeners() {
-
+            // nothing to do here (yet :P)
         }
 
 

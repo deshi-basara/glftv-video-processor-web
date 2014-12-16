@@ -30,16 +30,13 @@
             // change the selected profile setting
             var selectedOutput = ctrl.newProfile.outputFormat;
 
-            console.log(selectedOutput);
-            console.log(ctrl.allGlobalSettings);
-
             // get the settings of the selected outputFormat
             for (var i = 0; i < ctrl.allGlobalSettings.length; i++) {
 
                 if(ctrl.allGlobalSettings[i].name === selectedOutput) {
                     return ctrl.allProfileSettings = ctrl.allGlobalSettings[i];
                 }
-                
+
             };
         }
 
@@ -61,8 +58,8 @@
                 // reload the table
                 ctrl.tableParams.reload();
 
-            }, function(err, status) {
-                // @todo error response
+            }, function(err) {
+                SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
 
@@ -73,7 +70,7 @@
             ProfileService.getAllProfileSettings().then(function(success) {
                 ctrl.allGlobalSettings = success;
             }, function(error) {
-                // @todo error response
+                SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
 
@@ -107,8 +104,8 @@
             ProfileService.submitNewProfile(ctrl.newProfile).then(function(success) {
                 // refetch all profiles, for updating the all-profile-view
                 fetchAllProfiles();
-            }, function(error, status) {
-
+            }, function(error) {
+                SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
 

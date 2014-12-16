@@ -65,11 +65,14 @@
                 JobService.uploadFile(ctrl.filesInUploadQueue[i]).then(function(success) {
 
 
-                }, function(error, status) {
+                }, function(error) {
 
                     // server not available
                     if(status === null) {
-                        return SweetAlert.swal('Der Upload-Server ist nicht erreichbar');
+                        return SweetAlert.swal('Server-Fehler', 'Der Upload-Server ist nicht erreichbar', 'error');
+                    }
+                    else {
+                        return SweetAlert.swal('Server-Fehler', error, 'error');
                     }
 
                 }, null);
@@ -127,7 +130,7 @@
                     }, function(error) {
                         currentFile.status = 'Fehler';
                     }, function(progress) {
-                        console.log(progress);
+                        //console.log(progress);
                     });
                 }
                 else if(currentFile.status === 'Bereit' && currentFile.custom.length === 0) {

@@ -6,12 +6,12 @@
         .module('app')
         .controller('QueueCtrl', QueueCtrl);
 
-    QueueCtrl.$inject = ['QueueService', 'ngTableParams', 'SocketService', '$scope'];
+    QueueCtrl.$inject = ['QueueService', 'ngTableParams', 'SocketService', '$scope', 'SweetAlert'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function QueueCtrl(QueueService, ngTableParams, SocketService, $scope) {
+    function QueueCtrl(QueueService, ngTableParams, SocketService, $scope, SweetAlert) {
         var ctrl = this;
 
         /**
@@ -40,7 +40,7 @@
                 ctrl.tableParams.reload();
 
             }, function(error) {
-                // @todo error handling
+                return SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
 
@@ -67,7 +67,7 @@
                     fetchAll();
 
                 }, function(error) {
-                    // @todo error handling
+                    return SweetAlert.swal('Server-Fehler', error, 'error');
                 });
             }
         }
@@ -95,7 +95,7 @@
                     fetchAll();
 
                 }, function(error) {
-                    // @todo error handling
+                    return SweetAlert.swal('Server-Fehler', error, 'error');
                 });
             }
         }
