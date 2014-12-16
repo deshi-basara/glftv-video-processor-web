@@ -39,16 +39,32 @@ module.exports = {
             defaultsTo: 0
         },
 
+        authToken: {
+            type: 'string',
+            required: true
+        },
+
+        authCreated: {
+            type: 'date',
+            required: true
+        },
+
         comparePassword: function(password){
             // if the passwords match, return true
             return bcrypt.compareSync(password, this.password);
+        }
+
+        compareTokens: function(token) {
+            // if the tokens match, return true
+            return (token === this.authCreated);
         }
 
     },
 
     // Lifecycle Callbacks
     beforeCreate: function(values, next) {
-        console.log(values);
+
+        // hash user password
         bcrypt.hash(values.password, 10, function(err, hash) {
             if(err) return next(err);
 
