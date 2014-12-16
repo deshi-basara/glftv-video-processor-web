@@ -29,7 +29,8 @@
                 service.socket = io.connect(config.apiUrl);
             }
             catch(err) {
-                return SweetAlert.swal('Server-Fehler', 'Es konnte keine Verbindung zum WebSocket hergestellt werden', 'error');
+                return SweetAlert.swal('Server-Fehler', 'Es konnte keine Verbindung zum ' +
+                            'WebSocket hergestellt werden', 'error');
             }
 
             // when the socket is connected, start listening for updates
@@ -49,4 +50,4 @@
     }
 
 
-})()
+})();

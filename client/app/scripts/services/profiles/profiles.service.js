@@ -69,7 +69,7 @@
                     var jsonString = data[i].json;
 
                     data[i] = JSON.parse(jsonString);
-                };
+                }
 
                 q.resolve(data);
             }).error(function(data, status) {

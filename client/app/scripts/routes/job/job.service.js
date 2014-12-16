@@ -23,7 +23,7 @@
             uploadFile: uploadFile,
             startQueue: startQueue,
             startSearch: startSearch
-        }
+        };
 
         return service;
 

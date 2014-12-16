@@ -6,12 +6,12 @@
         .module('app')
         .controller('JobModalCtrl', JobModalCtrl);
 
-    JobModalCtrl.$inject = ['$modalInstance', 'JobService', '$timeout', '$rootScope'];
+    JobModalCtrl.$inject = ['$modalInstance', 'JobService', '$timeout', '$rootScope', 'SweetAlert'];
 
     /**
      * Handles the job-modal view and all interactions
      */
-    function JobModalCtrl($modalInstance, JobService, $timeout, $rootScope) {
+    function JobModalCtrl($modalInstance, JobService, $timeout, $rootScope, SweetAlert) {
         var modal = this;
 
         /**
@@ -78,7 +78,7 @@
               // selected, push to array
               selectedFiles.push(modal.foundFiles[i]);
             }
-          };
+          }
 
           // if something was selected, start the broadcast
           if(selectedFiles.length !== 0) {

@@ -38,7 +38,7 @@ function getProcessingData(stderrString) {
             if(value) {
                 processingObj[key] = value;
             }
-        };
+        }
 
         return processingObj;
     }
@@ -176,7 +176,7 @@ module.exports = {
         // does the user want a 2-pass encoding?
         if(profile.twoPass) {
             // clone the array
-            var cmdPassOne = _.clone(cmdPassTwo);
+            cmdPassOne = _.clone(cmdPassTwo);
 
             // 1-pass and escape
             cmdPassOne.push('-pass', 1); // @todo set audio to disabled on 1-pass

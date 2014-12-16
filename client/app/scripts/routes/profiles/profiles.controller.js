@@ -34,10 +34,11 @@
             for (var i = 0; i < ctrl.allGlobalSettings.length; i++) {
 
                 if(ctrl.allGlobalSettings[i].name === selectedOutput) {
-                    return ctrl.allProfileSettings = ctrl.allGlobalSettings[i];
+                    ctrl.allProfileSettings = ctrl.allGlobalSettings[i];
+                    return;
                 }
 
-            };
+            }
         }
 
         /**
@@ -58,7 +59,7 @@
                 // reload the table
                 ctrl.tableParams.reload();
 
-            }, function(err) {
+            }, function(error) {
                 SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
@@ -126,7 +127,8 @@
                 if(ctrl.allProfiles) {
                     params.total(ctrl.allProfiles.length);
                     // slice and set new data for the current page
-                    var data = ctrl.allProfiles.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    var data = ctrl.allProfiles.slice((params.page() - 1) *
+                            params.count(), params.page() * params.count());
                     $defer.resolve(data);
                 }
             }

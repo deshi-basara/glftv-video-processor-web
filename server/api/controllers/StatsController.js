@@ -99,7 +99,7 @@ module.exports = {
                 // if index === length, there are no other ids left to be detroyed
                 return res.send('Finished videos were removed');
             }
-        };
+        }
     }
 
 };

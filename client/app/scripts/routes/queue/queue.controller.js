@@ -57,7 +57,7 @@
                 if(currentVideo.status === 'failed') {
                     failedArray.push(currentVideo.id);
                 }
-            };
+            }
 
             // send remove request if there are finished videos
             if(failedArray.length > 0) {
@@ -85,7 +85,7 @@
                 if(currentVideo.status === 'finished') {
                     finishedArray.push(currentVideo.id);
                 }
-            };
+            }
 
             // send remove request if there are finished videos
             if(finishedArray.length > 0) {
@@ -116,7 +116,8 @@
                 if(ctrl.queueData) {
                     params.total(ctrl.queueData.length);
                     // slice and set new data for the current page
-                    var data = ctrl.queueData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    var data = ctrl.queueData.slice((params.page() - 1) *
+                            params.count(), params.page() * params.count());
                     $defer.resolve(data);
                 }
             }
@@ -151,7 +152,7 @@
 
                     return $scope.$apply();
                 }
-            };
+            }
         });
 
         //////////////////////

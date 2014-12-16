@@ -188,7 +188,7 @@ angular
         return angular.toJson(data);
       }
 
-    }
+    };
   }
 
   /**

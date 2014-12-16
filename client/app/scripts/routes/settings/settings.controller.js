@@ -21,7 +21,7 @@
             ProfileService.getAllProfileSettings().then(function(success) {
                 ctrl.allSettings = success;
             }, function(error) {
-                SweetAlert.swal("Server-Fehler", error, "error");
+                SweetAlert.swal('Server-Fehler', error, 'error');
             });
         }
 
