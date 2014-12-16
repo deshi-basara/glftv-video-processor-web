@@ -143,7 +143,7 @@
          * @param  {int}    id [Server database id of the user]
          */
         function saveUserId(id) {
-            localStorageService.set('userId', token);
+            localStorageService.set('userId', id);
         }
 
 
