@@ -121,7 +121,7 @@ angular
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('warteschlange');
+    $urlRouterProvider.otherwise('queue');
   }
 
   /**
@@ -144,13 +144,13 @@ angular
      *
      * https://docs.angularjs.org/api/ng/service/$http (search: Interceptors)
      */
-    $httpProvider.interceptors.push(function($q, $location) {
+    $httpProvider.interceptors.push(function($q) {
       return {
         // response error callback
         'responseError': function(response) {
           if(response.status === 401) {
             // error response is an 'unauthorized'-error, show login page
-            $location.path('/login');
+            window.location.href = '/#/login'; // use good old js, $location is buggy
           }
 
           // reject the promise and pass the error response
