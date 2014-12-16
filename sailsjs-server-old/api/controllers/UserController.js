@@ -35,12 +35,21 @@ module.exports = {
                 return res.send(401, 'Invalid credentials');
             }
 
-            // credentials were correct, create session
-            req.session.userId = user.id;
+            // credentials were correct, create new session and save all needed data in the session & database
+            AuthService.generateToken(function(newToken) {
 
-            console.log(req.session);
+                User.update({id: user.id}, {authToken: newToken, authCreated: new Date()}).exec(function(err, users) {
 
-            return res.send('Login successfull');
+                    req.session.userId = users[0].id;
+                    req.session.authToken = users[0].authToken;
+
+                    return res.send({
+                        msg: 'Login successfull',
+                        token: users[0].authToken
+                    });
+
+                });
+            });
         });
     },
 
@@ -70,18 +79,32 @@ module.exports = {
             }
             else {
 
-                 // create user in the database
-                User.create({
-                    name: req.body.name,
-                    email: req.body.mail,
-                    password: req.body.pass
-                }).exec(function(err, user) {
-                    if(err) {
-                        return res.send(500, err);
-                    }
+                // generate an authToken for the user
+                AuthService.generateToken(function(token) {
 
-                    // everything went well, send response
-                    return res.send('Account created');
+                     // create user in the database
+                    User.create({
+                        name: req.body.name,
+                        email: req.body.mail,
+                        password: req.body.pass,
+                        authToken: token,
+                        authCreated: new Date()
+                    }).exec(function(err, user) {
+                        if(err) {
+                            return res.send(500, err);
+                        }
+
+                        // save important values in the session
+                        req.session.userId = user.id;
+                        req.session.authToken = user.authToken;
+
+                        // everything went well, send response
+                        return res.send({
+                            msg: 'Account created',
+                            token: user.authToken
+                        });
+                    });
+
                 });
 
             }
@@ -93,10 +116,7 @@ module.exports = {
      */
     session: function(req, res) {
 
-            console.log(req.session);
-        
-
-        return res.send('Valid session open');
+        console.log(req.headers);
 
         if(!req.session.userId) {
             return res.send(401, 'No valid session open');

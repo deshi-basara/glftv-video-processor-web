@@ -52,7 +52,7 @@ module.exports = {
         comparePassword: function(password){
             // if the passwords match, return true
             return bcrypt.compareSync(password, this.password);
-        }
+        },
 
         compareTokens: function(token) {
             // if the tokens match, return true
