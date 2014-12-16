@@ -40,7 +40,9 @@ module.exports.policies = {
   },
 
   SettingsController: {
-    '*': ['isAuthenticated', 'isAdmin']
+    '*': ['isAuthenticated', 'isAdmin'],
+
+    all: ['isAuthenticated']
   },
 
   StatsController: {
