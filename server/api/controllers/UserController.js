@@ -43,6 +43,7 @@ module.exports = {
                     return res.send({
                         msg: 'Login successfull',
                         id: users[0].id,
+                        name: users[0].name,
                         token: users[0].authToken
                     });
 
@@ -96,6 +97,7 @@ module.exports = {
                         return res.send({
                             msg: 'Account created',
                             id: user.id,
+                            name: user.name,
                             token: user.authToken
                         });
                     });
