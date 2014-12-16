@@ -56,7 +56,7 @@ module.exports = {
 
         compareTokens: function(token) {
             // if the tokens match, return true
-            return (token === this.authCreated);
+            return (token === this.authToken);
         }
 
     },
