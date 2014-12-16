@@ -8,8 +8,7 @@
 module.exports = {
 
     /**
-     * Fetches all available profiles from the database and returns them.
-     * @return {[type]}     []
+     * [GET] Fetches all available profiles from the database and returns them.
      */
     all: function(req, res) {
         // @todo check if the user has auth
@@ -23,8 +22,7 @@ module.exports = {
     },
 
     /**
-     * Saves a handed profile into the database.
-     * @return {[Response]}     [Error or Success]
+     * [POST] Saves a handed profile into the database.
      */
     save: function(req, res) {
 

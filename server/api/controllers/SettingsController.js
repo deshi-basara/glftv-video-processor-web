@@ -7,6 +7,9 @@
 
 module.exports = {
 
+    /**
+     * [GET] Fetches all settings from the db and returns them.
+     */
     all: function(req, res) {
 
         // get all settings
@@ -19,6 +22,9 @@ module.exports = {
 
     },
 
+    /**
+     * [DELETE] Deletes a setting entry from the db, identified by it's name.
+     */
     remove: function(req, res) {
 
         // check if the request is valid
@@ -36,6 +42,9 @@ module.exports = {
         });
     },
 
+    /**
+     * [POST] Trys to save new settings into the database.
+     */
     save: function(req, res) {
 
         // check if the request is valid

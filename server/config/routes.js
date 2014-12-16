@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -46,4 +46,38 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  /**
+   * ProfilesController
+   */
+  'get /profiles/all': 'ProfilesController.all',
+  'post /profiles/save': 'ProfilesController.save',
+
+  /**
+   * SettingsController
+   */
+  'get /settings/all': 'SettingsController.all',
+  'delete /settings/remove': 'SettingsController.remove',
+  'post /settings/save': 'SettingsController.save',
+
+  /**
+   * StatsController
+   */
+  'get /stats/all': 'StatsController.all',
+  'delete /stats/cancel': 'StatsController.cancel',
+  'delete /stats/remove': 'StatsController.remove',
+
+  /**
+   * UserController
+   */
+  'post /user/login': 'UserController.login',
+  'post /user/register': 'UserController.register',
+  'get /user/auth': 'UserController.auth',
+
+  /**
+   * VideosController
+   */
+  'post /videos/upload': 'VideosController.upload',
+  'post /videos/model': 'VideosController.model',
+  'post /videos/search': 'VideosController.search',
+  'post /videos/start': 'VideosController.start',
 };

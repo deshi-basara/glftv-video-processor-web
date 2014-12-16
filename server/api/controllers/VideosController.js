@@ -19,8 +19,8 @@ module.exports = {
 
 
   /**
-   * Gets a file-upload and creates for the completly uploaded file a
-   * video-model. Returns the id of the video-model.
+   * [POST] Gets a file-upload and creates for the completly uploaded file a
+   *        video-model. Returns the id of the video-model.
    */
   upload: function (req, res) {
     // set the upload timeout to 'infinite'
@@ -49,8 +49,8 @@ module.exports = {
   },
 
   /**
-   * Creates a video-model on the server for files that aren't uploaded,
-   * but already exist on the server. Returns the id of the video-model.
+   * [POST] Creates a video-model on the server for files that aren't uploaded,
+   *        but already exist on the server. Returns the id of the video-model.
    */
   model: function(req, res) {
 
@@ -76,7 +76,7 @@ module.exports = {
   },
 
   /**
-   * Searches all video files in the handed path and returns the found ones.
+   * [POST] Searches all video files in the handed path and returns the found ones.
    */
   search: function(req, res) {
 
@@ -96,8 +96,8 @@ module.exports = {
   },
 
   /**
-   * Adds an already uploaded or existing file to the transcoding queue, if
-   * all dependencies resolve.
+   * [POST] Adds an already uploaded or existing file to the transcoding queue, if
+   *        all dependencies resolve.
    */
   start: function (req, res) {
 
