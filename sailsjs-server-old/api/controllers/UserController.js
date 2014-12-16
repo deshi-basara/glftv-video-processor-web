@@ -32,7 +32,7 @@ module.exports = {
                 return res.send(500, err);
             }
             else if(!user || (user.comparePassword(req.body.pass) === false)) {
-                return res.send(401, 'Invalid credentials');
+                return res.send(400, 'Invalid credentials');
             }
 
             // credentials were correct, create new session and save all needed data in the session & database
@@ -45,6 +45,7 @@ module.exports = {
 
                     return res.send({
                         msg: 'Login successfull',
+                        id: users[0].id,
                         token: users[0].authToken
                     });
 
@@ -101,6 +102,7 @@ module.exports = {
                         // everything went well, send response
                         return res.send({
                             msg: 'Account created',
+                            id: user.id,
                             token: user.authToken
                         });
                     });
@@ -112,11 +114,9 @@ module.exports = {
     },
 
     /**
-     * [POST]  Checks if the user has a running session
+     * [GET]  Checks if the user has a valid authentication
      */
-    session: function(req, res) {
-
-        console.log(req.headers);
+    auth: function(req, res) {
 
         if(!req.session.userId) {
             return res.send(401, 'No valid session open');

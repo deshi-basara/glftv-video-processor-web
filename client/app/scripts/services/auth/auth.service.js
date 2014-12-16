@@ -121,11 +121,27 @@
         }
 
         /**
+         * Returns the saved userId from the localStorage.
+         * @return {int}    id [Server database id of the user]
+         */
+        function getUserId() {
+            return localStorageService.get('userId');
+        }
+
+        /**
          * Saves the current authToken into the localStorage.
          * @param  {string}    token [Authentication token]
          */
         function saveToken(token) {
             localStorageService.set('authToken', token);
+        }
+
+        /**
+         * Saves the current authToken into the localStorage.
+         * @param  {int}    id [Server database id of the user]
+         */
+        function saveUserId(id) {
+            localStorageService.set('userId', token);
         }
 
 
