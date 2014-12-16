@@ -7,8 +7,9 @@
         background-color: $glf-green;
         box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
 
-        @include size(40% 48%);
+        @include size(50% 58%);
         min-height: 374px;
+        min-width: 682px;
         @include position(relative, 50% 0 0 50%);
         @include transform(translate(-50%, -50%));
 
