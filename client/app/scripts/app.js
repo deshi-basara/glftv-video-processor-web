@@ -25,7 +25,8 @@ angular
 ])
 
 .constant('config', {
-  'name': 'development',
+  'name': 'GLF-Video-Processor',
+  'version': '0.9.5',
   'apiUrl': 'http://localhost:1337'
 })
 
@@ -167,7 +168,7 @@ angular
 
 })
 
-.run(function($injector, $state, AuthService, SocketService) {
+.run(function($injector, AuthService, config, $rootScope, SocketService) {
 
   /**
    * 1) Sets the $http-header
@@ -191,7 +192,17 @@ angular
   }
 
   /**
-   * 2) Sets all needed connections
+   * 2) Sets all global variables
+   */
+  function setGlobals() {
+    // save all config variables into the $rootScope
+    angular.forEach(config, function(value, key) {
+      $rootScope[key] = value;
+    });
+  }
+
+  /**
+   * 3) Sets all needed connections
    */
   function setConnections() {
     // connect to the socket
@@ -200,6 +211,7 @@ angular
 
   // set
   setHeader();
+  setGlobals();
   setConnections();
 
 });
