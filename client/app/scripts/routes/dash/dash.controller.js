@@ -14,6 +14,7 @@
     function DashCtrl(SocketService) {
         var ctrl = this;
 
+
         //////////////////////
 
         angular.extend(ctrl, {
