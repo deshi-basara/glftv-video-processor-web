@@ -1,7 +1,7 @@
 glftv-video-processor-web
 =========================
 
-Video-processing webinterface written with Angularjs (client) and Sailsjs (server) for converting video-files into the web-video-formats used by [GLFtv.de](http://glftv.de/).
+Video-processing webinterface written with Angularjs (client) and Sailsjs (server) for transcoding video-files into the web-video-formats used by [GLFtv.de](http://glftv.de/).
 
 
 ===================
@@ -40,5 +40,12 @@ Execute inside 'client/'
 ========
 ### Todo
 
-* Auth
 * Extra-Features (Mailer, Scheduler, etc.)
+* Socket Auth
+
+
+==============
+### Known Bugs
+
+* Fix $digest-loop bug for the round progress circle
+* Update all Queue-Values via socket
