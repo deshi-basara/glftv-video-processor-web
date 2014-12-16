@@ -1,13 +1,15 @@
 /*!
 * Simon Schuster <simon.schuster@hs-furtwangen.de>
-* glftv-video-processor-web v0.9.0 (https://github.com/deshi-basara/glftv-video-processor-web)
+* glftv-video-processor-web v0.9.5 (https://github.com/deshi-basara/glftv-video-processor-web)
 */
 
 'use strict';
 
-// angular.module is a global place for creating, registering and retrieving Angular modules.
-// 'app' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'.
+/**
+ * angular.module is a global place for creating, registering and retrieving Angular modules.
+ * 'app' is the name of this angular module example (also set in a <body> attribute in index.html)
+ * the 2nd parameter is an array of 'requires'.
+ */
 angular
   .module('app', [
   'ui.router',
