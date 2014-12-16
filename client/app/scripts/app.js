@@ -110,6 +110,12 @@ angular
         resolve: {
           auth: function($http) {
             return $http.get(config.apiUrl + '/user/auth');
+          },
+          admin: function(AuthService, $state) {
+            // only allow admins (role == 1) to visit the route
+            if(AuthService.getUserRole() !== 1) {
+              return $state.go('queue');
+            }
           }
         }
       });

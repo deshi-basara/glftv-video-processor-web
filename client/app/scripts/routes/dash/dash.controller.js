@@ -29,7 +29,7 @@
             currentName: 'Kein laufender Prozess',
             currentUser: AuthService.getUserName(),
             globalProgress: 0,
-            isAdmin: false,
+            isAdmin: AuthService.getUserRole(),
 
             submitLogout: submitLogout
         });

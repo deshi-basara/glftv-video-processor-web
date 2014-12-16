@@ -44,6 +44,7 @@
                 AuthService.saveToken(success.token);
                 AuthService.saveUserId(success.id);
                 AuthService.saveUserName(success.name);
+                AuthService.saveUserRole(success.role);
 
                 // hide message, after 5000ms
                 $timeout(function() {

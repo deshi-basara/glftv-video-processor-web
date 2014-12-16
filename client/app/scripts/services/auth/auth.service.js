@@ -23,10 +23,12 @@
             getToken: getToken,
             getUserId: getUserId,
             getUserName: getUserName,
+            getUserRole: getUserRole,
             logout: logout,
             saveToken: saveToken,
             saveUserId: saveUserId,
-            saveUserName: saveUserName
+            saveUserName: saveUserName,
+            saveUserRole: saveUserRole
         };
 
         return service;
@@ -105,11 +107,20 @@
         }
 
         /**
+         * Returns the saved userRole from the localStorage.
+         */
+        function getUserRole() {
+            return localStorageService.get('userRole');
+        }
+
+        /**
          * Removes the localStorage auth-credentials and forces a logout.
          */
         function logout() {
             localStorageService.remove('authToken');
             localStorageService.remove('userId');
+            localStorageService.remove('userName');
+            localStorageService.remove('userRole');
         }
 
         /**
@@ -133,8 +144,15 @@
          * @param  {string} name [User name]
          */
         function saveUserName(name) {
-            console.log(name);
             localStorageService.set('userName', name);
+        }
+
+        /**
+         * Saves the current user's role into the localStorage.
+         * @param  {inz}    role [User role: 1 = admin, 0 = user]
+         */
+        function saveUserRole(role) {
+            localStorageService.set('userRole', role);
         }
 
 

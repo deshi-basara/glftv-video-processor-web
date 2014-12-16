@@ -44,6 +44,7 @@ module.exports = {
                         msg: 'Login successfull',
                         id: users[0].id,
                         name: users[0].name,
+                        role: users[0].role,
                         token: users[0].authToken
                     });
 
@@ -98,6 +99,7 @@ module.exports = {
                             msg: 'Account created',
                             id: user.id,
                             name: user.name,
+                            role: user.role,
                             token: user.authToken
                         });
                     });
