@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Lob&Tadel</title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width">
+      <link rel="stylesheet" href="/build/bundle.css">
+      <script src="/build/bundle.js" ></script>
+  </head>
+  <body>
+    <% if((locals.navigation && locals.navigation !== true) || typeof locals.navigation === "undefined"){ %>
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Lob&amp;Tadel</a>
+          <div class="pull-right">
+            <% if(locals.currentUser){ %>
+               <a href="/shot/create">Hinzufügen</a>
+                <form method="post" action="/user/logout">
+                  <input type="submit" value="Logout">
+                </form>
+            <% } else { %>
+              <a href="/user/register">Registrieren</a>
+              <a href="/user/login">Log in</a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+    <div class="container"><%- body -%></div>
+  </body>
+</html>

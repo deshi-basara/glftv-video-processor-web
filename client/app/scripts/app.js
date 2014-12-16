@@ -24,7 +24,7 @@ angular
 
 .constant('config', {
   'name': 'development',
-  'apiUrl': 'http://localhost:1337'
+  'apiUrl': 'http://localhost:8051'
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

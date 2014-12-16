@@ -38,6 +38,8 @@ module.exports = {
             // credentials were correct, create session
             req.session.userId = user.id;
 
+            console.log(req.session);
+
             return res.send('Login successfull');
         });
     },
@@ -90,6 +92,9 @@ module.exports = {
      * [POST]  Checks if the user has a running session
      */
     session: function(req, res) {
+
+            console.log(req.session);
+        
 
         return res.send('Valid session open');
 

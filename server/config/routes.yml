@@ -1,0 +1,8 @@
+routes:
+
+	# user api
+	user: #namespace
+		POST register: User.register
+		POST login: User.login
+		GET logout: User.logout
+		GET session: User.hasSession

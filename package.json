@@ -16,5 +16,7 @@
     "url": "https://github.com/deshi-basara/glftv-video-processor-web/issues"
   },
   "homepage": "https://github.com/deshi-basara/glftv-video-processor-web",
-  "dependencies": {}
+  "dependencies": {
+    "risotto": "0.0.1"
+  }
 }
