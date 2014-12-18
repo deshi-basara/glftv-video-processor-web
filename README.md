@@ -50,6 +50,12 @@ Execute inside 'client/'
 * Fix $digest-loop bug for the round progress circle
 * Update all Queue-Values via socket
 
+========
+### Demo
+
+![Demo 1](http://i.imgur.com/Q7aa8er.png)
+![Demo 2](http://i.imgur.com/L2FLKno.png)
+
 
 ===========
 ### Credits
