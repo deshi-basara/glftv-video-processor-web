@@ -1,0 +1,33 @@
+<div id="login">
+
+    <div class="login-form">
+        <div class="login-form-header">
+            <span class="headline">GLF-Video-Processor RC1</span>
+        </div>
+        <div class="login-form-input center-parent">
+
+            <div class="center-child">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input class="input-text" type="text" ng-model="ctrl.login.user">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input class="input-text" type="password" ng-model="ctrl.login.pass">
+                </div>
+            </div>
+
+        </div>
+        <div class="login-form-submit">
+            <button class="button" ng-click="ctrl.submitLogin()">Einloggen</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast animate-show" ng-show="ctrl.showError">
+    <span class="error-msg">Oh Nein! {{ ctrl.errorMsg }}!</span>
+</div>
+<div class="toast animate-show" ng-show="ctrl.showSuccess">
+    <span class="success-msg">Login erfolgreich, du wirst gleich weitergeleitet <i class="fa fa-spinner fa-spin"></i> </span>
+</div>

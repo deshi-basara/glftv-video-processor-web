@@ -1,0 +1,113 @@
+<section id="job" class="section-box">
+    <div class="section-box-head">
+        <h4>Video-Files hochladen</h4>
+    </div>
+    <div class="section-box-body">
+        <div class="upload-help" ng-hide="ctrl.filesInUploadQueue.length !== 0">
+            <div>#1</div> Wähle alle Dateien, die du konvertieren möchtest aus.<br>
+            <div>#2</div> Du kannst mehr als eine Datei gleichzeitig auswählen und hochladen.<br>
+            <div>#3</div> Der Upload beginnt sobald du eine Datei ausgewählt hast.<br>
+            <div>#4</div> Nur fertig hochgeladene Videos können konvertiert werden!
+        </div>
+        <div class="upload-indicator" ng-show="ctrl.filesInUploadQueue.length !== 0">
+            <table ng-table class="table table-hover">
+                <tr ng-repeat="file in ctrl.filesInUploadQueue" ng-click="ctrl.onVideoSelect(file)" ng-class="{ 'started': file.status === 'Fertig' }">
+                    <td data-title="'#'" class="col-sm-1">
+                        {{:: $index }}
+                    </td>
+                    <td data-title="'Name'" class="col-sm-4">
+                        {{:: file.name }}
+                    </td>
+                    <td data-title="'Profile'" class="col-sm-2">
+                        <select class="form-control select-profile" ng-model="file.profile" ng-class="{ 'error': file.noProfile === true }">
+                            <!--<option value="all">Alle</option>
+                            <option ng-repeat="profile in ctrl.profiles">{{:: profile.name }}</option>-->
+                            <option value="custom" ng-show="file.custom.length !== 0" ng-selected="file.custom.length !== 0">{{ file.custom }}</option>
+                        </select>
+                    </td>
+                    <td data-title="'Fortschritt'" class="col-sm-2">
+                        <progressbar max="100" value="file.progress">{{ file.progress }}%</progressbar>
+                    </td>
+                    <td data-title="'Größe'" class="col-sm-1">
+                        {{ file.size | agsBytes:2 }}
+                    </td>
+                    <td data-title="'Status'" class="col-sm-1">
+                        {{ file.status }}
+                    </td>
+                    <td class="fa-started" data-title="'Gestartet'" class="col-sm-1">
+                        <i class="fa fa-minus" ng-hide="file.status === 'Fertig' || file.status === 'Fehler'"></i>
+                        <i class="fa fa-check" ng-show="file.status === 'Fertig'"></i>
+                        <i class="fa fa-exclamation-triangle" ng-show="file.status === 'Fehler'"></i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="section-box-footer">
+        <div class="upload-controls">
+            <button class="button" ng-click="ctrl.queueUploadedVideos()" ng-show="ctrl.filesInUploadQueue.length !== 0">Alle fertigen Uploads starten</button>
+            <button class="button" ng-click="ctrl.onServerSelect()" ng-show="ctrl.filesInUploadQueue.length === 0">Server-Ordner auswählen</button>
+            <button class="button" ng-file-select="ctrl.onFileSelect($files)" data-multiple="true" ng-show="ctrl.filesInUploadQueue.length === 0">Dateien hochladen</button>
+        </div>
+    </div>
+</section>
+<section id="job-profile" class="section-box" ng-show="ctrl.fileSelected">
+    <div class="section-box-head">
+        <h4>Einstellungen für: <span>{{ ctrl.fileSelected.name }}</span></h4>
+    </div>
+    <div class="section-box-body">
+        <div class="section-left">
+            <!--<div class="input-group output-name">
+                <label>Output-Name</label>
+                <input class="input-text" type="text">
+            </div>-->
+        </div>
+        <div class="section-right">
+            <div class="section-profiles">
+                <div class="profile-item" ng-repeat="profile in ctrl.profiles">
+                    <span>{{:: profile.name }} ({{:: profile.outputFormat }})</span><input type="checkbox" ng-model="profile.checked" ng-change="ctrl.customProfiles(profile.name)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-box-footer">
+        ffmpeg
+    </div>
+</section>
+<!--
+    Server modal
+-->
+<script type="text/ng-template" id="server-modal.html">
+    <div class="section-box">
+        <div class="section-box-head">
+            <h4>Ordner durchsuchen:</h4>
+            <div class="section-search">
+                <input type="text" ng-model="modal.searchString">
+                <button class="button button-green" ng-click="modal.startSearch()">
+                    <i class="fa fa-search" ng-show="!modal.isSearching"></i>
+                    <i class="fa fa-circle-o-notch fa-spin" ng-hide="!modal.isSearching"></i>
+                </button>
+            </div>
+        </div>
+        <div class="section-box-body">
+            <div class="file-list">
+                <div class="file-list-item" ng-repeat="file in modal.foundFiles">
+                    <div class="file-counter">#{{:: $index }}</div>
+                    <div class="file-name">
+                        {{:: file.name | characters: 55 :true }}
+                        <input type="checkbox" ng-model="file.selected"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-box-footer">
+            <div class="file-indicator">
+                <span>{{ (modal.foundFiles | filter: {selected: true}).length }} / {{ modal.totalFiles }}</span> Videos
+            </div>
+            <div class="upload-controls">
+                <button class="button button-neutral" ng-click="modal.selectAll()">Alle auswählen</button>
+                <button class="button button-red" ng-click="modal.closeModal()">Schließen</button>
+                <button class="button button-green" ng-click="modal.okModal()">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+</script>
