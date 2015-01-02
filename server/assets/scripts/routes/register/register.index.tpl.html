@@ -1,0 +1,41 @@
+<div id="register">
+
+    <div class="register-form">
+        <div class="register-form-header">
+            <span class="headline">GLF-Video-Processor RC1 - Registrierung</span>
+        </div>
+        <div class="register-form-input center-parent">
+
+            <div class="center-child">
+                <div class="input-group">
+                    <label>Name</label>
+                    <input class="input-text" type="text" ng-model="ctrl.register.name">
+                </div>
+                <div class="input-group">
+                    <label>HS-Furtwangen-Email</label>
+                    <input class="input-text" type="text" ng-model="ctrl.register.mail">
+                </div>
+                <div class="input-group">
+                    <label>Passwort</label>
+                    <input class="input-text" type="password" ng-model="ctrl.register.pass">
+                </div>
+                <div class="input-group">
+                    <label>Passwort wiederholen</label>
+                    <input class="input-text" type="password" ng-model="ctrl.register.pass2">
+                </div>
+            </div>
+
+        </div>
+        <div class="register-form-submit">
+            <button class="button" ng-click="ctrl.submitRegistration()">Registrieren</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast animate-show" ng-show="ctrl.showError">
+    <span class="error-msg">Oh Nein! {{ ctrl.errorMsg }}!</span>
+</div>
+<div class="toast animate-show" ng-show="ctrl.showSuccess">
+    <span class="success-msg">Dein Account wurde erfolgreich erstellt, du wirst gleich weitergeleitet <i class="fa fa-spinner fa-spin"></i> </span>
+</div>
