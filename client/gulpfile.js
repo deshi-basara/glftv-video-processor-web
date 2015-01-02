@@ -203,3 +203,17 @@ gulp.task('serve', ['styles'], function() {
 gulp.task('build', ['clean'], function(cb) {
 	runSequence('styles', ['html', 'images', 'fonts', 'copy']);
 });
+
+/**
+ * CLI 'gulp deploy': Deploy Task.
+ * Copies the client/dist to server/assets.
+ */
+gulp.task('deploy', function(cb) {
+	return gulp.src([
+		'dist/**/*',
+		], {
+			dot: true
+		})
+		.pipe(gulp.dest('../server/assets/'))
+		.pipe($.size({title: 'deploy'}));
+});
