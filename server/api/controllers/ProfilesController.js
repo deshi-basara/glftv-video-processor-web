@@ -20,6 +20,26 @@ module.exports = {
     },
 
     /**
+     * [DELETE] Deletes a profile entry from the db, identified by it's name.
+     */
+    remove: function(req, res) {
+
+        // check if the request is valid
+        if(!req.body.name) {
+            return res.send(400, 'Bad request');
+        }
+
+        // remove the entry
+        Profiles.destroy({name: req.body.name}).exec(function(err) {
+            if(err) {
+                return res.send(500, err);
+            }
+
+            res.send('Profile removed');
+        });
+    },
+
+    /**
      * [POST] Saves a handed profile into the database.
      */
     save: function(req, res) {
@@ -35,6 +55,7 @@ module.exports = {
         try {
             var name = req.body.profile.name;
             var outputFormat = req.body.profile.outputFormat;
+            var scaleFactor = req.body.profile.vf;
             var videoCodec = req.body.profile['codec:v'];
             var twoPass = req.body.profile.twoPass;
 
@@ -57,6 +78,7 @@ module.exports = {
             Profiles.create({
                 name: name,
                 outputFormat: outputFormat,
+                scaleFactor: scaleFactor,
                 videoCodec: videoCodec,
                 twoPass: twoPass,
                 autor: user.name,

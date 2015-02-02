@@ -22,6 +22,11 @@ module.exports = {
             required: true
         },
 
+        scaleFactor: {
+            type: 'string',
+            required: true
+        },
+
         videoCodec: {
             type: 'string',
             required: true

@@ -9,11 +9,18 @@
                     <td data-title="'#'" class="col-sm-1">
                         {{:: $index }}
                     </td>
-                    <td data-title="'Name'" class="col-sm-3">
+                    <td data-title="'Name'" class="col-sm-2">
                         {{:: profile.name }}
                     </td>
                     <td data-title="'Output'" class="col-sm-1">
                         {{:: profile.outputFormat }}
+                    </td>
+                    <td data-title="'Skalierung'" class="col-sm-1">
+                        {{:: profile.scaleFactor }}
+                    </td>
+                    <td data-title="'2-Pass'" class="col-sm-1">
+                        <i class="fa fa-minus" ng-hide="profile.twoPass"></i>
+                        <i class="fa fa-check" ng-show="profile.twoPass"></i>
                     </td>
                     <td data-title="'Video-Codec'" class="col-sm-2">
                         {{:: profile.videoCodec }}
