@@ -117,7 +117,10 @@ module.exports = {
                             // everything went well, send response
                             return res.send('Profile was updated');
                         });
-
+                    }
+                    else {
+                        // no rights to modify the profile
+                        return res.send(401, 'You do not have permissions to modify this profile!');
                     }
                 }
                 // we have a new profile, create it
