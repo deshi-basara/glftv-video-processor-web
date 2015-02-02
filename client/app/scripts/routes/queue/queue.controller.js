@@ -19,11 +19,27 @@
          * @param  {int} jobId [Id of the job we want to cancel]
          */
         function cancelSelected(jobId) {
-            QueueService.cancelJob(jobId).then(function(success) {
-                // job was canceled, refetch list
-                fetchAll();
-            }, function(error) {
-                // @todo error handling
+
+            // ask the user if he is sure
+            SweetAlert.swal({
+                title: "Bist du dir sicher?",
+                text: "Gelöschte Jobs können nicht wiederhergestellt werden!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ja, löschen",
+                cancelButtonText: "Abbrechen",
+            },function(isConfirm){
+                if(isConfirm) {
+                    // user confirmed, make a delete request
+                    QueueService.cancelJob(jobId).then(function(success) {
+                        // job was canceled, refetch list
+                        fetchAll();
+                        // give user feedback
+                        SweetAlert.swal("Gelöscht!", "Der Job wurde erfolgreich gelöscht.", "success");
+                    }, function(error) {
+                        SweetAlert.swal('Server-Fehler', error, 'error');
+                    });
+                }
             });
         }
 
