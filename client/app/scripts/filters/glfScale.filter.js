@@ -11,7 +11,6 @@
      */
     function glfScale() {
         return function(factor) {
-            console.log(factor);
             if(factor === 'scale=-1:-1') {
                 return 'Untouched';
             }
