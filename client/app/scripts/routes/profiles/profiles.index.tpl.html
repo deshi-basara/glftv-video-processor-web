@@ -32,7 +32,7 @@
                     <td data-title="'Letztes Update'" class="col-sm-2">
                         {{:: profile.updatedAt | date: 'dd.MM.yyyy, HH:mm' }} Uhr
                     </td>
-                    <td class="fa-activated" data-title="'Löschen'" class="col-sm-1">
+                    <td class="fa-activated" class="col-sm-1">
                         <!-- Only show the remove button to the profile owner or to all admins -->
                         <i class="glyphicon glyphicon-remove-circle" ng-show="profile.id === ctrl.userId || ctrl.userRole === 1" ng-click="ctrl.removeProfile(profile.id)"></i>
                     </td>

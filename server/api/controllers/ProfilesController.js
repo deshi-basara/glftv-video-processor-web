@@ -92,25 +92,55 @@ module.exports = {
         User.findOne({id: req.headers.user}).exec(function(err, user) {
             if(err) return res.send(500, err);
 
-            //@todo maybe check for overwrites
-
-            // save the profile object
-            Profiles.create({
-                name: name,
-                outputFormat: outputFormat,
-                scaleFactor: scaleFactor,
-                videoCodec: videoCodec,
-                twoPass: twoPass,
-                autor: user.name,
-                autorId: user.id,
-                json: jsonString
-            }).exec(function(err, profile) {
+            // check for overwrites
+            Profiles.findOne({name: name}).exec(function(err, profile) {
                 if(err) return res.send(500, err);
 
-                // everything went well, send response
-                return res.send('Profile was created');
-            });
+                // we have an overwrite, update the existing profile
+                if(profile) {
 
+                    // has the user the right to update the profile?
+                    if(user.id === profile.autorId || user.role === 1) {
+
+                        // save the profile object
+                        Profiles.update({name: name}, {
+                            outputFormat: outputFormat,
+                            scaleFactor: scaleFactor,
+                            videoCodec: videoCodec,
+                            twoPass: twoPass,
+                            autor: user.name,
+                            autorId: user.id,
+                            json: jsonString
+                        }).exec(function(err, profile) {
+                            if(err) return res.send(500, err);
+
+                            // everything went well, send response
+                            return res.send('Profile was updated');
+                        });
+
+                    }
+                }
+                // we have a new profile, create it
+                else {
+
+                    // save the profile object
+                    Profiles.create({
+                        name: name,
+                        outputFormat: outputFormat,
+                        scaleFactor: scaleFactor,
+                        videoCodec: videoCodec,
+                        twoPass: twoPass,
+                        autor: user.name,
+                        autorId: user.id,
+                        json: jsonString
+                    }).exec(function(err, profile) {
+                        if(err) return res.send(500, err);
+
+                        // everything went well, send response
+                        return res.send('Profile was created');
+                    });
+                }
+            })
         });
     }
 };
