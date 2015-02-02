@@ -1,6 +1,6 @@
 <h5>{{ currentName }}</h5>
 <div class="worker-circle">
-    <div class="worker-circle-percentage">{{ currentProgress }}<span>Prozent</span></div>
+    <div class="worker-circle-percentage">{{ currentProgress | number: 0 }}<span>Prozent</span></div>
     <div round-progress
         max="100"
         current="currentProgress"
@@ -11,7 +11,7 @@
         semi="false"></div>
 </div>
 <div class="worker-overall-progress">
-    <progressbar id="overall-progressbar" max="100" value="ctrl.globalProgress"></progressbar>
+    <progressbar id="overall-progressbar" max="100" value="globalProgress"></progressbar>
     <div id="overall-progress">
         Insgesammt <span>{{ globalProgress }}%</span>
     </div>
