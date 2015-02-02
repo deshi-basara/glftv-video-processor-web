@@ -16,7 +16,7 @@
                         {{:: profile.outputFormat }}
                     </td>
                     <td data-title="'Skalierung'" class="col-sm-1">
-                        {{:: profile.scaleFactor }}
+                        {{:: profile.scaleFactor | glfScale}}
                     </td>
                     <td data-title="'2-Pass'" class="col-sm-1">
                         <i class="fa fa-minus" ng-hide="profile.twoPass"></i>
