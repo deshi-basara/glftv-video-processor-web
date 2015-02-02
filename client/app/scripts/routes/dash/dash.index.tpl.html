@@ -10,26 +10,8 @@
 
         <!-- Indicator circle -->
         <section class="dash-nav-worker">
-            <h5>{{ ctrl.currentName }}</h5>
-            <div class="worker-circle">
-                <div class="worker-circle-percentage">{{ ctrl.currentProgress }}<span>Prozent</span></div>
-                <div round-progress
-                    max="100"
-                    current="ctrl.currentProgress"
-                    radius="100"
-                    color="#FFFFFF"
-                    bgcolor="#50B200"
-                    stroke="9"
-                    semi="false"></div>
-            </div>
-            <div class="worker-overall-progress">
-                <progressbar id="overall-progressbar" max="100" value="ctrl.globalProgress"></progressbar>
-                <div id="overall-progress">
-                    Insgesammt <span>{{ ctrl.globalProgress }}%</span>
-                </div>
-            </div>
+            <glf-circle></glf-circle>
         </section>
-
 
         <!-- Menu items -->
         <section class="dash-nav-items">

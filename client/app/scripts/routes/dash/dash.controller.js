@@ -25,28 +25,13 @@
         //////////////////////
 
         angular.extend(ctrl, {
-            currentProgress: 0,
-            currentName: 'Kein laufender Prozess',
             currentUser: AuthService.getUserName(),
-            globalProgress: 0,
             isAdmin: AuthService.getUserRole(),
 
             submitLogout: submitLogout
         });
 
         /////////////////////
-
-        /**
-         * Is fired when a stats-entry is updated.
-         * @param  {object} data [id of the stats-entry and all the values that have changed]
-         */
-        SocketService.socket.on('stats.progress.update', function(data) {
-
-            // update values
-            ctrl.currentProgress = data.progress;
-            ctrl.currentName = data.name;
-
-        });
 
     }
 
