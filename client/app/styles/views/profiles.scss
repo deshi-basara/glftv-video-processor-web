@@ -45,6 +45,19 @@
                 margin-left: 10px;
             }
         }
+
+        .form-group-name {
+            @include span-columns(10 of 12);
+
+            label {
+                text-align: right;
+                @include span-columns(2 of 10);
+            }
+
+            input, select {
+                @include span-columns(7 of 10);
+            }
+        }
     }
 }
 
