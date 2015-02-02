@@ -156,6 +156,7 @@
          * Is fired when a stats-entry is updated.
          * @param  {object} data [id of the stats-entry and all the values that have changed]
          */
+        var updateAll = 0;
         SocketService.socket.on('stats.progress.update', function(data) {
 
             // loop through all stats entries
@@ -164,7 +165,17 @@
                 // update the right stats-entry
                 if(ctrl.queueData[i].id === data.id) {
 
-                    ctrl.queueData[i].progress = data.progress;
+                    // update the whole stats every 50 steps
+                    if(updateAll++ === 50) {
+                        updateAll = 0;
+
+                        ctrl.queueData[i] = data;
+                    }
+                    // only update the progress
+                    else {
+                        ctrl.queueData[i].progress = data.progress;
+                    }
+
 
                     return $scope.$apply();
                 }

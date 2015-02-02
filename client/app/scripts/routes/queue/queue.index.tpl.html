@@ -15,10 +15,10 @@
                         <i class="fa fa-circle" ng-show="job.priority === 'medium'"></i>
                         <i class="fa fa-arrow-circle-o-down" ng-show="job.priority === 'low'"></i>
                     </td>
-                    <td data-title="'Name'" class="col-xs-3">
+                    <td data-title="'Name'" class="col-xs-2">
                         {{:: job.name }}
                     </td>
-                    <td data-title="'Profil'" class="col-xs-1">
+                    <td data-title="'Profil'" class="col-xs-2">
                         {{:: job.profil }}
                     </td>
                     <td data-title="'Erstellt'" class="col-xs-1">
@@ -33,9 +33,9 @@
                     </td>
                     <td data-title="'Fortschritt'" class="col-xs-2">
                         <!--<ags-progress progress="{{ file.progress }}" status="{{ file.status }}"></ags-progress>-->
-                        <progressbar max="100" value="job.progress">{{ job.progress }}%</progressbar>
+                        <progressbar max="100" value="job.progress">{{ job.progress | number: 0 }}%</progressbar>
                     </td>
-                    <td data-title="'Benutzer'" class="col-xs-2">
+                    <td data-title="'Benutzer'" class="col-xs-1 center-text">
                         {{ job.createdBy }}
                     </td>
                     <td data-title="'Status'" class="col-xs-0 center-text">
