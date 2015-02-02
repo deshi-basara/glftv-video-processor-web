@@ -18,10 +18,12 @@
             allSettingsUrl: '/settings/all',
             newProfileUrl: '/profiles/save',
             newSettingsUrl: '/settings/save',
+            removeProfileUrl: '/profiles/remove',
             removeSettingUrl: '/settings/remove',
 
             getAllProfiles: getAllProfiles,
             getAllProfileSettings: getAllProfileSettings,
+            removeProfile: removeProfile,
             removeSetting: removeSetting,
             submitNewProfile: submitNewProfile,
             submitNewSettings: submitNewSettings
@@ -80,14 +82,36 @@
         }
 
         /**
+         * Removes a profile item from the database.
+         * @param  {int} profileId [Id of the profile we want to remove]
+         * @return {[promise]}          [Angular promise]
+         */
+        function removeProfile(profileId) {
+            var q = $q.defer();
+
+            // make the request
+            $http({
+                method: 'DELETE',
+                url: config.apiUrl + service.removeProfileUrl,
+                data: {
+                    id: profileId
+                }
+            }).success(function(data) {
+                q.resolve(data);
+            }).error(function(data, status) {
+                q.reject(data, status);
+            });
+
+            return q.promise;
+        }
+
+        /**
          * Removes a setting item from the database.
          * @param  {string} settingName [Name of the setting we want to remove]
          * @return {[promise]}              [Angular promise]
          */
         function removeSetting(settingName) {
             var q = $q.defer();
-
-            console.log(settingName);
 
             // make the request
             $http({

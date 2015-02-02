@@ -48,6 +48,7 @@ module.exports.routes = {
    * ProfilesController
    */
   'get /profiles/all': 'ProfilesController.all',
+  'delete /profiles/remove': 'ProfilesController.remove',
   'post /profiles/save': 'ProfilesController.save',
 
   /**

@@ -42,6 +42,11 @@ module.exports = {
             required: true
         },
 
+        autorId: {
+            type: 'integer',
+            required: true
+        },
+
         json: {
             type: 'string',
             required: true

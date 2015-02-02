@@ -6,12 +6,12 @@
         .module('app')
         .controller('ProfilesCtrl', ProfilesCtrl);
 
-    ProfilesCtrl.$inject = ['ngTableParams', 'ProfileService', 'SweetAlert'];
+    ProfilesCtrl.$inject = ['ngTableParams', 'ProfileService', 'SweetAlert', 'AuthService'];
 
     /**
      * Handles the dash-board view and all interactions
      */
-    function ProfilesCtrl(ngTableParams, ProfileService, SweetAlert) {
+    function ProfilesCtrl(ngTableParams, ProfileService, SweetAlert, AuthService) {
         var ctrl = this;
 
         /**
@@ -46,7 +46,9 @@
          */
         function createNewProfile() {
             ctrl.showSettingBox = true;
-            ctrl.newProfile = {};
+            ctrl.newProfile = {
+                twoPass: true
+            };
         }
 
         /**
@@ -102,11 +104,44 @@
          */
         function submitNewProfile() {
 
+            console.log(ctrl.newProfile);
+
             ProfileService.submitNewProfile(ctrl.newProfile).then(function(success) {
                 // refetch all profiles, for updating the all-profile-view
                 fetchAllProfiles();
             }, function(error) {
                 SweetAlert.swal('Server-Fehler', error, 'error');
+            });
+        }
+
+        /**
+         * Sends a remove request for the clicked profile after confirming the
+         * remove dialog.
+         * @param  {int} profileId [Id of the profile the user wants to remove]
+         */
+        function removeProfile(profileId) {
+
+            // ask the user if he is sure
+            SweetAlert.swal({
+                title: "Bist du dir sicher?",
+                text: "Gelöschte Profile können nicht wiederhergestellt werden!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ja, löschen",
+                cancelButtonText: "Abbrechen",
+            },function(isConfirm){
+                if(isConfirm) {
+                    // user confirmed, make a delete request
+                    ProfileService.removeProfile(profileId).then(function(success) {
+                        // reload profiles after removing one
+                        ctrl.showSettingBox = false;
+                        fetchAllProfiles();
+                        // give user feedback
+                        SweetAlert.swal("Gelöscht!", "Das Profile wurde erfolgreich gelöscht.", "success");
+                    }, function(error) {
+                        SweetAlert.swal('Server-Fehler', error, 'error');
+                    });
+                }
             });
         }
 
@@ -139,18 +174,20 @@
         angular.extend(ctrl, {
             isActive: 'global', // default active setting tab
             showSettingBox: false,
+            userId: AuthService.getUserId(),
+            userRole: AuthService.getUserRole(),
 
             allProfiles: null, // all saved profiles from the server
             allGlobalSettings: [], // all saved profile-settings from the server
             allProfileSettings: [], // all predefined form settings for the selected output. Default: null
-            newProfile: {},
             tableParams: tableParams,
 
             changeActive: changeActive, // changes the default active settings tab
             changeOutputFormat: changeOutputFormat,
             createNewProfile: createNewProfile,
             onProfileSelect: onProfileSelect, // when a profile is selected from the list
-            submitNewProfile: submitNewProfile
+            submitNewProfile: submitNewProfile,
+            removeProfile: removeProfile
         });
 
     }

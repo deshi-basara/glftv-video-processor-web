@@ -25,17 +25,35 @@ module.exports = {
     remove: function(req, res) {
 
         // check if the request is valid
-        if(!req.body.name) {
+        if(!req.body.id) {
             return res.send(400, 'Bad request');
         }
 
-        // remove the entry
-        Profiles.destroy({name: req.body.name}).exec(function(err) {
-            if(err) {
-                return res.send(500, err);
-            }
+        // does the profile exist we want to remove
+        Profiles.findOne({id: req.body.id}).exec(function(err, profile) {
+            if(err) return res.send(500, err);
 
-            res.send('Profile removed');
+            // get the user profile data
+            User.findOne({id: req.headers.user}).exec(function(err, user) {
+                if(err) return res.send(500, err);
+
+                // has the user the right to remove the profile, because its his own
+                // or he is a global admin?
+                if(user.id === profile.autorId || user.role === 1) {
+
+                    Profiles.destroy({id: req.body.id}).exec(function(err) {
+                        if(err) {
+                            return res.send(500, err);
+                        }
+
+                        res.send('Profile removed');
+                    });
+
+                }
+                else {
+                    return res.send(500, 'No permissions to remove the profile!')
+                }
+            });
         });
     },
 
@@ -43,6 +61,8 @@ module.exports = {
      * [POST] Saves a handed profile into the database.
      */
     save: function(req, res) {
+
+        console.log('save');
 
         // check if the request is valid
         if(!req.body.profile || !req.body.profile.name || !req.body.profile.outputFormat ||
@@ -82,6 +102,7 @@ module.exports = {
                 videoCodec: videoCodec,
                 twoPass: twoPass,
                 autor: user.name,
+                autorId: user.id,
                 json: jsonString
             }).exec(function(err, profile) {
                 if(err) return res.send(500, err);
