@@ -16,8 +16,6 @@ var uploadConfig = {
  */
 module.exports = {
 
-
-
   /**
    * [POST] Gets a file-upload and creates for the completly uploaded file a
    *        video-model. Returns the id of the video-model.
@@ -42,7 +40,8 @@ module.exports = {
         Videos.create({
           name: file[0].filename,
           path: file[0].fd,
-          user: user.name
+          user: user.name,
+          uploaded: 1
         }).exec(function(err, created) {
           if(err) return res.send(500, err);
 
