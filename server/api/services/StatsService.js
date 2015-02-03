@@ -13,9 +13,10 @@ module.exports = {
      * @param  {boolean}   statsPass     [True === 2-pass encoding enabled]
      * @param  {string}    statsProfil   [Transcoding-profile name]
      * @param  {string}    statsCreator  [The person who started the transcoding task]
+     * @param  {string}    statsPath     [Path of the transcoded file]
      * @param  {Function}  cb            [Callback, returns: Error, statsId]
      */
-    create: function(statsName, statsPriority, statsPass, statsProfil, statsCreator, cb) {
+    create: function(statsName, statsPriority, statsPass, statsProfil, statsCreator, statsPath, cb) {
 
         // create a new Stats-Object
         Stats.create({
@@ -23,7 +24,8 @@ module.exports = {
             priority: statsPriority,
             twoPass: statsPass,
             profil: statsProfil,
-            createdBy: statsCreator
+            createdBy: statsCreator,
+            path: statsPath
         }).exec(function(err, stat) {
             if(err) return cb(err);
 
