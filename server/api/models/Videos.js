@@ -54,6 +54,12 @@ module.exports = {
             type: 'int',
             required: true,
             defaultsTo: 0
+        },
+
+        uploaded: {
+            type: 'int',
+            required: true,
+            defaultsTo: 0
         }
     }
 };
