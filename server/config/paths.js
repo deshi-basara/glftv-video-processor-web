@@ -1,8 +1,10 @@
+var path = require('path');
+
 module.exports = {
 
     path: {
-        transcoding: __dirname + '/../.tmp/transcodes',
-        finished: __dirname + '/../videos'
+        transcoding: path.resolve(__dirname + '/../.tmp/transcodes'),
+        finished: path.resolve(__dirname + '/../videos')
     }
 
 };
