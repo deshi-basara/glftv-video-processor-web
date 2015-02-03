@@ -16,14 +16,25 @@
         var service = {
             allUrl: '/stats/all',
             cancelUrl: '/stats/cancel',
+            downloadUrl: '/videos/download',
             removeUrl: '/stats/remove',
 
             cancelJob: cancelJob,
+            downloadTranscode: downloadTranscode,
             getAllInQueue: getAllInQueue,
             removeAll: removeAll
         };
 
         return service;
+
+        /**
+         * Sends a download request to the server.
+         * @param  {int}    statsId [Stats db id of the transcoded video-file]
+         * @return {Promise}        [Resolve: Object | Reject: false]
+         */
+        function downloadTranscode(statsId) {
+            window.open(config.apiUrl + service.downloadUrl + '/' + statsId);
+        }
 
         /**
          * Sends a cancel request to the server and reacts to the server feedback.

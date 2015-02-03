@@ -52,7 +52,8 @@ module.exports.policies = {
   VideosController: {
     '*': ['isAuthenticated'],
 
-    upload: ['isValidUploader'] // can't use the header to authenticate, use form data
+    upload: ['isValidUploader'], // can't use the header to authenticate, use form data
+    download: ['isValidDownloader']
   }
 
 };

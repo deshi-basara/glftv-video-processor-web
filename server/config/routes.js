@@ -75,6 +75,7 @@ module.exports.routes = {
   /**
    * VideosController
    */
+  'get /videos/download/:statsId': 'VideosController.download',
   'post /videos/upload': 'VideosController.upload',
   'post /videos/model': 'VideosController.model',
   'post /videos/search': 'VideosController.search',

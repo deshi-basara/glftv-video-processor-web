@@ -53,6 +53,11 @@ module.exports = {
 
         startedAt: {
             type: 'datetime'
+        },
+
+        path: {
+            type: 'string',
+            required: true
         }
 
     }

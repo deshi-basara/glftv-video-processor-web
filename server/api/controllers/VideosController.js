@@ -1,4 +1,5 @@
 var async = require('async');
+var path = require('path');
 
 /**
  * Upload settings
@@ -15,6 +16,34 @@ var uploadConfig = {
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 module.exports = {
+
+  /**
+   * [GET] Download request for a transcoded video.
+   */
+  download: function(req, res) {
+
+    // check if the request is valid
+    if(!req.params.statsId) {
+      return res.send(400, 'Bad request');
+    }
+
+    //@todo check for download rights
+
+    // does the stats entry exist?
+    Stats.findOne({id: req.params.statsId}).exec(function(err, stat) {
+      if(err) return res.send(500, err);
+
+      // is there a stats entry?
+      if(stat) {
+        var downloadPath = path.resolve(stat.path);
+
+        res.download(downloadPath);
+      }
+      else {
+        res.send(400, 'Bad request');
+      }
+    });
+  },
 
   /**
    * [POST] Gets a file-upload and creates for the completly uploaded file a

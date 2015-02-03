@@ -15,6 +15,14 @@
         var ctrl = this;
 
         /**
+         * Makes a download request for a transcoded video-file.
+         * @param  {int}    statsId [Stats db id of the transcoded video-file]
+         */
+        function downloadTranscode(statsId) {
+            QueueService.downloadTranscode(statsId);
+        }
+
+        /**
          * Is fired when the 'cancel'-icon is clicked.
          * @param  {int} jobId [Id of the job we want to cancel]
          */
@@ -51,6 +59,7 @@
 
                 // save result globally
                 ctrl.queueData = success;
+                console.log(success);
 
                 // reload table params
                 ctrl.tableParams.reload();
@@ -116,8 +125,6 @@
             }
         }
 
-
-
         //////////////////////
 
         // ngTable settings
@@ -146,6 +153,7 @@
             tableParams: tableParams,
 
             cancelSelected: cancelSelected,
+            downloadTranscode: downloadTranscode,
             removeAllFailed: removeAllFailed,
             removeAllFinished: removeAllFinished
         });
@@ -156,7 +164,7 @@
          * Is fired when a stats-entry is updated.
          * @param  {object} data [id of the stats-entry and all the values that have changed]
          */
-        var updateAll = 0;
+        var updateAll = 48;
         SocketService.socket.on('stats.progress.update', function(data) {
 
             // loop through all stats entries
