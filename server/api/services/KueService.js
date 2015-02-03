@@ -174,13 +174,13 @@ module.exports = {
         async.eachSeries(profileArray, function(profileObj, cb) {
 
             // create the transcoding command
-            FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo) {
+            FFmpegService.prepareCmd(videoObj, profileObj, function(err, passOne, passTwo, transcodedPath) {
                 if(err) {
                     return cb(err);
                 }
 
                 // create a new stats model
-                StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, videoObj.user,
+                StatsService.create(videoObj.name, videoObj.priority, profileObj.twoPass, profileObj.name, videoObj.user, transcodedPath,
                     function(err, statsId) {
                         if(err) {
                             return cb(err);

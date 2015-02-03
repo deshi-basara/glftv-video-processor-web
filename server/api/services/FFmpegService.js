@@ -204,12 +204,13 @@ module.exports = {
             cmdPassTwo.push('-f', profile.outputFormat);
         }
         // add the output file
-        cmdPassTwo.push(video.transcodingDest + '/' +video.fileName +
-                        '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat);
+        var transcodedPath = video.transcodingDest + '/' +video.fileName +
+                                '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat
+        cmdPassTwo.push(transcodedPath);
 
         // escape cmd
         cmdPassTwo = cmdPassTwo;
 
-        return cb(null, cmdPassOne, cmdPassTwo);
+        return cb(null, cmdPassOne, cmdPassTwo, transcodedPath);
     }
 };
