@@ -8,7 +8,7 @@ var path = require('path');
 // create the queue
 var jobs = kue.createQueue();
 // create the json-api
-var api = kue.app.listen(1338);
+//var api = kue.app.listen(1338);
 
 /**
  * Kue job for transcoding videos into a specified format.
@@ -29,6 +29,7 @@ jobs.process('transcode', function(job, done) {
             }
 
             // copy the video file to its transcoding-folder
+            // @todo don't copy, just use the file.
             fse.copy(job.data.video.path, job.data.video.transcodingDest + '/' + job.data.video.fileName +
                 job.data.video.fileExtension, function(err) {
                 if(err) return done('Coud not move the video to the transcoding folder: '+ job.data.video.transcodingDest);
@@ -102,6 +103,36 @@ jobs.process('transcode', function(job, done) {
 
     }, 5000);
 });
+
+/**
+ * Kue job for unlinking uploaded videos.
+ * @param  {[Object]}   job  [Kue-job-object]
+ * @param  {Function}   done [Callback, that tells kue when the job is finshed]
+ */
+jobs.process('unlink', 0, function(job, done) {
+    setTimeout(function() {
+        console.log(job.data);
+
+        // does the specified video file exist?
+        fs.exists(job.data.file, function(exists) {
+            if(!exists) {
+                console.log('Aborting unlinking of ' + job.data.file + ': does not exist');
+                return done('Uploaded file does not exist');
+            }
+
+            fs.unlink(job.data.file, function(err) {
+                if(err) return done(err);
+
+                console.log('File ' + job.data.file + 'was unlinked');
+
+                // job was finished
+                done();
+            });
+        });
+
+    }, 5000);
+});
+
 
 /**
  * Listens for Queue-lebel events.
@@ -185,6 +216,18 @@ module.exports = {
             });
 
         }, function(err) {
+            // check if the video file was uploaded
+            if(videoObj.uploaded == 1) {
+
+                setTimeout(function() {
+                    // create an additional remove job for unlinking the uploaded file
+                    var unlink = jobs.create('unlink', {
+                        file: videoObj.path
+                    }).priority('medium').removeOnComplete(false).save();
+
+                }, 10000);
+            }
+
             // jobs were added successfully, call callback for triggering the response feedback
             return cb();
         });
@@ -222,7 +265,3 @@ module.exports = {
         });
     }
 };
-
-setTimeout(function() {
-    //KueService.restartJobs();
-}, 20000);
