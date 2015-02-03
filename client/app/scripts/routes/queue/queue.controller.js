@@ -174,6 +174,7 @@
                     // only update the progress
                     else {
                         ctrl.queueData[i].progress = data.progress;
+                        ctrl.queueData[i].status = data.status;
                     }
 
 
