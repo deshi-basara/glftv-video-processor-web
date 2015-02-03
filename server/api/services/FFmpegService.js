@@ -158,7 +158,7 @@ module.exports = {
         var cmdPassOne = null;
 
         // add the input file
-        cmdPassTwo.push('-i', video.transcodingDest + '/' + video.fileName + video.fileExtension);
+        cmdPassTwo.push('-y', '-i', video.transcodingDest + '/' + video.fileName + video.fileExtension);
 
         // parse the json string into an object
         try {
@@ -180,16 +180,32 @@ module.exports = {
 
             // 1-pass and escape
             cmdPassOne.push('-pass', 1); // @todo set audio to disabled on 1-pass
-            cmdPassOne.push('-f', profile.outputFormat, '-y', '/dev/null');
+
+            // check for ogv transcodes (ogv needs -f ogg as parameter)
+            if(profile.outputFormat === 'ogv') {
+                cmdPassOne.push('-f', 'ogg');
+            }
+            else {
+                cmdPassOne.push('-f', profile.outputFormat);
+            }
+            cmdPassOne.push('/dev/null');
+
             cmdPassOne = cmdPassOne;
 
             // 2-pass
             cmdPassTwo.push('-pass', 2);
         }
 
+        // check for ogv transcodes (ogv needs -f ogg as parameter)
+        if(profile.outputFormat === 'ogv') {
+            cmdPassTwo.push('-f', 'ogg');
+        }
+        else {
+            cmdPassTwo.push('-f', profile.outputFormat);
+        }
         // add the output file
-        cmdPassTwo.push('-f', profile.outputFormat, video.transcodingDest + '/' +video.fileName +
-                            '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat);
+        cmdPassTwo.push(video.transcodingDest + '/' +video.fileName +
+                        '-' + profile.name.replace(' ', '_') + '.' +profile.outputFormat);
 
         // escape cmd
         cmdPassTwo = cmdPassTwo;
@@ -197,18 +213,3 @@ module.exports = {
         return cb(null, cmdPassOne, cmdPassTwo);
     }
 };
-
-/*setTimeout(function() {
-
-Profiles.findOne({name: 'Simon 720p'}).exec(function(err, profileObj) {
-
-    Videos.findOne({id: 22}).exec(function(err, videoObj) {
-
-        KueService.transcodeVideo(videoObj, profileObj, function(err) {
-            console.log(err);
-        })
-    });
-});
-
-
-}, 1000);*/
