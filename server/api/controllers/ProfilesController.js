@@ -1,10 +1,14 @@
+var _ = require('underscore');
+
+// array for filtering illegal cmd words
+var illegalWords = ['scaleFactor', 'videoCodec', 'autor', 'autorId', 'json', 'createdAt', 'updatedAt', 'id', '&&']
+
 /**
  * ProfilesController
  *
  * @description :: Server-side logic for managing Profiles
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
 module.exports = {
 
     /**
@@ -62,28 +66,30 @@ module.exports = {
      */
     save: function(req, res) {
 
-        console.log('save');
-
         // check if the request is valid
         if(!req.body.profile || !req.body.profile.name || !req.body.profile.outputFormat ||
-                !req.body.profile['codec:v'] || (req.body.profile.twoPass === undefined)) {
+                !req.body.profile['codec:v'] || !req.body.profile.vf || (req.body.profile.twoPass === undefined)) {
             return res.send(400, 'Bad request');
         }
+
+        // remove illegal cmd-values
+        var filteredRequest = _.omit(req.body.profile, illegalWords);
 
         // get all needed database data and remove it from the json object.
         // Save the jsonObj as string.
         try {
-            var name = req.body.profile.name;
-            var outputFormat = req.body.profile.outputFormat;
-            var scaleFactor = req.body.profile.vf;
-            var videoCodec = req.body.profile['codec:v'];
-            var twoPass = req.body.profile.twoPass;
+            var name = filteredRequest.name;
+            var outputFormat = filteredRequest.outputFormat;
+            var scaleFactor = filteredRequest.vf;
+            var videoCodec = filteredRequest['codec:v'];
+            var twoPass = filteredRequest.twoPass;
 
-            delete req.body.profile['name'];
-            delete req.body.profile['outputFormat'];
-            delete req.body.profile['twoPass'];
+            delete filteredRequest['name'];
+            delete filteredRequest['outputFormat'];
+            delete filteredRequest['vf'];
+            delete filteredRequest['twoPass'];
 
-            var jsonString = JSON.stringify(req.body.profile);
+            var jsonString = JSON.stringify(filteredRequest);
         } catch(e) {
             return res.send(500, e);
         }
