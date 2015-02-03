@@ -23,10 +23,13 @@ module.exports = function(req, res, next) {
         var tokenMatches = user.compareTokens(req.headers.authorization);
         var hasNotExpired = AuthService.hasExpired(user.authCreated);
         if(tokenMatches && hasNotExpired) {
+            // create a session (e.g. for GET-downloads)
+            req.session.authenticated = true;
             return next();
         }
         else {
             return res.send(401, 'Unauthorized');
         }
     });
+
 };
