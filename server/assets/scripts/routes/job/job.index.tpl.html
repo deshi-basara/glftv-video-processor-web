@@ -15,15 +15,8 @@
                     <td data-title="'#'" class="col-sm-1">
                         {{:: $index }}
                     </td>
-                    <td data-title="'Name'" class="col-sm-4">
+                    <td data-title="'Name'" class="col-sm-6">
                         {{:: file.name }}
-                    </td>
-                    <td data-title="'Profile'" class="col-sm-2">
-                        <select class="form-control select-profile" ng-model="file.profile" ng-class="{ 'error': file.noProfile === true }">
-                            <!--<option value="all">Alle</option>-->
-                            <option ng-repeat="profile in ctrl.profiles">{{:: profile.name }}</option>
-                            <option value="custom" ng-show="file.custom.length !== 0" ng-selected="file.custom.length !== 0">{{ file.custom }}</option>
-                        </select>
                     </td>
                     <td data-title="'Fortschritt'" class="col-sm-2">
                         <progressbar max="100" value="file.progress">{{ file.progress }}%</progressbar>
@@ -56,11 +49,16 @@
         <h4>Einstellungen für: <span>{{ ctrl.fileSelected.name }}</span></h4>
     </div>
     <div class="section-box-body">
-        <div class="section-left">
-            <!--<div class="input-group output-name">
+        <div class="section-profiles">
+            <div class="profile-item" ng-repeat="profile in ctrl.profiles" ng-class="{ 'selected': profile.checked }">
+                <span>{{:: profile.name }} ({{:: profile.outputFormat }})</span><input type="checkbox" ng-model="profile.checked" ng-change="ctrl.customProfiles(profile.name)">
+            </div>
+        </div>
+        <!--<div class="section-left">
+            <div class="input-group output-name">
                 <label>Output-Name</label>
                 <input class="input-text" type="text">
-            </div>-->
+            </div>
         </div>
         <div class="section-right">
             <div class="section-profiles">
@@ -68,10 +66,10 @@
                     <span>{{:: profile.name }} ({{:: profile.outputFormat }})</span><input type="checkbox" ng-model="profile.checked" ng-change="ctrl.customProfiles(profile.name)">
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="section-box-footer">
-        ffmpeg
+        <!--ffmpeg-->
     </div>
 </section>
 <!--

@@ -1,8 +1,8 @@
 <div id="login">
 
-    <div class="login-form">
+    <form class="login-form" ng-submit="ctrl.submitLogin()">
         <div class="login-form-header">
-            <span class="headline">GLF-Video-Processor RC1</span>
+            <span class="headline">GLF-Video-Processor RC2</span>
         </div>
         <div class="login-form-input center-parent">
 
@@ -19,9 +19,9 @@
 
         </div>
         <div class="login-form-submit">
-            <button class="button" ng-click="ctrl.submitLogin()">Einloggen</button>
+            <button type="submit" class="button">Einloggen</button>
         </div>
-    </div>
+    </form>
 
 </div>
 

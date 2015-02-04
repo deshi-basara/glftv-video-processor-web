@@ -1,6 +1,7 @@
 <section id="profiles" class="section-box">
     <div class="section-box-head">
         <h4>Alle Profile</h4>
+        {{ $rootScope }}
     </div>
     <div class="section-box-body">
         <div class="profiles-all">
@@ -9,11 +10,18 @@
                     <td data-title="'#'" class="col-sm-1">
                         {{:: $index }}
                     </td>
-                    <td data-title="'Name'" class="col-sm-3">
+                    <td data-title="'Name'" class="col-sm-2">
                         {{:: profile.name }}
                     </td>
                     <td data-title="'Output'" class="col-sm-1">
                         {{:: profile.outputFormat }}
+                    </td>
+                    <td data-title="'Skalierung'" class="col-sm-1">
+                        {{:: profile.scaleFactor | glfScale}}
+                    </td>
+                    <td data-title="'2-Pass'" class="col-sm-1">
+                        <i class="fa fa-minus" ng-hide="profile.twoPass"></i>
+                        <i class="fa fa-check" ng-show="profile.twoPass"></i>
                     </td>
                     <td data-title="'Video-Codec'" class="col-sm-2">
                         {{:: profile.videoCodec }}
@@ -24,9 +32,9 @@
                     <td data-title="'Letztes Update'" class="col-sm-2">
                         {{:: profile.updatedAt | date: 'dd.MM.yyyy, HH:mm' }} Uhr
                     </td>
-                    <td class="fa-activated" data-title="'Aktiviert'" class="col-sm-1">
-                        <i class="fa fa-minus" ng-hide="profile.activated === 0"></i>
-                        <i class="fa fa-check" ng-show="profile.status === 0"></i>
+                    <td class="fa-activated" class="col-sm-1">
+                        <!-- Only show the remove button to the profile owner or to all admins -->
+                        <i class="glyphicon glyphicon-remove-circle" ng-show="profile.id === ctrl.userId || ctrl.userRole === 1" ng-click="ctrl.removeProfile(profile.id)"></i>
                     </td>
                 </tr>
             </table>
@@ -45,7 +53,7 @@
     <div class="section-box-body">
         <div class="section-left">
             <div class="section-general" ng-show="ctrl.isActive === 'global'">
-                <div class="form-group">
+                <div class="form-group form-group-name">
                     <label>Profil-Name</label>
                     <input class="form-control" type="text" value="{{ ctrl.newProfile.name }}" ng-model="ctrl.newProfile.name">
                 </div>
@@ -78,7 +86,7 @@
                 <div class="form-group2">
                     <!-- Scale -->
                     <label class="control-label">2-pass?</label>
-                    <input class="control-check" type="checkbox" ng-model="ctrl.newProfile.twoPass"/>
+                    <input class="control-check" type="checkbox" ng-model="ctrl.newProfile.twoPass" checked/>
                 </div><!-- / Row 1 -->
 
                 <formly-form result="ctrl.newProfile" fields="ctrl.allProfileSettings.video"></formly-form>
