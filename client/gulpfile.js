@@ -148,7 +148,7 @@ gulp.task('copy', function () {
 	return gulp.src([
 		'app/*',
 		'!app/*.html',
-		'!app/lib'
+		'app/lib'
 		], {
 			dot: true
 		})
