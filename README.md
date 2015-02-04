@@ -37,6 +37,36 @@ Execute inside 'client/'
 [client]$  gulp serve
 ```
 
+==============
+### Deployment
+
+1. Change the 'apiUrl' inside 'client/app/scripts/app.js' (l. 30) to fit your URL/Server-IP
+2. Minificate & concat your client-code
+
+```Shell
+[client]$  gulp build   # will be build into client/dist
+```
+
+3. Copy your minificated client-code inside 'server/assets'
+
+```Shell
+[client]$  gulp deploy
+```
+
+4. Upstart your redis-server (connection-config: 'server/config/connections.js')
+5. Upstart the sailsjs-server
+
+```Shell
+[server]$  sails lift --prod
+or
+[server]$  forever start app.js --prod
+```
+
+6. Default settings & profiles will be initiated on the first server start
+7. Connect to http://URL:1337/#/register and create an account (Email-restrictions can be changed in 'server/api/controllers/UserController.js' (l. 67-69))
+
+
+
 ========
 ### Todo
 
@@ -47,8 +77,7 @@ Execute inside 'client/'
 ==============
 ### Known Bugs
 
-* Fix $digest-loop bug for the round progress circle
-* Update all Queue-Values via socket
+
 
 ========
 ### Demo
