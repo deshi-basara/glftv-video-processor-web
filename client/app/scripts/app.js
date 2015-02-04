@@ -1,6 +1,6 @@
 /*!
 * Simon Schuster <simon.schuster@hs-furtwangen.de>
-* glftv-video-processor-web v0.9.5 (https://github.com/deshi-basara/glftv-video-processor-web)
+* glftv-video-processor-web v0.9.6 (https://github.com/deshi-basara/glftv-video-processor-web)
 */
 
 'use strict';
@@ -26,7 +26,7 @@ angular
 
 .constant('config', {
   'name': 'GLF-Video-Processor',
-  'version': '0.9.5',
+  'version': '0.9.6',
   'apiUrl': 'http://localhost:1337'
 })
 
